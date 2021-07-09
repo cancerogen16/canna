@@ -1,3 +1,9 @@
-import storeConfig from './config'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { profileReducer } from './profile/reducer';
+import thunk from 'redux-thunk';
 
-export default storeConfig()
+const roorReducer = combineReducers({
+    profile: profileReducer
+})
+
+export const store = createStore(roorReducer, applyMiddleware(thunk));

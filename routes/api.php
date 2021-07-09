@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,17 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// default name space for all routes is 'App\Http\Controllers\Api'
-$api_version = config('api.api_version');
-
-Route::group(["prefix" => "{$api_version}"], function() {
-    // register auth routes
-    Route::prefix('auth')
-        ->group(base_path('routes/api/auth.php'));
-    // register users routes
-    Route::prefix('users')
-        ->group(base_path('routes/api/users.php'));
-    // register articles routes
-    Route::prefix('articles')
-        ->group(base_path('routes/api/articles.php'));
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
 });
