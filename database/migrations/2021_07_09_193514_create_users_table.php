@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateUsersTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Зарегистрированные пользователи
      *
      * @return void
      */
@@ -15,13 +15,13 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')
+            $table->foreignId('role_id') // привязка к роли
                 ->constrained('roles')
                 ->cascadeOnDelete();
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('password');
-            $table->boolean('is_business')->default(false);
+            $table->boolean('is_business')->default(false); // 0-клиент, 1-салон
             $table->rememberToken();
             $table->timestamps();
         });

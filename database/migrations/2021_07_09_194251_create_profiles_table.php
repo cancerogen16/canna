@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateProfilesTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Профили зарегистрированных пользователей
      *
      * @return void
      */
@@ -15,14 +15,14 @@ class CreateProfilesTable extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')
+            $table->foreignId('user_id') // привязка к таблице users
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->string('name');
             $table->string('photo');
             $table->string('address');
-            $table->string('email')->index();
-            $table->string('about');
+            $table->string('email')->unique();
+            $table->string('about'); // о себе
         });
     }
 

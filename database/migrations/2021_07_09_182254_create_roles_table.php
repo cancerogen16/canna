@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateRolesTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Роли зарегистрированных пользователей
      *
      * @return void
      */
@@ -15,7 +15,7 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('role');
+            $table->string('role'); // 'administrator', 'manager', 'salon', 'master', 'client', 'user'
         });
     }
 
