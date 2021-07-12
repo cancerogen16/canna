@@ -13,11 +13,18 @@ class CreateCalendarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('calendars', function (Blueprint $table) {
+        Schema::create('calendars', function (Blueprint $table) { //календарь со списком услуг для записи
+
             $table->id();
-            $table->date('date');
-            $table->time('start_datetime'); // время начала
-            $table->time('end_datetime'); // время окончания
+
+            $table->foreignId('service_id') // привязка к услуге
+            ->constrained('services')
+                ->cascadeOnDelete();
+
+            $table->dateTime('start_datetime'); // время начала
+
+            $table->dateTime('end_datetime'); // время окончания
+
             $table->timestamps();
         });
     }
