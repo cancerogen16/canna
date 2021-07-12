@@ -15,13 +15,13 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->default(3) // привязка к роли, 3-клиент, 2-салон. на фронтенде сделать выпадающее меню - салон/клиент
+            $table->foreignId('role_id') // привязка к роли
                 ->constrained('roles')
                 ->cascadeOnDelete();
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('password');
-          //  $table->boolean('is_business')->default(false); // 0-клиент, 1-салон
+            $table->boolean('is_business')->default(false); // 0-клиент, 1-салон
             $table->rememberToken();
             $table->timestamps();
         });
