@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "@material-ui/core": "^4.12.1",
+        "firebase": "^8.7.1",
         "react-redux": "^7.2.4",
         "thunk": "0.0.1"
     }

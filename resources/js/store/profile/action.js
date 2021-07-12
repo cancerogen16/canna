@@ -1,15 +1,15 @@
 export const EDIT_PROFILE = 'PROFILE::EDIT_PROFILE';
 
-export const editProfile = (firstName, lastName, email, phone) => ({
+export const editProfile = (email, token) => ({
     type: EDIT_PROFILE,
-    firstName,
-    lastName,
     email,
-    phone
+    token
 });
 
-export const fetchProfileWithThunk = () => (dispatch, getState) => {
-            fetch("https://reqres.in/api/users?id=2").then(res => res.json()).then(res => {
-                dispatch(editProfile( res.data.first_name, res.data.last_name, res.data.email ))
-            })
-        }     
+
+// export const fetchProfileWithThunk = () => (dispatch, getState) => {
+//             fetch("https://reqres.in/api/users?id=2").then(res => res.json()).then(res => {
+//                 dispatch(editProfile( res.data.first_name, res.data.last_name, res.data.email ))
+//             })
+//         }
+
