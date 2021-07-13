@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// default name space for all routes is 'App\Http\Controllers\Api'
+$api_version = config('api.api_version');
+
+Route::group(["prefix" => "{$api_version}"], function () {
+    // register categories routes
+    Route::prefix('categories')
+        ->group(base_path('routes/api/categories.php'));
 });
+
+Route::any('/{any}', function () {
+    return response()->json([
+        'success' => false,
+        'message' => 'Resource not found',
+    ], 404);
+})->name('api.any.404');

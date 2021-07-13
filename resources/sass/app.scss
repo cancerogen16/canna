@@ -1,6 +1,13 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
+@import '../js/components/login/index.scss';
+@import '../js/components/registre/index.scss';
 // Variables
 @import 'variables';
 
+.login-page__block{
+    flex-direction: column;
+    max-width: 400px;
+    display: flex;
+    margin: auto;
+}

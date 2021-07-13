@@ -1,10 +1,9 @@
 import { EDIT_PROFILE } from "./action"
 
 const initialState = {
-    firstName: 'Тест',
-    lastName: 'ТЕСТ',
-    email: 'mail@mail.ru',
-    phone: '+79999999999',   
+    
+    email: '',
+    token: ''   
 }
 
 export const profileReducer = (state = initialState, action) => {
