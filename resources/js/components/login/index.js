@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import PropTypes from 'prop-types'
+import { Validator } from 'ree-validate'
 
 
 import firebase from 'firebase/app';
@@ -30,6 +32,11 @@ var firebaseConfig = {
 
 
 export default function Login (){
+
+    const validator = new Validator({
+        email: 'required|email',
+        password: 'required|min:6'
+      }) 
 
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
@@ -65,7 +72,7 @@ export default function Login (){
     }
     const click = () => {
 
-        
+
 
         firebase.auth().signInWithEmailAndPassword(credentials.phone, credentials.password)
         .then((userCredential) => {
@@ -89,8 +96,8 @@ export default function Login (){
     }
     
     return (<form className="form_login">
-                <TextField id="filled-basic" onChange={handlerOnChangeField}   label="email" name="phone" variant="filled" />
-                <TextField id="filled-basic" onChange={handlerOnChangeField}  label="Пароль" name="password" variant="filled" />
+                <TextField id="filled-basic" onChange={handlerOnChangeField} type="phone"  label="Телефон" name="phone" variant="filled" />
+                <TextField id="filled-basic" onChange={handlerOnChangeField} type="password"  label="Пароль" name="password" variant="filled" />
                 <FormControlLabel control={<Checkbox onChange={handlerOnChangeField} name="remember" checked={credentials.remember} color="primary" />} label="Запомнить" />
                 <Button variant="contained" onClick={click} color="primary">Войти</Button>
             </form>)
