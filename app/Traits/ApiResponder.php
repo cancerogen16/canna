@@ -7,11 +7,11 @@ use Illuminate\Http\JsonResponse;
 trait ApiResponder
 {
     /**
-     * @param array $result
+     * @param $result
      * @param string $msg
      * @return JsonResponse
      */
-    public function handleResponse(array $result, string $msg = ''): JsonResponse
+    public function handleResponse($result, string $msg = ''): JsonResponse
     {
         $res = [
             'success' => true,
