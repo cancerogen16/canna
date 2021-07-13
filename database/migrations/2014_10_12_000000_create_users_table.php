@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateUsersTable extends Migration
 {
     /**
-     * Зарегистрированные пользователи
+     * Run the migrations.
      *
      * @return void
      */
@@ -15,13 +15,10 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->default(3) // привязка к роли, 3-клиент, 2-салон. на фронтенде сделать выпадающее меню - салон/клиент
-                ->constrained('roles')
-                ->cascadeOnDelete();
             $table->string('name');
-            $table->string('phone')->unique();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-          //  $table->boolean('is_business')->default(false); // 0-клиент, 1-салон
             $table->rememberToken();
             $table->timestamps();
         });
