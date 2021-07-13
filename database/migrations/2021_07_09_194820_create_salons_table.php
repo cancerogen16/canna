@@ -18,6 +18,9 @@ class CreateSalonsTable extends Migration
 
             $table->string('slug', 191)->unique(); // ярлык
             $table->string('main_photo'); // основное фото салона
+            $table->string('city')
+                ->nullable()
+                ->index();
             $table->string('address');
             $table->string('phone', 50);
             $table->string('worktime'); // время работы(можно в json)
