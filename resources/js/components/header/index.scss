@@ -1,0 +1,11 @@
+.toolbar{
+
+    justify-content: space-between;
+    &__auth{
+        position: absolute;
+        padding: 15px;
+        width: 300px;
+        top: 65px;
+        right: 0;
+    }
+}

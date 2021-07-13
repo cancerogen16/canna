@@ -13,18 +13,18 @@ import { authLogin } from '../../store/auth/actions';
 
 
 
-var firebaseConfig = {
-    apiKey: "AIzaSyBwf9H3J5uI3W_WGpKcM8le2XDbwBOl9tc",
-    authDomain: "test-5b0ea.firebaseapp.com",
-    projectId: "test-5b0ea",
-    storageBucket: "test-5b0ea.appspot.com",
-    messagingSenderId: "964341762176",
-    appId: "1:964341762176:web:15d74d02c7b86236623e65",
-    measurementId: "G-25CTYC0L3B",
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+// var firebaseConfig = {
+//     apiKey: "AIzaSyBwf9H3J5uI3W_WGpKcM8le2XDbwBOl9tc",
+//     authDomain: "test-5b0ea.firebaseapp.com",
+//     projectId: "test-5b0ea",
+//     storageBucket: "test-5b0ea.appspot.com",
+//     messagingSenderId: "964341762176",
+//     appId: "1:964341762176:web:15d74d02c7b86236623e65",
+//     measurementId: "G-25CTYC0L3B",
+//   };
+//   // Initialize Firebase
+//   firebase.initializeApp(firebaseConfig);
+//   firebase.analytics();
 
 
 export default function Register (){
@@ -33,13 +33,9 @@ export default function Register (){
     
 
     const [credentials, setCredentials] = useState({
-        type: 'salon',
-        lastName: '',
-        firstName: '',
+        name: '',
         phone: '',
-        email: '',
         password: '',
-        remember: false,
     });
 
     const handlerOnChangeField = (e) => {
@@ -56,29 +52,10 @@ export default function Register (){
                     password: e.target.value
                 })
             break;
-            case 'last-name': 
+            case 'name': 
                 setCredentials({
                     ...credentials,
-                    lastName: e.target.value
-                })
-            break;
-            case 'first-name': 
-                setCredentials({
-                    ...credentials,
-                    firstName: e.target.value
-                })
-            break;
-            case 'email': 
-                setCredentials({
-                    ...credentials,
-                    email: e.target.value
-                })
-            break;
-            case 'type': 
-                console.log(e.target);
-                setCredentials({
-                    ...credentials,
-                    type: e.target.value
+                    name: e.target.value
                 })
             break;
         }
@@ -104,28 +81,10 @@ export default function Register (){
     
     
     return (<form className="form_registre">
-                {console.log(credentials)}
-                <FormControl variant="filled">
-                <InputLabel htmlFor="filled-age-native-simple">Тип регистрации</InputLabel>
-                <Select
-                    native
-                    value={credentials.type}
-                    name="type"
-                    onChange={handlerOnChangeField}
-                    >
-                    <option value={'salon'}>Салон</option>
-                    <option value={'master'}>Частный мастер</option>
-                </Select>
-                </FormControl>
-                {credentials.type == 'salon'? 
-                    <TextField id="filled-basic" onChange={handlerOnChangeField}   label="Название салона" name="phone" variant="filled" />:
-                     null
-                }
-                <TextField id="filled-basic" onChange={handlerOnChangeField}   label="Фамилия" name="last-name" variant="filled" />
-                <TextField id="filled-basic" onChange={handlerOnChangeField}   label="Имя" name="first-name" variant="filled" />
+                <TextField id="filled-basic" onChange={handlerOnChangeField}   label="Имя" name="name" variant="filled" />
                 <TextField id="filled-basic" onChange={handlerOnChangeField}   label="Телефон" name="phone" variant="filled" />
-                <TextField id="filled-basic" onChange={handlerOnChangeField}   label="E-mail" name="email" variant="filled" />
                 <TextField id="filled-basic" onChange={handlerOnChangeField}  label="Пароль" name="password" variant="filled" />
+                <TextField id="filled-basic" onChange={handlerOnChangeField}  label="Повторите пароль" name="password" variant="filled" />
                 <Button variant="contained" onClick={click} color="primary">Зарегистрировать</Button>
             </form>)
 }

@@ -96,8 +96,8 @@ export default function Login (){
     }
     
     return (<form className="form_login">
-                <TextField id="filled-basic" onChange={handlerOnChangeField} type="phone"  label="Телефон" name="phone" variant="filled" />
-                <TextField id="filled-basic" onChange={handlerOnChangeField} type="password"  label="Пароль" name="password" variant="filled" />
+                <TextField  id="filled-basic" onChange={handlerOnChangeField} type="phone" helperText=""  label="Телефон" name="phone" variant="filled" />
+                <TextField error={false} id="filled-basic" onChange={handlerOnChangeField} type="password" helperText=""  label="Пароль" name="password" variant="filled" />
                 <FormControlLabel control={<Checkbox onChange={handlerOnChangeField} name="remember" checked={credentials.remember} color="primary" />} label="Запомнить" />
                 <Button variant="contained" onClick={click} color="primary">Войти</Button>
             </form>)
