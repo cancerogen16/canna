@@ -23,6 +23,8 @@ class CreateRecordsTable extends Migration
                 ->constrained('calendars')
                 ->cascadeOnDelete();
 
+            $table->string('name');
+            $table->string('phone');
             $table->string('comment')->nullable();
 
             $table->timestamps();
