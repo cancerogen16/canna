@@ -21,9 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('password');
-          //  $table->boolean('is_business')->default(false); // 0-клиент, 1-салон
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -25,11 +25,11 @@ class CreateMastersTable extends Migration
 
             $table->string('photo', 255)->nullable(); // фото
 
-            $table->string('experience', 255); // опыт
+            $table->string('experience', 255)->nullable(); // опыт
 
             $table->text('description')->nullable(); // описание
 
-            $table->integer('rating'); // рейтинг
+            $table->integer('rating')->default(0); // рейтинг
 
             $table->timestamps();
             $table->softDeletes();

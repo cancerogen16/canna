@@ -19,7 +19,7 @@ trait ApiResponder
             'message' => $msg,
         ];
 
-        return response()->json($res, 200);
+        return response()->json($res, 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -39,6 +39,6 @@ trait ApiResponder
             $res['data'] = $errorMsg;
         }
 
-        return response()->json($res, $code);
+        return response()->json($res, $code, [], JSON_UNESCAPED_UNICODE);
     }
 }
