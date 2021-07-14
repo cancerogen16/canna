@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "@material-ui/core": "^4.12.1",
+        "@material-ui/icons": "^4.11.2",
         "firebase": "^8.7.1",
         "react-redux": "^7.2.4",
         "ree-validate": "^3.3.2",

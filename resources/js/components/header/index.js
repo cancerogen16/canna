@@ -10,7 +10,7 @@ export default function Header() {
 
 
     return (<>
-        <AppBar position="static">
+        <AppBar className="header" position="static">
         <Toolbar className="toolbar">
           <Typography variant="h6" >
             News
