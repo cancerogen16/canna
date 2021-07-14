@@ -18,11 +18,12 @@ class CreateProfilesTable extends Migration
             $table->foreignId('user_id') // привязка к таблице users
                 ->constrained('users')
                 ->cascadeOnDelete();
-            $table->string('name');
-            $table->string('photo');
-            $table->string('address');
-            $table->string('email')->unique();
-            $table->string('about'); // о себе
+            $table->string('name')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('address')->nullable();
+            $table->string('email')->unique()->nullable();
+            $table->string('about')->nullable(); // о себе
+            $table->softDeletes();
         });
     }
 
