@@ -24,17 +24,13 @@ class CreateServicesTable extends Migration
             ->constrained('masters')
                 ->cascadeOnDelete();
 
-            $table->foreignId('salon_id') // привязка к салону
-            ->constrained('salons')
-                ->cascadeOnDelete();
-
             $table->string('title', 191); // название
             $table->string('slug', 191)->unique(); // ярлык
 
             $table->decimal('price', 8, 0); // цена услуги
-            $table->string('duration')->default(1); // количество минут для записи
+            $table->string('duration')->default(1); // продолжительность услуги в минутах
 
-            $table->string('use_break')->nullable(); // Перерыв после записи
+            $table->string('use_break')->nullable(); // Перерыв после записи в минутах
 
             $table->string('image', 255)->nullable(); // изображение услуги
 
