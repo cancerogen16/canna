@@ -13,6 +13,7 @@ class Salon extends Model
 
     protected $fillable = [
         'slug',
+        'main_photo',
         'city',
         'address',
         'phone',
