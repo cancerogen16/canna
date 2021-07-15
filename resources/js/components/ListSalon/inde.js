@@ -1,7 +1,8 @@
 
-import { Checkbox, Divider, FormControlLabel, FormGroup, Link, Modal, TextField } from '@material-ui/core';
+import { Checkbox, Divider, FormControlLabel, FormGroup, Grid, Link, Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import CardSalon from './card';
 function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -33,6 +34,8 @@ export default function ListSalon() {
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
 
+    const salons = useSelector(state => state.salons);
+
     const handleOpen = () => {
         setOpen(true);
       };
@@ -41,7 +44,11 @@ export default function ListSalon() {
         setOpen(false);
       };
 
-    return (<div className='search-salon'>
-        <CardSalon />
-    </div>);
+    return (
+     <Grid container  spacing={3}>
+       {salons.map(salon =><Grid key={salon.id} item xs={6}> <CardSalon  salon={salon} /></Grid>)}
+     </Grid>
+        
+       
+      );
 }
