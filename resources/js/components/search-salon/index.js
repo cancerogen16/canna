@@ -1,8 +1,9 @@
 
 import { Checkbox, Divider, FormControlLabel, FormGroup, Link, Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategoryAll } from '../../store/category/action';
 function rand() {
     return Math.round(Math.random() * 20) - 10;
   }
@@ -30,6 +31,11 @@ function getModalStyle() {
 
 export default function SearchSalon() {
     const categories = useSelector(state => state.categories);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchCategoryAll());
+    },[])
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);

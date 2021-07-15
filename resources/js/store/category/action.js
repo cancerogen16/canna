@@ -1,15 +1,20 @@
-export const EDIT_CATEGORY = 'CATEGORY::EDIT_CATEGORY';
+export const ADD_CATEGORY = 'CATEGORY::ADD_CATEGORY';
 
-export const editCategory = (email, token) => ({
-    type: EDIT_CATEGORY,
-    email,
-    token
+export const addCategory = ({id, title, slug}) => ({
+    type: ADD_CATEGORY,
+    id,
+    title,
+    slug
 });
 
 
-// export const fetchProfileWithThunk = () => (dispatch, getState) => {
-//             fetch("https://reqres.in/api/users?id=2").then(res => res.json()).then(res => {
-//                 dispatch(editProfile( res.data.first_name, res.data.last_name, res.data.email ))
-//             })
-//         }
+export const fetchCategoryAll = () => (dispatch, getState) => {
+            fetch("http://localhost:8000/api/categories").then(res => res.json()).then(res => {
+                
+                res.data.forEach(element => {
+                    dispatch(addCategory(element))
+                });
+                
+            })
+        }
 

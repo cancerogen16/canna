@@ -16,12 +16,6 @@ class CreateActionsTable extends Migration
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('salon_id') // привязка к салону
-                ->constrained('salons')
-                ->cascadeOnDelete();
-            $table->foreignId('master_id') // привязка к мастеру
-                ->constrained('masters')
-                ->cascadeOnDelete();
             $table->foreignId('service_id') // привязка к услуге
                 ->constrained('services')
                 ->cascadeOnDelete();
@@ -34,8 +28,8 @@ class CreateActionsTable extends Migration
 
             $table->decimal('price', 8, 0); // цена по акции
 
-            $table->timestamp('start_at'); // начало акции
-            $table->timestamp('end_at'); // окончание акции
+            $table->dateTime('start_at'); // начало акции
+            $table->dateTime('end_at'); // окончание акции
 
             $table->timestamps();
         });
