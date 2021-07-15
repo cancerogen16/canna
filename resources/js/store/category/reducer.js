@@ -1,21 +1,21 @@
-import { EDIT_CATEGORY } from "./action"
+import { ADD_CATEGORY } from "./action"
 
 const initialState = [
-    {
-        id:1,
-        title: "Парикмахер"
-    }
+    
 ]
 
 
 export const categoryReducer = (state = initialState, action) => {
 
     switch(action.type){
-        case EDIT_CATEGORY:{
-            return {
+        case ADD_CATEGORY:{
+            console.log(action.id)
+            return [
                 ...state,
-                ...action
-            }
+                {
+                    ...action
+                }
+            ]
         }
         default:{
             return state
