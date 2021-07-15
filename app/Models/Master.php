@@ -17,7 +17,6 @@ class Master extends Model
         'experience',
         'description',
         'rating',
-        'created_at',
     ];
 
     public function salon()

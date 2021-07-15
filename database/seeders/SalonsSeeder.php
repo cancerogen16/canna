@@ -23,6 +23,7 @@ class SalonsSeeder extends Seeder
 
         foreach ($titles as $title) {
             $salons[] = [
+                'user_id' => 1,
                 'title' => $title,
                 'slug' => Str::of($title)->slug(),
                 'main_photo' => $faker->imageUrl(300, 300, 'nails', true, 'haircut'),
