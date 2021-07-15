@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
                 ->constrained('roles')
                 ->cascadeOnDelete();
             $table->string('name');
-            $table->string('phone')->unique();
+            $table->string('email')->unique();
             $table->string('password');
           //  $table->boolean('is_business')->default(false); // 0-клиент, 1-салон
             $table->rememberToken();
