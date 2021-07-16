@@ -16,6 +16,7 @@ class CreateSalonsTable extends Migration
         Schema::create('salons', function (Blueprint $table) {
             $table->id();
 
+            $table->string('title', 191)->unique(); // название салона
             $table->string('slug', 191)->unique(); // ярлык
             $table->string('main_photo'); // основное фото салона
             $table->string('city')
