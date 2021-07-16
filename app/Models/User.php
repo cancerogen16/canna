@@ -53,4 +53,13 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($url));
     }
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 }
