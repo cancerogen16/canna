@@ -22,18 +22,17 @@ class MastersSeeder extends Seeder
 
         foreach ($names  as $name) {
 
-            $createdAt = $faker->dateTimeBetween('-3 months', '-2 months');
+            $salon_id = $faker->numberBetween(1, 10);
 
         $data = [
             [
-                'salon_id' => $faker->numberBetween(1, 10),
+                'salon_id' => $salon_id,
                 'name' => $name,
-                'slug' => Str::of($name)->slug(),
+                'slug' => $salon_id.'-'.Str::of($name)->slug(),
                 'photo' => 'https://sun1-54.userapi.com/s/v1/if1/5Ir5r-6Y2bxqtAq48yrT9XDm25VGyPuxlXI1iwfzge4_ewW9lvwlmsTtZx87gILouxX4zwGp.jpg?size=400x0&quality=96&crop=205,0,541,541&ava=1',
                 'experience' => $faker->randomDigit().' лет',
                 'description' => $faker->realText(),
                 'rating' => $faker->randomDigit(),
-                'created_at' => $createdAt,
             ]
         ];
 
