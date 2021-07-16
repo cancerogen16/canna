@@ -22,6 +22,12 @@ Route::group(["prefix" => "{$api_version}"], function () {
         ->group(base_path('routes/api/categories.php'));
 });
 
+Route::group(["prefix" => "{$api_version}"], function () {
+    // register categories routes
+    Route::prefix('salons')
+        ->group(base_path('routes/api/salons.php'));
+});
+
 Route::any('/{any}', function () {
     return response()->json([
         'success' => false,
