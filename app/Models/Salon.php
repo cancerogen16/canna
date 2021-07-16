@@ -21,4 +21,14 @@ class Salon extends Model
         'description',
         'rating',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function master()
+    {
+        return $this->hasMany(Master::class);
+    }
 }
