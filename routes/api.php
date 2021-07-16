@@ -20,10 +20,8 @@ Route::group(["prefix" => "{$api_version}"], function () {
     // register categories routes
     Route::prefix('categories')
         ->group(base_path('routes/api/categories.php'));
-
-    Route::prefix('authorization')
-        ->group(base_path('routes/api/authorization.php'));
-
+    Route::prefix('masters')
+        ->group(base_path('routes/api/masters.php'));
 });
 
 Route::any('/{any}', function () {
@@ -32,4 +30,3 @@ Route::any('/{any}', function () {
         'message' => 'Resource not found',
     ], 404);
 })->name('api.any.404');
-
