@@ -16,6 +16,10 @@ class CreateSalonsTable extends Migration
         Schema::create('salons', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('user_id') // привязка к таблице users
+            ->constrained('users')
+                ->cascadeOnDelete();
+
             $table->string('title', 191)->unique(); // название салона
             $table->string('slug', 191)->unique(); // ярлык
             $table->string('main_photo')->nullable(); // основное фото салона
