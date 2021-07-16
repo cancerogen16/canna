@@ -22,7 +22,7 @@ class CreateSalonsTable extends Migration
 
             $table->string('title', 191)->unique(); // название салона
             $table->string('slug', 191)->unique(); // ярлык
-            $table->string('main_photo'); // основное фото салона
+            $table->string('main_photo')->nullable(); // основное фото салона
             $table->string('city')
                 ->nullable()
                 ->index();
@@ -30,7 +30,8 @@ class CreateSalonsTable extends Migration
             $table->string('phone', 50);
             $table->string('worktime'); // время работы(можно в json)
             $table->text('description')->nullable();
-            $table->integer('rating'); // рейтинг
+            $table->integer('rating')->default(0); // рейтинг
+            $table->softDeletes();
         });
     }
 
