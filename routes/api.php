@@ -22,6 +22,8 @@ Route::group(["prefix" => "{$api_version}"], function () {
         ->group(base_path('routes/api/categories.php'));
     Route::prefix('masters')
         ->group(base_path('routes/api/masters.php'));
+    Route::prefix('services')
+        ->group(base_path('routes/api/services.php'));
 });
 
 Route::any('/{any}', function () {
