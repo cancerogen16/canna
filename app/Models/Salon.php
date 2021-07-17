@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class Salon extends Model
 {
     use HasFactory;
+    use Sluggable;
 
     protected $fillable = [
+        'user_id',
+        'title',
         'slug',
         'main_photo',
         'city',
@@ -30,5 +32,14 @@ class Salon extends Model
     public function master()
     {
         return $this->hasMany(Master::class);
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => ['title', 'city']
+            ]
+        ];
     }
 }
