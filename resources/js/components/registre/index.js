@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Button, Checkbox, FormControl, FormControlLabel, InputLabel, Select, TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
+import { Button } from '@material-ui/core';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 
 import firebase from 'firebase/app';
@@ -13,30 +14,38 @@ import { authLogin } from '../../store/auth/actions';
 
 
 
-// var firebaseConfig = {
-//     apiKey: "AIzaSyBwf9H3J5uI3W_WGpKcM8le2XDbwBOl9tc",
-//     authDomain: "test-5b0ea.firebaseapp.com",
-//     projectId: "test-5b0ea",
-//     storageBucket: "test-5b0ea.appspot.com",
-//     messagingSenderId: "964341762176",
-//     appId: "1:964341762176:web:15d74d02c7b86236623e65",
-//     measurementId: "G-25CTYC0L3B",
-//   };
-//   // Initialize Firebase
-//   firebase.initializeApp(firebaseConfig);
-//   firebase.analytics();
-
 
 export default function Register (){
+    
 
     const dispatch = useDispatch();
     
-
+    const [submitted, setSubmitted] = useState(false);
     const [credentials, setCredentials] = useState({
         name: '',
         phone: '',
         password: '',
+        repeatPassword: ''
     });
+
+    const handleSubmit = () => {
+        setSubmitted(true, () => {
+            setTimeout(() => setSubmitted(false), 1000);
+        })
+        firebase.auth().c(credentials.email, credentials.password)
+        .then((userCredential) => {
+          
+          var user = userCredential.user;
+          //dispatch(authLogin(user.uid));
+          console.log('sds',user.uid)
+        })
+        .catch((error) => {
+            console.log(error)
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        
+        });
+    }
 
     const handlerOnChangeField = (e) => {
         switch (e.target.name){
@@ -58,33 +67,91 @@ export default function Register (){
                     name: e.target.value
                 })
             break;
+            case 'repeatPassword': 
+                setCredentials({
+                    ...credentials,
+                    repeatPassword: e.target.value
+                })
+            break;
         }
     }
-    const click = () => {
-
+    
+    
+    
+    
+    useEffect(() => {
         
+        if (!ValidatorForm.hasValidationRule('isPasswordMatch')) {
+            ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+                const {password} = credentials
+                return value == password;
+            });
+        }
 
-        firebase.auth().createUserWithEmailAndPassword(credentials.email, credentials.password)
-        .then((userCredential) => {
-          
-          var user = userCredential.user;
-          //dispatch(authLogin(user.uid));
-          console.log('sds',user.uid)
-        })
-        .catch((error) => {
-            console.log(error)
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ..
-        });
-    }
+        return () => {
+            if (ValidatorForm.hasValidationRule('isPasswordMatch')) {
+                ValidatorForm.removeValidationRule('isPasswordMatch');
+            }
+          }
+    })
+   
     
-    
-    return (<form className="form_registre">
-                <TextField id="filled-basic" onChange={handlerOnChangeField}   label="Имя" name="name" variant="filled" />
-                <TextField id="filled-basic" onChange={handlerOnChangeField}   label="Телефон" name="phone" variant="filled" />
-                <TextField id="filled-basic" onChange={handlerOnChangeField}  label="Пароль" name="password" variant="filled" />
-                <TextField id="filled-basic" onChange={handlerOnChangeField}  label="Повторите пароль" name="password" variant="filled" />
-                <Button variant="contained" onClick={click} color="primary">Зарегистрировать</Button>
-            </form>)
+    return (<ValidatorForm
+        className="form_registre"
+        //ref="/"
+        onSubmit={handleSubmit}
+    >
+        <TextValidator
+            className="form_registre__item"
+            label="Имя"
+            onChange={handlerOnChangeField}
+            name="name"
+            value={credentials.name}
+            validators={['required']}
+            errorMessages={['Поле обязательно для заполнения']}
+        />
+        <TextValidator
+            className="form_registre__item"
+            label="Телефон"
+            onChange={handlerOnChangeField}
+            name="phone"
+            value={credentials.phone}
+            validators={['required', 'matchRegexp:^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{5,6}$']}
+            errorMessages={['Поле обязательно для заполнения', 'Номер должен быть в фортмате +7(999) 999 99 99']}
+        />
+        <TextValidator
+            className="form_registre__item"
+            label="Пароль"
+            onChange={handlerOnChangeField}
+            name="password"
+            type="password"
+            value={credentials.password}
+            validators={['required',]}
+            errorMessages={['Укажите пароль' ]}
+        />
+        <TextValidator
+            className="form_registre__item"
+            label="Повтоите пароль"
+            onChange={handlerOnChangeField}
+            name="repeatPassword"
+            type="password"
+            value={credentials.repeatPassword}
+            validators={['isPasswordMatch', 'required']}
+            errorMessages={['Пароли не совпадают','Поле обязательно для заполнения']}
+        />
+        <br />
+        <Button
+            className="form_registre__item"
+            color="primary"
+            variant="contained"
+            type="submit"
+            disabled={submitted}
+        >
+            {
+                (submitted && 'Отправлено!')
+                || (!submitted && 'Зарегистрироваться')
+            }
+        </Button>
+    </ValidatorForm>)
+            
 }

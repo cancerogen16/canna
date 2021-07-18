@@ -5,6 +5,7 @@
     
     justify-content: space-between;
     &__auth{
+        z-index: 100;
         position: absolute;
         padding: 15px;
         width: 300px;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
-import PropTypes from 'prop-types'
-import { Validator } from 'ree-validate'
+import { Button} from '@material-ui/core';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+
 
 
 import firebase from 'firebase/app';
@@ -33,20 +33,35 @@ var firebaseConfig = {
 
 export default function Login (){
 
-    const validator = new Validator({
-        email: 'required|email',
-        password: 'required|min:6'
-      }) 
-
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
-    
+    const [submitted, setSubmitted] = useState(false);
 
     const [credentials, setCredentials] = useState({
         phone: '',
         password: '',
         remember: false,
+        
     });
+
+    const handleSubmit = () => {
+        setSubmitted(true, () => {
+            setTimeout(() => setSubmitted(false), 1000);
+        })
+        firebase.auth().signInWithEmailAndPassword(credentials.phone, credentials.password)
+        .then((userCredential) => {
+          
+          var user = userCredential.user;
+          dispatch(authLogin(user.uid));
+          console.log(user);
+          dispatch(editProfile(user.email, user.uid));
+        })
+        .catch((error) => {
+            console.log(error)
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        });
+    }
 
     const handlerOnChangeField = (e) => {
         switch (e.target.name){
@@ -70,35 +85,52 @@ export default function Login (){
             break;
         }
     }
-    const click = () => {
-
-
-
-        firebase.auth().signInWithEmailAndPassword(credentials.phone, credentials.password)
-        .then((userCredential) => {
-          
-          var user = userCredential.user;
-          dispatch(authLogin(user.uid));
-          console.log(user);
-          dispatch(editProfile(user.email, user.uid));
-        })
-        .catch((error) => {
-            console.log(error)
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        });
-    }
     
     if(auth.isAuthenticated){
         return <Redirect to={{
             pathname: '/profile',
         }}/>
     }
-    
-    return (<form className="form_login">
-                <TextField  id="filled-basic" onChange={handlerOnChangeField} type="phone" helperText=""  label="Телефон" name="phone" variant="filled" />
-                <TextField error={false} id="filled-basic" onChange={handlerOnChangeField} type="password" helperText=""  label="Пароль" name="password" variant="filled" />
-                <FormControlLabel control={<Checkbox onChange={handlerOnChangeField} name="remember" checked={credentials.remember} color="primary" />} label="Запомнить" />
-                <Button variant="contained" onClick={click} color="primary">Войти</Button>
-            </form>)
+
+    return (
+        <ValidatorForm 
+            className='form_login'
+            //ref="/"
+            onSubmit={handleSubmit}
+        >
+            <TextValidator
+                className="form_login__item"
+                label="Телефон"
+                onChange={handlerOnChangeField}
+                name="phone"
+                value={credentials.phone}
+                validators={['required', 'matchRegexp:^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{5,6}$']}
+                errorMessages={['Поле обязательно для заполнения', 'Номер должен быть в фортмате +7(999) 999 99 99']}
+            />
+            <br />
+            <TextValidator
+                className="form_login__item"
+                label="Пароль"
+                onChange={handlerOnChangeField}
+                name="password"
+                type="password"
+                value={credentials.password}
+                validators={['required']}
+                errorMessages={['Поле обязательно для заполнения']}
+            />
+            <br />
+            <Button
+                className="form_login__item"
+                color="primary"
+                variant="contained"
+                type="submit"
+                disabled={submitted}
+            >
+                {
+                    (submitted && 'Отправленно!')
+                    || (!submitted && 'Войти')
+                }
+            </Button>
+        </ValidatorForm>
+    );
 }
