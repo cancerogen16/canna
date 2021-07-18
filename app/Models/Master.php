@@ -6,40 +6,33 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Salon extends Model
+class Master extends Model
 {
     use HasFactory;
     use Sluggable;
 
     protected $fillable = [
-        'user_id',
-        'title',
+        'salon_id',
+        'name',
         'slug',
-        'main_photo',
-        'city',
-        'address',
-        'phone',
-        'worktime',
+        'photo',
+        'experience',
         'description',
         'rating',
     ];
 
-    public function user()
+    public function salon()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function master()
-    {
-        return $this->hasMany(Master::class);
+        return $this->belongsTo(Salon::class);
     }
 
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => ['title', 'city']
+                'source' => 'name'
             ]
         ];
     }
+
 }
