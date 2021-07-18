@@ -8,6 +8,15 @@ export default function Header() {
     const [hidenLogin, setHidenLogin] = useState(true);
     const [hidenReg, setHidenReg] = useState(true);
 
+    const handleShowLogin = () => {
+      setHidenLogin(!hidenLogin);
+      setHidenReg(true)
+    }
+
+    const handleShowReg = () => {
+      setHidenLogin(true);
+      setHidenReg(!hidenReg)
+    }
 
     return (<>
         <AppBar className="header" position="static">
@@ -16,8 +25,8 @@ export default function Header() {
             News
           </Typography>
           <div className='toolbar__group'>
-            <Button color="inherit" onClick={() => setHidenLogin(!hidenLogin)} >Вход</Button>
-            <Button color="inherit" onClick={() => setHidenReg(!hidenReg)} >Регистрация</Button>
+            <Button color="inherit" onClick={handleShowLogin} >Вход</Button>
+            <Button color="inherit" onClick={handleShowReg} >Регистрация</Button>
           </div>
           <Paper hidden={hidenLogin} className="toolbar__auth" elevation={3}>
             <Login/>
