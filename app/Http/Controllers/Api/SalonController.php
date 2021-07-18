@@ -6,85 +6,75 @@ use App\Http\Controllers\Controller;
 use App\Models\Salon;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Requests\SalonRequest;
 
 class SalonController extends Controller
 {
     use ApiResponder;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function index(Request $request): JsonResponse
+    public function index(): JsonResponse
     {
-        $salons = Salon::all();
+        $data = Salon::all();
 
-        return $this->handleResponse($salons);
+        return $this->handleResponse($data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param CategoryRequest $request
-     * @return JsonResponse
-     */
-    public function store(CategoryRequest $request): JsonResponse
+
+    public function store(SalonRequest $request): JsonResponse
     {
         $salon = new Salon($request->validated());
 
         $salon->save();
 
-        return $this->handleResponse($salon, 201);
+        if ($salon) {
+            return $this->handleResponse($salon, 201);
+
+        } else {
+            return $this->handleError('Ошибка при добавлении салона', [], 404);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function show(Request $request, $id): JsonResponse
+
+    public function show($id): JsonResponse
     {
-        $salon = Salon::findOrFail($id);
+        try {
+            $salon = Salon::findOrFail($id);
 
-        return  $this->handleResponse($salon->toArray());
+            return $this->handleResponse($salon->toArray());
+        } catch (ModelNotFoundException $e) {
+            return $this->handleError($e, ['Ошибка при поиске салона'], 404);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param CategoryRequest $request
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function update(CategoryRequest $request, int $id): JsonResponse
+
+    public function update(SalonRequest $request, int $id): JsonResponse
     {
-        $salon = Salon::findOrFail($id);
+        try {
+            $salon = Salon::findOrFail($id);
 
-        $data = $request->validated();
+            $data = $request->validated();
 
-        $salon->update($data);
+            $salon->update($data);
 
-        return $this->handleResponse($salon, 'Updated');
+            return $this->handleResponse($salon, 'Updated');
+        } catch (ModelNotFoundException $e) {
+            return $this->handleError($e, ['Ошибка при поиске салона'], 404);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return JsonResponse
-     */
+
     public function delete($id): JsonResponse
     {
-        $salon = Salon::findOrFail($id);
+        try {
+            $salon = Salon::findOrFail($id);
 
-        $salon->delete();
+            $salon->delete();
 
-        return $this->handleResponse($salon, 'Deleted');
+            return $this->handleResponse($salon, 'Deleted');
+        } catch (ModelNotFoundException $e) {
+            return $this->handleError($e, ['Ошибка при удалении салона'], 404);
+        }
     }
 }
