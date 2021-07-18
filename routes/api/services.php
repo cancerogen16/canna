@@ -9,7 +9,7 @@ Route::get('/{id}', [ServiceController::class, 'show'])->name('services.show');
 Route::group([
     'middleware' => 'auth:sanctum',
 ], function () {
-    Route::post('/', [ServiceController::class, 'add'])->name('services.add');
+    Route::post('/', [ServiceController::class, 'store'])->name('services.store');
     Route::match(['put', 'patch'], '/{id}', [ServiceController::class, 'update'])->name('services.update');
     Route::delete('/{id}', [ServiceController::class, 'delete'])->name('services.delete');
 });

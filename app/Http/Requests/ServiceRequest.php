@@ -27,6 +27,7 @@ class ServiceRequest extends FormRequest
             'category_id' => 'required|integer|exists:categories,id',
             'master_id' => 'required|integer|exists:masters,id',
             'title' => 'required|between:3,191',
+            'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
             'price' => 'required|integer|between:0,999999',
             'duration' => 'required|integer|between:1,600',
             'use_break' => 'nullable|integer|between:0,600',
