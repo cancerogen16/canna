@@ -27,10 +27,10 @@ class CreateServicesTable extends Migration
             $table->string('title', 191); // название
             $table->string('slug', 191)->unique(); // ярлык
 
-            $table->decimal('price', 8, 0); // цена услуги
-            $table->string('duration')->default(1); // продолжительность услуги в минутах
+            $table->integer('price'); // цена услуги в рублях
+            $table->integer('duration'); // продолжительность услуги в минутах
 
-            $table->string('use_break')->nullable(); // Перерыв после записи в минутах
+            $table->integer('use_break')->nullable(); // Перерыв после записи в минутах
 
             $table->string('image', 255)->nullable(); // изображение услуги
 
