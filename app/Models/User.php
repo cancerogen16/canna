@@ -64,6 +64,6 @@ class User extends Authenticatable
 
     public function salon()
     {
-        return $this->hasOne(Salon::class);
+        return $this->hasMany(Salon::class);
     }
 }

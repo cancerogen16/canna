@@ -25,6 +25,12 @@ class MasterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:250',
+            'salon_id' => 'required|integer|exists:salons,id',
+            'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
+            'photo' => 'nullable|string|max:255',
+            'experience' => 'nullable|string',
+            'description' => 'nullable|string',
+            'rating' => 'required|integer|between:0,9',
         ];
     }
 }
