@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterRequest;
 use App\Models\Master;
 use App\Traits\ApiResponder;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 
@@ -23,27 +24,27 @@ class MasterController extends Controller
 
     public function add(MasterRequest $request): JsonResponse
     {
-        $master = new Master($request->validated());
+        try {
+            $master = new Master($request->validated());
 
-        $master->save();
+            $master->save();
 
-        if ($master) {
             return $this->handleResponse($master, 201);
 
-        } else {
-            return $this->handleError('Ошибка при добавлении мастера', [], 404);
+        } catch (QueryException $e) {
+            return $this->handleError($e->getMessage(),['Ошибка при добавлении мастера'], 404);
         }
 
     }
 
-    public function show($id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
 
-            return $this->handleResponse($master->toArray());
+            return $this->handleResponse($master->toArray(), 200);
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e, ['Ошибка при поиске мастера'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера'], 404);
         }
     }
 
@@ -58,11 +59,11 @@ class MasterController extends Controller
 
             return $this->handleResponse($master, 'Updated');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e, ['Ошибка при поиске мастера'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при изменении профиля мастера'], 404);
         }
     }
 
-    public function delete($id): JsonResponse
+    public function delete(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
@@ -71,7 +72,7 @@ class MasterController extends Controller
 
             return $this->handleResponse($master, 'Deleted');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e, ['Ошибка при удалении мастера'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера'], 404);
         }
     }
 }
