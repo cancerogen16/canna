@@ -21,11 +21,11 @@ import {
     };
   }
   
-  export function authLogout() {
-    return {
-      type: AUTH_LOGOUT,
-    }
-  }
+  // export function authLogout() {
+  //   return {
+  //     type: AUTH_LOGOUT,
+  //   }
+  // }
   
   export function authRefreshToken(payload) {
     return {
