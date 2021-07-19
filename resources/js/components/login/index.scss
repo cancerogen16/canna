@@ -1,4 +1,9 @@
 .form_login{
+   
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    &__item{
+        width: 100%;
+    }
 }
