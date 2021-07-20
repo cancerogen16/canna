@@ -9,6 +9,9 @@ use App\Traits\ApiResponder;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
+
 
 
 class MasterController extends Controller
@@ -26,6 +29,18 @@ class MasterController extends Controller
     {
         try {
             $master = new Master($request->validated());
+
+            $filename  = $master['photo']->getClientOriginalName();
+
+            $master['photo']->move(Storage::path('images').'origin/',$filename);
+
+            $thumbnail = Image::make(Storage::path('images').'origin/'.$filename);
+
+            $thumbnail->fit(300, 300);
+
+            $thumbnail->save(Storage::path('images').'thumbnail/'.$filename);
+
+            $master['photo'] = $filename;
 
             $master->save();
 
