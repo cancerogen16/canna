@@ -29,8 +29,8 @@ class ActionRequest extends FormRequest
             'photo' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|integer|between:0,999999',
-            'start_at' => 'date',
-            'end_at' => 'date|after:start_at',
+            'start_at' => 'required|date_format:Y-m-d H:i:s',
+            'end_at' => 'required|date_format:Y-m-d H:i:s|after:start_at',
 
         ];
     }
