@@ -34,6 +34,11 @@ class Service extends Model
         return $this->belongsTo(Master::class);
     }
 
+    public function action()
+    {
+        return $this->hasMany(Action::class);
+    }
+
     public function sluggable(): array
     {
         return [
