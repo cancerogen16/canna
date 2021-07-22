@@ -25,12 +25,12 @@ Route::middleware('auth:sanctum','verified')->get('/user', function (Request $re
 
 
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login'])->name('authorization.login');
+Route::post('/register', [AuthController::class, 'register'])->name('authorization.register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('authorization.logout')->middleware('auth:sanctum');
 
-Route::post('email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
-Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
+Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->name('authorization.verification')->middleware('auth:sanctum');
+Route::get('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('authorization.verification.verify')->middleware('auth:sanctum');
 
-Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
-Route::post('reset-password', [NewPasswordController::class, 'reset']);
+Route::post('/forgot-password', [NewPasswordController::class, 'forgotPassword'])->name('authorization.forgot');
+Route::post('/reset-password', [NewPasswordController::class, 'reset'])->name('authorization.reset');
