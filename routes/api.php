@@ -28,6 +28,8 @@ Route::group(["prefix" => "{$api_version}"], function () {
         ->group(base_path('routes/api/services.php'));
     Route::prefix('actions')
         ->group(base_path('routes/api/actions.php'));
+    Route::prefix('authorization')
+        ->group(base_path('routes/api/authorization.php'));
 });
 
 Route::any('/{any}', function () {
