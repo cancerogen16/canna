@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EmailVerificationController;
 use App\Http\Controllers\Api\NewPasswordController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +17,9 @@ use App\Http\Controllers\Api\NewPasswordController;
 |
 */
 
-Route::middleware('auth:sanctum','verified')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum', 'verified')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-
 
 Route::post('/login', [AuthController::class, 'login'])->name('authorization.login');
 Route::post('/register', [AuthController::class, 'register'])->name('authorization.register');
