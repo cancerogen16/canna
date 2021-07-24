@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { Button } from '@material-ui/core';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import React, {useEffect, useState} from 'react'
+import {Button} from '@material-ui/core';
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 
+import {useDispatch} from 'react-redux';
 
-import firebase from 'firebase/app';
-import "firebase/analytics";
-
-// Add the Firebase products that you want to use
-import "firebase/auth";
-import "firebase/firestore";
-import { useDispatch } from 'react-redux';
-import { authLogin } from '../../store/auth/actions';
-
-
-
-
-export default function Register (){
-    
-
+export default function Register() {
     const dispatch = useDispatch();
-    
+
     const [submitted, setSubmitted] = useState(false);
     const [credentials, setCredentials] = useState({
         name: '',
@@ -33,37 +20,34 @@ export default function Register (){
     }
 
     const handlerOnChangeField = (e) => {
-        switch (e.target.name){
+        switch (e.target.name) {
             case 'email':
                 setCredentials({
                     ...credentials,
                     email: e.target.value
                 })
                 break;
-            case 'password': 
+            case 'password':
                 setCredentials({
                     ...credentials,
                     password: e.target.value
                 })
-            break;
-            case 'name': 
+                break;
+            case 'name':
                 setCredentials({
                     ...credentials,
                     name: e.target.value
                 })
-            break;
-            case 'repeatPassword': 
+                break;
+            case 'repeatPassword':
                 setCredentials({
                     ...credentials,
                     repeatPassword: e.target.value
                 })
-            break;
+                break;
         }
     }
-    
-    
-    
-    
+
     useEffect(() => {
         setTimeout(() => setSubmitted(false), 1000)
         if (!ValidatorForm.hasValidationRule('isPasswordMatch')) {
@@ -77,10 +61,9 @@ export default function Register (){
             if (ValidatorForm.hasValidationRule('isPasswordMatch')) {
                 ValidatorForm.removeValidationRule('isPasswordMatch');
             }
-          }
+        }
     })
-   
-    
+
     return (<ValidatorForm
         className="form_registre"
         //ref="/"
@@ -112,7 +95,7 @@ export default function Register (){
             type="password"
             value={credentials.password}
             validators={['required',]}
-            errorMessages={['Укажите пароль' ]}
+            errorMessages={['Укажите пароль']}
         />
         <TextValidator
             className="form_registre__item"
@@ -122,9 +105,9 @@ export default function Register (){
             type="password"
             value={credentials.repeatPassword}
             validators={['isPasswordMatch', 'required']}
-            errorMessages={['Пароли не совпадают','Поле обязательно для заполнения']}
+            errorMessages={['Пароли не совпадают', 'Поле обязательно для заполнения']}
         />
-        <br />
+        <br/>
         <Button
             className="form_registre__item"
             color="primary"
@@ -138,5 +121,5 @@ export default function Register (){
             }
         </Button>
     </ValidatorForm>)
-            
+
 }
