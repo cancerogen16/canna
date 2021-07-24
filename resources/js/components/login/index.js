@@ -1,58 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Button} from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { useDispatch, useSelector } from 'react-redux';
-import { authLogin } from '../../store/auth/actions';
-import { Redirect } from 'react-router-dom';
+import {useHukLogin} from '../../store/auth/huks/useHukLogin';
 
 
 export default function Login (){
 
-    const dispatch = useDispatch();
-    const auth = useSelector(state => state.auth);
-    const [submitted, setSubmitted] = useState(false);
-
-    const [credentials, setCredentials] = useState({
-        email: '',
-        password: '',
-        remember: false,
-        
-    });
-    useEffect(() => {
-        setTimeout(() => setSubmitted(false), 1000)
-    })
-    const handleSubmit = () => {
-        setSubmitted(true);
-    }
-
-    const handlerOnChangeField = (e) => {
-        switch (e.target.name){
-            case 'email':
-                setCredentials({
-                    ...credentials,
-                    email: e.target.value
-                })
-                break;
-            case 'password': 
-                setCredentials({
-                    ...credentials,
-                    password: e.target.value
-                })
-            break;
-            case 'remember': 
-                setCredentials({
-                    ...credentials,
-                    remember: !credentials.remember
-                })
-            break;
-        }
-    }
     
-    if(auth.isAuthenticated){
-        return <Redirect to={{
-            pathname: '/profile',
-        }}/>
-    }
+    
+
+    const {
+        handlerOnChangeField,
+        credentials,
+        setCredentials,
+        handleSubmit,
+        submitted,
+        setSubmitted
+    } = useHukLogin();
+
+    
 
     return (
         <ValidatorForm 

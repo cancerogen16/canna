@@ -1,16 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Button } from '@material-ui/core';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-
-
-import firebase from 'firebase/app';
-import "firebase/analytics";
-
-// Add the Firebase products that you want to use
-import "firebase/auth";
-import "firebase/firestore";
-import { useDispatch } from 'react-redux';
-import { authLogin } from '../../store/auth/actions';
+import { TextValidator } from 'react-material-ui-form-validator';
+import { useHukReg } from '../../store/auth/huks/useHukReg';
 
 
 
@@ -18,70 +9,16 @@ import { authLogin } from '../../store/auth/actions';
 export default function Register (){
     
 
-    const dispatch = useDispatch();
+    const {
+        handleSubmit,
+        handlerOnChangeField,
+        submitted,
+        credentials,
+        ValidatorForm
+    } = useHukReg();
     
-    const [submitted, setSubmitted] = useState(false);
-    const [credentials, setCredentials] = useState({
-        name: '',
-        email: '',
-        password: '',
-        repeatPassword: ''
-    });
-
-    const handleSubmit = () => {
-        setSubmitted(true);
-    }
-
-    const handlerOnChangeField = (e) => {
-        switch (e.target.name){
-            case 'email':
-                setCredentials({
-                    ...credentials,
-                    email: e.target.value
-                })
-                break;
-            case 'password': 
-                setCredentials({
-                    ...credentials,
-                    password: e.target.value
-                })
-            break;
-            case 'name': 
-                setCredentials({
-                    ...credentials,
-                    name: e.target.value
-                })
-            break;
-            case 'repeatPassword': 
-                setCredentials({
-                    ...credentials,
-                    repeatPassword: e.target.value
-                })
-            break;
-        }
-    }
-    
-    
-    
-    
-    useEffect(() => {
-        setTimeout(() => setSubmitted(false), 1000)
-        if (!ValidatorForm.hasValidationRule('isPasswordMatch')) {
-            ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-                const {password} = credentials
-                return value == password;
-            });
-        }
-
-        return () => {
-            if (ValidatorForm.hasValidationRule('isPasswordMatch')) {
-                ValidatorForm.removeValidationRule('isPasswordMatch');
-            }
-          }
-    })
-   
-    
-    return (<ValidatorForm
+    return (
+    <ValidatorForm
         className="form_registre"
         //ref="/"
         onSubmit={handleSubmit}
