@@ -57,7 +57,7 @@ export default function Register (){
             onChange={handlerOnChangeField}
             name="repeatPassword"
             type="password"
-            value={credentials.repeatPassword}
+            value={credentials.password_confirmation}
             validators={['isPasswordMatch', 'required']}
             errorMessages={['Пароли не совпадают','Поле обязательно для заполнения']}
         />

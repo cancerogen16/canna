@@ -7,6 +7,26 @@ import {
     AUTH_USER,
   } from './action-types';
   
+
+  export const fetchLogin = (credentials) => (dispatch, getState) => {
+    fetch('/api/authorization/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(credentials),
+    }).then(res => res.json()).then(res => console.log(res.data.token));
+  }
+
+  export const fetchRegistre = (credentials) => (dispatch, getState) => {
+    fetch('/api/authorization/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(credentials),
+    }).then(res => res.json()).then(res => console.log(res.data.token));
+  }
   
   export function authCheck() {
     return {

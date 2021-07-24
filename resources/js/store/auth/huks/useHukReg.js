@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { fetchRegistre } from '../actions';
 
 export const useHukReg = () => {
     const dispatch = useDispatch();
@@ -10,10 +11,11 @@ export const useHukReg = () => {
         name: '',
         email: '',
         password: '',
-        repeatPassword: ''
+        password_confirmation: ''
     });
 
     const handleSubmit = () => {
+        dispatch(fetchRegistre(credentials));
         setSubmitted(true);
     }
 
@@ -40,7 +42,7 @@ export const useHukReg = () => {
             case 'repeatPassword': 
                 setCredentials({
                     ...credentials,
-                    repeatPassword: e.target.value
+                    password_confirmation: e.target.value
                 })
             break;
         }

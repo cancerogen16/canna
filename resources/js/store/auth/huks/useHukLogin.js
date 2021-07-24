@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { authLogin } from '../actions';
+import { fetchLogin } from '../actions';
 
 export const useHukLogin = () => {
     const [submitted, setSubmitted] = useState(false);
     const [credentials, setCredentials] = useState({
         email: '',
         password: '',
-        remember: false,
+        //remember: false,
         
     });
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
 
-    useEffect(() => {
-        setTimeout(() => setSubmitted(false), 1000)
-    })
     const handleSubmit = () => {
+        dispatch(fetchLogin(credentials))
         setSubmitted(true);
     }
 
