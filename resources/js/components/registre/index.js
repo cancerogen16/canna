@@ -1,74 +1,24 @@
-import React, {useEffect, useState} from 'react'
-import {Button} from '@material-ui/core';
-import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import React from 'react'
+import { Button } from '@material-ui/core';
+import { TextValidator } from 'react-material-ui-form-validator';
+import { useHukReg } from '../../store/auth/huks/useHukReg';
 
-import {useDispatch} from 'react-redux';
 
-export default function Register() {
-    const dispatch = useDispatch();
 
-    const [submitted, setSubmitted] = useState(false);
+
+export default function Register (){
     
-    const [credentials, setCredentials] = useState({
-        name: '',
-        email: '',
-        password: '1111',
-        password_confirmation: '1111'
-    });
 
-    const handleSubmit = () => {
-        axios.post("api/authorization/register", credentials).then(function (res) {
-            setSubmitted(true);
-            return res.json();
-        });
-    }
-
-    const handlerOnChangeField = (e) => {
-        switch (e.target.name) {
-            case 'email':
-                setCredentials({
-                    ...credentials,
-                    email: e.target.value
-                })
-                break;
-            case 'password':
-                setCredentials({
-                    ...credentials,
-                    password: e.target.value
-                })
-                break;
-            case 'name':
-                setCredentials({
-                    ...credentials,
-                    name: e.target.value
-                })
-                break;
-            case 'password_confirmation':
-                setCredentials({
-                    ...credentials,
-                    password_confirmation: e.target.value
-                })
-                break;
-        }
-    }
-
-    useEffect(() => {
-        setTimeout(() => setSubmitted(false), 1000)
-        if (!ValidatorForm.hasValidationRule('isPasswordMatch')) {
-            ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-                const {password} = credentials
-                return value == password;
-            });
-        }
-
-        return () => {
-            if (ValidatorForm.hasValidationRule('isPasswordMatch')) {
-                ValidatorForm.removeValidationRule('isPasswordMatch');
-            }
-        }
-    })
-
-    return (<ValidatorForm
+    const {
+        handleSubmit,
+        handlerOnChangeField,
+        submitted,
+        credentials,
+        ValidatorForm
+    } = useHukReg();
+    
+    return (
+    <ValidatorForm
         className="form_registre"
         //ref="/"
         onSubmit={handleSubmit}
@@ -99,19 +49,19 @@ export default function Register() {
             type="password"
             value={credentials.password}
             validators={['required',]}
-            errorMessages={['Укажите пароль']}
+            errorMessages={['Укажите пароль' ]}
         />
         <TextValidator
             className="form_registre__item"
             label="Повторите пароль"
             onChange={handlerOnChangeField}
-            name="password_confirmation"
+            name="repeatPassword"
             type="password"
-            value={credentials.password_confirmation}
+            value={credentials.repeatPassword}
             validators={['isPasswordMatch', 'required']}
-            errorMessages={['Пароли не совпадают', 'Поле обязательно для заполнения']}
+            errorMessages={['Пароли не совпадают','Поле обязательно для заполнения']}
         />
-        <br/>
+        <br />
         <Button
             className="form_registre__item"
             color="primary"
@@ -125,5 +75,5 @@ export default function Register() {
             }
         </Button>
     </ValidatorForm>)
-
+            
 }
