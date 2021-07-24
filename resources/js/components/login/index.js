@@ -1,61 +1,27 @@
-import React, {useEffect, useState} from 'react'
-import {Button} from '@material-ui/core';
-import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {useDispatch, useSelector} from 'react-redux';
-import {Redirect} from 'react-router-dom';
+import React from 'react'
+import { Button} from '@material-ui/core';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import {useHukLogin} from '../../store/auth/huks/useHukLogin';
 
-export default function Login() {
 
-    const dispatch = useDispatch();
-    const auth = useSelector(state => state.auth);
-    const [submitted, setSubmitted] = useState(false);
+export default function Login (){
 
-    const [credentials, setCredentials] = useState({
-        email: '',
-        password: '',
-        remember: false,
+    
+    
 
-    });
+    const {
+        handlerOnChangeField,
+        credentials,
+        setCredentials,
+        handleSubmit,
+        submitted,
+        setSubmitted
+    } = useHukLogin();
 
-    useEffect(() => {
-        setTimeout(() => setSubmitted(false), 1000)
-    })
-
-    const handleSubmit = () => {
-        setSubmitted(true);
-    }
-
-    const handlerOnChangeField = (e) => {
-        switch (e.target.name) {
-            case 'email':
-                setCredentials({
-                    ...credentials,
-                    email: e.target.value
-                })
-                break;
-            case 'password':
-                setCredentials({
-                    ...credentials,
-                    password: e.target.value
-                })
-                break;
-            case 'remember':
-                setCredentials({
-                    ...credentials,
-                    remember: !credentials.remember
-                })
-                break;
-        }
-    }
-
-    if (auth.isAuthenticated) {
-        return <Redirect to={{
-            pathname: '/profile',
-        }}/>
-    }
+    
 
     return (
-        <ValidatorForm
+        <ValidatorForm 
             className='form_login'
             //ref="/"
             onSubmit={handleSubmit}
@@ -71,7 +37,7 @@ export default function Login() {
                 validators={['required', 'isEmail']}
                 errorMessages={['Поле обязательно для заполнения', 'Некорректный e-mail']}
             />
-            <br/>
+            <br />
             <TextValidator
                 className="form_login__item"
                 label="Пароль"
@@ -82,7 +48,7 @@ export default function Login() {
                 validators={['required']}
                 errorMessages={['Поле обязательно для заполнения']}
             />
-            <br/>
+            <br />
             <Button
                 className="form_login__item"
                 color="primary"
