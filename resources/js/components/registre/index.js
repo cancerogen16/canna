@@ -23,36 +23,21 @@ export default function Register (){
     const [submitted, setSubmitted] = useState(false);
     const [credentials, setCredentials] = useState({
         name: '',
-        phone: '',
+        email: '',
         password: '',
         repeatPassword: ''
     });
 
     const handleSubmit = () => {
-        setSubmitted(true, () => {
-            setTimeout(() => setSubmitted(false), 1000);
-        })
-        firebase.auth().c(credentials.email, credentials.password)
-        .then((userCredential) => {
-          
-          var user = userCredential.user;
-          //dispatch(authLogin(user.uid));
-          console.log('sds',user.uid)
-        })
-        .catch((error) => {
-            console.log(error)
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        
-        });
+        setSubmitted(true);
     }
 
     const handlerOnChangeField = (e) => {
         switch (e.target.name){
-            case 'phone':
+            case 'email':
                 setCredentials({
                     ...credentials,
-                    phone: e.target.value
+                    email: e.target.value
                 })
                 break;
             case 'password': 
@@ -80,7 +65,7 @@ export default function Register (){
     
     
     useEffect(() => {
-        
+        setTimeout(() => setSubmitted(false), 1000)
         if (!ValidatorForm.hasValidationRule('isPasswordMatch')) {
             ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
                 const {password} = credentials
@@ -112,11 +97,11 @@ export default function Register (){
         />
         <TextValidator
             className="form_registre__item"
-            label="Телефон"
+            label="E-mail"
             onChange={handlerOnChangeField}
-            name="phone"
-            value={credentials.phone}
-            validators={['required', 'matchRegexp:^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{5,6}$']}
+            name="email"
+            value={credentials.email}
+            validators={['required', 'isEmail']}
             errorMessages={['Поле обязательно для заполнения', 'Номер должен быть в фортмате +7(999) 999 99 99']}
         />
         <TextValidator
@@ -131,7 +116,7 @@ export default function Register (){
         />
         <TextValidator
             className="form_registre__item"
-            label="Повтоите пароль"
+            label="Повторите пароль"
             onChange={handlerOnChangeField}
             name="repeatPassword"
             type="password"
