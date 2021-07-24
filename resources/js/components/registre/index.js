@@ -8,15 +8,19 @@ export default function Register() {
     const dispatch = useDispatch();
 
     const [submitted, setSubmitted] = useState(false);
+    
     const [credentials, setCredentials] = useState({
         name: '',
         email: '',
-        password: '',
-        repeatPassword: ''
+        password: '1111',
+        password_confirmation: '1111'
     });
 
     const handleSubmit = () => {
-        setSubmitted(true);
+        axios.post("api/authorization/register", credentials).then(function (res) {
+            setSubmitted(true);
+            return res.json();
+        });
     }
 
     const handlerOnChangeField = (e) => {
@@ -39,10 +43,10 @@ export default function Register() {
                     name: e.target.value
                 })
                 break;
-            case 'repeatPassword':
+            case 'password_confirmation':
                 setCredentials({
                     ...credentials,
-                    repeatPassword: e.target.value
+                    password_confirmation: e.target.value
                 })
                 break;
         }
@@ -101,9 +105,9 @@ export default function Register() {
             className="form_registre__item"
             label="Повторите пароль"
             onChange={handlerOnChangeField}
-            name="repeatPassword"
+            name="password_confirmation"
             type="password"
-            value={credentials.repeatPassword}
+            value={credentials.password_confirmation}
             validators={['isPasswordMatch', 'required']}
             errorMessages={['Пароли не совпадают', 'Поле обязательно для заполнения']}
         />
