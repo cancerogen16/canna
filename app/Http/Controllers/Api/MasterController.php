@@ -22,7 +22,7 @@ class MasterController extends Controller
         return $this->handleResponse($data);
     }
 
-    public function add(MasterRequest $request): JsonResponse
+    public function store(MasterRequest $request): JsonResponse
     {
         try {
             $master = new Master($request->validated());
