@@ -1,3 +1,4 @@
+import HTTP from '../HTTP';
 import { editProfile } from '../profile/action';
 import {
     AUTH_CHECK,
@@ -10,19 +11,19 @@ import {
   
 
   export const fetchLogin = (credentials) => (dispatch, getState) => {
-    fetch('/api/authorization/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(credentials),
-    })
-    .then(res => res.json())
-    .then(res => {
-      dispatch(authLogin(res.data.token));
-      dispatch(editProfile(res.data.user));
-      return res.data.token;
-    }).then(token => localStorage.setItem('access_token', token));
+    HTTP.get('sanctum/csrf-cookie')
+        .then(() => {
+          HTTP.post('api/authorization/login', credentials)
+              .then(res => {
+                console.log(res)
+                dispatch(authLogin(res.data.data.token));
+                dispatch(editProfile(res.data.data.user));
+                return res.data.data.token;
+              }).then(token => {
+            localStorage.setItem('access_token', token);
+            HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          });
+        });
   }
 
   export const fetchRegistre = (credentials) => (dispatch, getState) => {
