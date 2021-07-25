@@ -28,7 +28,7 @@ const authReducer = (state = initialState, { type, payload = null }) => {
 };
 
 function login(state, payload) {
-  localStorage.setItem('access_token', payload);
+  
 //   HTTP.defaults.headers.common['Authorization'] = `Bearer ${payload}`;
 
   return {
@@ -49,7 +49,7 @@ function checkAuth(state) {
 }
 
 function logout(state) {
-  //localStorage.removeItem('access_token')
+  localStorage.removeItem('access_token')
 
   return {
     ...state, isAuthenticated: false
