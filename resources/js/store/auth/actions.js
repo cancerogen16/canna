@@ -36,8 +36,9 @@ import {
     .then(res => res.json())
     .then(res => {
       dispatch(authLogin(res.data.token));
-      localStorage.setItem('access_token', res.data.token);
-    });
+      dispatch(editProfile(res.data.user));
+      return res.data.token;
+    }).then(token => localStorage.setItem('access_token', token));
   }
   
   export function authCheck() {
