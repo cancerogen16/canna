@@ -18,7 +18,7 @@ class ActionController extends Controller
     {
         $actions = Action::all();
 
-        return $this->handleResponse($actions, 200);
+        return $this->handleResponse($actions);
     }
 
     public function store(ActionRequest $request): JsonResponse
@@ -28,9 +28,9 @@ class ActionController extends Controller
 
             $action->save();
 
-            return $this->handleResponse($action, 201);
+            return $this->handleResponse($action, 'Action created', 201);
         } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при создании акции'], 400);
+            return $this->handleError($e->getMessage(), ['Ошибка при добавлении акции']);
         }
     }
 
@@ -39,9 +39,9 @@ class ActionController extends Controller
         try {
             $action = Action::findOrFail($id);
 
-            return $this->handleResponse($action->toArray(), 200);
+            return $this->handleResponse($action->toArray());
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске акции'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске акции']);
         }
     }
 
@@ -56,7 +56,7 @@ class ActionController extends Controller
 
             return $this->handleResponse($action, 'Updated');
         } catch (ModelNotFoundException | QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при обновлении акции'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при изменении акции']);
         }
     }
 
@@ -69,7 +69,7 @@ class ActionController extends Controller
 
             return $this->handleResponse($action, 'Deleted');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске акции'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при удалении акции']);
         }
     }
 }
