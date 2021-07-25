@@ -18,7 +18,7 @@ class ServiceController extends Controller
     {
         $services = Service::all();
 
-        return $this->handleResponse($services, 200);
+        return $this->handleResponse($services);
     }
 
     public function store(ServiceRequest $request): JsonResponse
@@ -30,7 +30,7 @@ class ServiceController extends Controller
 
             return $this->handleResponse($service, 201);
         } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при создании услуги'], 400);
+            return $this->handleError($e->getMessage(), ['Ошибка при добавлении услуги']);
         }
     }
 
@@ -41,7 +41,7 @@ class ServiceController extends Controller
 
             return $this->handleResponse($service->toArray(), 200);
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске услуги'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске услуги']);
         }
     }
 
@@ -56,7 +56,7 @@ class ServiceController extends Controller
 
             return $this->handleResponse($service, 'Updated');
         } catch (ModelNotFoundException | QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при обновлении услуги'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при обновлении услуги']);
         }
     }
 
@@ -69,7 +69,7 @@ class ServiceController extends Controller
 
             return $this->handleResponse($service, 'Deleted');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при посике услуги'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при посике услуги']);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Salon;
 use App\Traits\ApiResponder;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\SalonRequest;
@@ -20,34 +21,30 @@ class SalonController extends Controller
         return $this->handleResponse($data);
     }
 
-
     public function store(SalonRequest $request): JsonResponse
     {
-        $salon = new Salon($request->validated());
+        try {
+            $salon = new Salon($request->validated());
 
-        $salon->save();
+            $salon->save();
 
-        if ($salon) {
-            return $this->handleResponse($salon, 201);
+            return $this->handleResponse($salon, 'Salon created', 201);
 
-        } else {
-            return $this->handleError('Ошибка при добавлении салона', [], 404);
+        } catch (QueryException $e) {
+            return $this->handleError($e->getMessage(), ['Ошибка при добавлении салона']);
         }
-
     }
 
-
-    public function show($id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
             return $this->handleResponse($salon->toArray());
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e, ['Ошибка при поиске салона'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске салона']);
         }
     }
-
 
     public function update(SalonRequest $request, int $id): JsonResponse
     {
@@ -60,12 +57,11 @@ class SalonController extends Controller
 
             return $this->handleResponse($salon, 'Updated');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e, ['Ошибка при поиске салона'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при изменении салона']);
         }
     }
 
-
-    public function delete($id): JsonResponse
+    public function delete(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -74,7 +70,7 @@ class SalonController extends Controller
 
             return $this->handleResponse($salon, 'Deleted');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e, ['Ошибка при удалении салона'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при удалении салона']);
         }
     }
 }

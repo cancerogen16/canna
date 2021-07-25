@@ -7,31 +7,27 @@ use Illuminate\Http\JsonResponse;
 trait ApiResponder
 {
     /**
-     * @param $result
-     * @param string $msg
+     * @param $data
+     * @param string $message
+     * @param int $code
      * @return JsonResponse
      */
-    public function handleResponse($result, string $msg = ''): JsonResponse
+    protected function handleResponse($data, string $message = '', int $code = 200): JsonResponse
     {
-        $res = [
-            'success' => true,
-            'data' => $result,
-            'message' => $msg,
-        ];
-
-        return response()->json($res, 200, [], JSON_UNESCAPED_UNICODE);
+        return response()->json([
+            'data' => $data,
+            'message' => $message,
+        ], $code, [], JSON_UNESCAPED_UNICODE);
     }
 
     /**
      * @param string $error
      * @param array $errorMsg
-     * @param int $code
      * @return JsonResponse
      */
-    public function handleError(string $error, array $errorMsg = [], int $code = 404): JsonResponse
+    protected function handleError(string $error, array $errorMsg = []): JsonResponse
     {
         $res = [
-            'success' => false,
             'message' => $error,
         ];
 
@@ -39,6 +35,6 @@ trait ApiResponder
             $res['data'] = $errorMsg;
         }
 
-        return response()->json($res, $code, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($res, 404, [], JSON_UNESCAPED_UNICODE);
     }
 }

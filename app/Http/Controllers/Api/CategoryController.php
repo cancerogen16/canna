@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Traits\ApiResponder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
     use ApiResponder;
 
     /**
-     * Display a listing of the resource.
+     * Список категорий
      *
      * @param Request $request
      * @return JsonResponse
@@ -27,36 +29,43 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Создание новой категории
      *
      * @param CategoryRequest $request
      * @return JsonResponse
      */
     public function store(CategoryRequest $request): JsonResponse
     {
-        $category = new Category($request->validated());
+        try {
+            $category = new Category($request->validated());
 
-        $category->save();
+            $category->save();
 
-        return $this->handleResponse($category, 201);
+            return $this->handleResponse($category, 'Category created', 201);
+        } catch (QueryException $e) {
+            return $this->handleError($e->getMessage(), ['Ошибка при добавлении категории']);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Вывод категории по id
      *
-     * @param Request $request
      * @param int $id
      * @return JsonResponse
      */
-    public function show(Request $request, $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $category = Category::findOrFail($id);
+        try {
+            $category = Category::findOrFail($id);
 
-        return  $this->handleResponse($category->toArray());
+            return $this->handleResponse($category->toArray());
+        } catch (ModelNotFoundException $e) {
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске категории']);
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Изменение категории
      *
      * @param CategoryRequest $request
      * @param int $id
@@ -64,27 +73,35 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, int $id): JsonResponse
     {
-        $category = Category::findOrFail($id);
+        try {
+            $category = Category::findOrFail($id);
 
-        $data = $request->validated();
+            $data = $request->validated();
 
-        $category->update($data);
+            $category->update($data);
 
-        return $this->handleResponse($category, 'Updated');
+            return $this->handleResponse($category, 'Updated');
+        } catch (ModelNotFoundException $e) {
+            return $this->handleError($e->getMessage(), ['Ошибка при изменении категории']);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаление категории
      *
      * @param int $id
      * @return JsonResponse
      */
-    public function delete($id): JsonResponse
+    public function delete(int $id): JsonResponse
     {
-        $category = Category::findOrFail($id);
+        try {
+            $category = Category::findOrFail($id);
 
-        $category->delete();
+            $category->delete();
 
-        return $this->handleResponse($category, 'Deleted');
+            return $this->handleResponse($category, 'Deleted');
+        } catch (ModelNotFoundException $e) {
+            return $this->handleError($e->getMessage(), ['Ошибка при удалении категории']);
+        }
     }
 }

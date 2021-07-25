@@ -22,19 +22,18 @@ class MasterController extends Controller
         return $this->handleResponse($data);
     }
 
-    public function add(MasterRequest $request): JsonResponse
+    public function store(MasterRequest $request): JsonResponse
     {
         try {
             $master = new Master($request->validated());
 
             $master->save();
 
-            return $this->handleResponse($master, 201);
+            return $this->handleResponse($master, 'Master created', 201);
 
         } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(),['Ошибка при добавлении мастера'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при добавлении мастера']);
         }
-
     }
 
     public function show(int $id): JsonResponse
@@ -44,7 +43,7 @@ class MasterController extends Controller
 
             return $this->handleResponse($master->toArray(), 200);
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера']);
         }
     }
 
@@ -59,7 +58,7 @@ class MasterController extends Controller
 
             return $this->handleResponse($master, 'Updated');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при изменении профиля мастера'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при изменении профиля мастера']);
         }
     }
 
@@ -72,7 +71,7 @@ class MasterController extends Controller
 
             return $this->handleResponse($master, 'Deleted');
         } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера'], 404);
+            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера']);
         }
     }
 }
