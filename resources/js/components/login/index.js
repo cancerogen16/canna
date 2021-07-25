@@ -6,9 +6,6 @@ import {useHukLogin} from '../../store/auth/huks/useHukLogin';
 
 export default function Login (){
 
-    
-    
-
     const {
         handlerOnChangeField,
         credentials,
@@ -19,7 +16,6 @@ export default function Login (){
     } = useHukLogin();
 
     
-
     return (
         <ValidatorForm 
             className='form_login'

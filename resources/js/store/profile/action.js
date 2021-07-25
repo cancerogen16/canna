@@ -1,9 +1,9 @@
 export const EDIT_PROFILE = 'PROFILE::EDIT_PROFILE';
 
-export const editProfile = (email, token) => ({
+export const editProfile = ({name, email}) => ({
     type: EDIT_PROFILE,
+    name,
     email,
-    token
 });
 
 

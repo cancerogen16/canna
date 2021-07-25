@@ -1,3 +1,4 @@
+import { editProfile } from '../profile/action';
 import {
     AUTH_CHECK,
     AUTH_LOGIN,
@@ -15,7 +16,13 @@ import {
         'Content-Type': 'application/json;charset=utf-8'
       },
       body: JSON.stringify(credentials),
-    }).then(res => res.json()).then(res => console.log(res.data.token));
+    })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(authLogin(res.data.token));
+      dispatch(editProfile(res.data.user));
+      return res.data.token;
+    }).then(token => localStorage.setItem('access_token', token));
   }
 
   export const fetchRegistre = (credentials) => (dispatch, getState) => {
@@ -25,7 +32,12 @@ import {
         'Content-Type': 'application/json;charset=utf-8'
       },
       body: JSON.stringify(credentials),
-    }).then(res => res.json()).then(res => console.log(res.data.token));
+    })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(authLogin(res.data.token));
+      localStorage.setItem('access_token', res.data.token);
+    });
   }
   
   export function authCheck() {
@@ -41,11 +53,11 @@ import {
     };
   }
   
-  // export function authLogout() {
-  //   return {
-  //     type: AUTH_LOGOUT,
-  //   }
-  // }
+  export function authLogout() {
+    return {
+      type: AUTH_LOGOUT,
+    }
+  }
   
   export function authRefreshToken(payload) {
     return {

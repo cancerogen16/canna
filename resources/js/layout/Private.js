@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Header from '../components/header'
+import UserBar from '../components/userBar'
 
 
 const containerStyle = {
@@ -12,12 +14,12 @@ const propTypes = {
 }
 
 function PrivateLayout({ children }) {
-  return <div style={containerStyle}>
-    
+  return <div>
+    <Header>
+      <UserBar />
+    </Header>
     <main style={{ minHeight: '100vh'}}>
-        privet
       { children }
-     
     </main>
 
   </div>

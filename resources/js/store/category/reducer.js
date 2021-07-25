@@ -1,4 +1,4 @@
-import { ADD_CATEGORY } from "./action"
+import { ADD_CATEGORY, CLEAR_CATEGORY } from "./action"
 
 const initialState = [
     
@@ -9,12 +9,16 @@ export const categoryReducer = (state = initialState, action) => {
 
     switch(action.type){
         case ADD_CATEGORY:{
-            console.log(action.id)
             return [
                 ...state,
                 {
                     ...action
                 }
+            ]
+        }
+        case CLEAR_CATEGORY:{
+            return [
+                
             ]
         }
         default:{

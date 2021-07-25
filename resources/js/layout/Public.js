@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../components/header'
+import Auch from '../components/auch'
+
 
 
 
@@ -15,9 +17,10 @@ const propTypes = {
 
 function PublicLayout({ children }) {
   return <div >
-    <Header />
+    <Header>
+      <Auch/>
+    </Header>
     <main style={{ minHeight: '100vh'}}>
-
       { children }
     </main>
   </div>
