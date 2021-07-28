@@ -1,11 +1,12 @@
 import React from 'react'
 import { Button} from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import {useHukLogin} from '../../store/auth/huks/useHukLogin';
+import { useHukLogin } from './useHukLogin';
 
 
-export default function Login (){
 
+export default function Login (props){
+    
     const {
         handlerOnChangeField,
         credentials,
@@ -13,13 +14,12 @@ export default function Login (){
         handleSubmit,
         submitted,
         setSubmitted
-    } = useHukLogin();
+    } = useHukLogin(props);
 
     
     return (
         <ValidatorForm 
             className='form_login'
-            //ref="/"
             onSubmit={handleSubmit}
         >
             <TextValidator

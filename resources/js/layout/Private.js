@@ -18,7 +18,7 @@ function PrivateLayout({ children }) {
     <Header>
       <UserBar />
     </Header>
-    <main style={{ minHeight: '100vh'}}>
+    <main>
       { children }
     </main>
 

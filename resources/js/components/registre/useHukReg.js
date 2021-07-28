@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { fetchRegistre } from '../actions';
+import { fetchRegistre } from '../../store/auth/actions';
+
 
 export const useHukReg = () => {
     const dispatch = useDispatch();

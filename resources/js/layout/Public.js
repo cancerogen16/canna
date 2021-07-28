@@ -18,9 +18,9 @@ const propTypes = {
 function PublicLayout({ children }) {
   return <div >
     <Header>
-      <Auch/>
+    <Auch/>
     </Header>
-    <main style={{ minHeight: '100vh'}}>
+    <main >
       { children }
     </main>
   </div>

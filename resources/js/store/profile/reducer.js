@@ -3,7 +3,8 @@ import { EDIT_PROFILE } from "./action"
 const initialState = {
     
     name: '',
-    email: '',  
+    email: '',
+    role_id: ''  
 }
 
 export const profileReducer = (state = initialState, action) => {

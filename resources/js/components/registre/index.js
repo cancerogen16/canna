@@ -1,7 +1,8 @@
 import React from 'react'
 import { Button } from '@material-ui/core';
 import { TextValidator } from 'react-material-ui-form-validator';
-import { useHukReg } from '../../store/auth/huks/useHukReg';
+import { useHukReg } from './useHukReg';
+
 
 
 

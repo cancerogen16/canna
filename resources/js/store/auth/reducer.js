@@ -1,4 +1,4 @@
-//import HTTP from '../../../utils/Http';
+import HTTP from '../HTTP';
 import {
   AUTH_CHECK,
   AUTH_LOGIN,
@@ -29,11 +29,10 @@ const authReducer = (state = initialState, { type, payload = null }) => {
 
 function login(state, payload) {
   
-//   HTTP.defaults.headers.common['Authorization'] = `Bearer ${payload}`;
-
   return {
     ...state, isAuthenticated: true,
   }
+
 }
 
 function checkAuth(state) {
@@ -42,7 +41,7 @@ function checkAuth(state) {
   })
 
   if (state.isAuthenticated) {
-    //HTTP.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+    HTTP.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
   }
 
   return state;
