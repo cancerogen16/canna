@@ -13,6 +13,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -24,24 +25,36 @@ class AuthController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => ['required', 'confirmed', Password::min(4)],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->handleError($validator->messages(), ['Ошибка валидации']);
-        } else {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
+        try {
+            $validator = Validator::make($request->all(),[
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => ['required', 'confirmed', Password::min(4)],
             ]);
 
-            $token = $user->createToken('authtoken');
+            if ($validator->fails()) {
+                return $this->handleResponse([
+                    'status' => 'error',
+                    'errors' => $validator->messages()
+                ]);
+            } else {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
 
-            return $this->handleResponse(['token' => $token->plainTextToken, 'user' => $user], 'User Registered');
+                event(new Registered($user));
+
+                $token = $user->createToken('authtoken');
+
+                return $this->handleResponse([
+                    'token' => $token->plainTextToken,
+                    'user' => $user
+                ]);
+            }
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -52,13 +65,20 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
+        try {
+            $request->authenticate();
 
-        $user = $request->user();
+            $user = $request->user();
 
-        $token = $user->createToken('authtoken');
+            $token = $user->createToken('authtoken');
 
-        return $this->handleResponse(['token' => $token->plainTextToken, 'user' => $user], 'User Logged in');
+            return $this->handleResponse([
+                'token' => $token->plainTextToken,
+                'user' => $user
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
     }
 
     /**
@@ -67,10 +87,16 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $user = $request->user();
+        try {
+            $user = $request->user();
 
-        $user->tokens()->delete();
+            $user->tokens()->delete();
 
-        return $this->handleResponse(['user' => $user], 'User Logged out');
+            return $this->handleResponse([
+                'user' => $user
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
     }
 }

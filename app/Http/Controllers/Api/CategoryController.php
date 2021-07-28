@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Traits\ApiResponder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class CategoryController extends Controller
 {
@@ -41,9 +40,9 @@ class CategoryController extends Controller
 
             $category->save();
 
-            return $this->handleResponse($category, 'Category created', 201);
-        } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при добавлении категории']);
+            return $this->handleResponse($category, 201);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -59,8 +58,8 @@ class CategoryController extends Controller
             $category = Category::findOrFail($id);
 
             return $this->handleResponse($category->toArray());
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске категории']);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -80,9 +79,9 @@ class CategoryController extends Controller
 
             $category->update($data);
 
-            return $this->handleResponse($category, 'Updated');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при изменении категории']);
+            return $this->handleResponse($category);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -99,9 +98,9 @@ class CategoryController extends Controller
 
             $category->delete();
 
-            return $this->handleResponse($category, 'Deleted');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при удалении категории']);
+            return $this->handleResponse($category);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 }

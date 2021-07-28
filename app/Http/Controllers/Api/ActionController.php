@@ -6,14 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ActionRequest;
 use App\Models\Action;
 use App\Traits\ApiResponder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use Throwable;
 
 class ActionController extends Controller
 {
     use ApiResponder;
 
+    /**
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         $actions = Action::all();
@@ -21,6 +23,10 @@ class ActionController extends Controller
         return $this->handleResponse($actions);
     }
 
+    /**
+     * @param ActionRequest $request
+     * @return JsonResponse
+     */
     public function store(ActionRequest $request): JsonResponse
     {
         try {
@@ -28,23 +34,32 @@ class ActionController extends Controller
 
             $action->save();
 
-            return $this->handleResponse($action, 'Action created', 201);
-        } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при добавлении акции']);
+            return $this->handleResponse($action);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function show(int $id): JsonResponse
     {
         try {
             $action = Action::findOrFail($id);
 
             return $this->handleResponse($action->toArray());
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске акции']);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
+    /**
+     * @param ActionRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
     public function update(ActionRequest $request, int $id): JsonResponse
     {
         try {
@@ -54,12 +69,16 @@ class ActionController extends Controller
 
             $action->update($data);
 
-            return $this->handleResponse($action, 'Updated');
-        } catch (ModelNotFoundException | QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при изменении акции']);
+            return $this->handleResponse($action);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function delete(int $id): JsonResponse
     {
         try {
@@ -67,9 +86,9 @@ class ActionController extends Controller
 
             $action->delete();
 
-            return $this->handleResponse($action, 'Deleted');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при удалении акции']);
+            return $this->handleResponse($action);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 }

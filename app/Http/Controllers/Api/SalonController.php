@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Salon;
 use App\Traits\ApiResponder;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\SalonRequest;
+use Throwable;
 
 class SalonController extends Controller
 {
@@ -28,10 +27,10 @@ class SalonController extends Controller
 
             $salon->save();
 
-            return $this->handleResponse($salon, 'Salon created', 201);
+            return $this->handleResponse($salon, 201);
 
-        } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при добавлении салона']);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -41,8 +40,8 @@ class SalonController extends Controller
             $salon = Salon::findOrFail($id);
 
             return $this->handleResponse($salon->toArray());
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске салона']);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -55,9 +54,9 @@ class SalonController extends Controller
 
             $salon->update($data);
 
-            return $this->handleResponse($salon, 'Updated');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при изменении салона']);
+            return $this->handleResponse($salon);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -68,9 +67,9 @@ class SalonController extends Controller
 
             $salon->delete();
 
-            return $this->handleResponse($salon, 'Deleted');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при удалении салона']);
+            return $this->handleResponse($salon);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 }

@@ -8,33 +8,26 @@ trait ApiResponder
 {
     /**
      * @param $data
-     * @param string $message
      * @param int $code
      * @return JsonResponse
      */
-    protected function handleResponse($data, string $message = '', int $code = 200): JsonResponse
+    protected function handleResponse($data, int $code = 200): JsonResponse
     {
-        return response()->json([
-            'data' => $data,
-            'message' => $message,
-        ], $code, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($data, $code, [], JSON_UNESCAPED_UNICODE);
     }
 
     /**
-     * @param string $error
-     * @param array $errorMsg
+     * @param int $code
+     * @param string $message
      * @return JsonResponse
      */
-    protected function handleError(string $error, array $errorMsg = []): JsonResponse
+    protected function handleError(int $code, string $message): JsonResponse
     {
         $res = [
-            'message' => $error,
+            'code' => $code,
+            'message' => $message,
         ];
 
-        if (!empty($errorMsg)) {
-            $res['data'] = $errorMsg;
-        }
-
-        return response()->json($res, 404, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($res, 200, [], JSON_UNESCAPED_UNICODE);
     }
 }

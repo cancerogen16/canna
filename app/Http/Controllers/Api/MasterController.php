@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterRequest;
 use App\Models\Master;
 use App\Traits\ApiResponder;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use Throwable;
 
 
 class MasterController extends Controller
@@ -44,10 +42,10 @@ class MasterController extends Controller
 
             $master->save();
 
-            return $this->handleResponse($master, 'Master created', 201);
+            return $this->handleResponse($master, 201);
 
-        } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при добавлении мастера']);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -56,9 +54,9 @@ class MasterController extends Controller
         try {
             $master = Master::findOrFail($id);
 
-            return $this->handleResponse($master->toArray(), 200);
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера']);
+            return $this->handleResponse($master->toArray());
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -71,9 +69,9 @@ class MasterController extends Controller
 
             $master->update($data);
 
-            return $this->handleResponse($master, 'Updated');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при изменении профиля мастера']);
+            return $this->handleResponse($master);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -84,9 +82,9 @@ class MasterController extends Controller
 
             $master->delete();
 
-            return $this->handleResponse($master, 'Deleted');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске мастера']);
+            return $this->handleResponse($master);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 }
