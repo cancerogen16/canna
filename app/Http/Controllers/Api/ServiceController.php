@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
 use App\Models\Service;
 use App\Traits\ApiResponder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use Throwable;
 
 class ServiceController extends Controller
 {
@@ -29,8 +28,8 @@ class ServiceController extends Controller
             $service->save();
 
             return $this->handleResponse($service, 201);
-        } catch (QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при добавлении услуги']);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -39,9 +38,9 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            return $this->handleResponse($service->toArray(), 200);
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске услуги']);
+            return $this->handleResponse($service->toArray());
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -54,9 +53,9 @@ class ServiceController extends Controller
 
             $service->update($data);
 
-            return $this->handleResponse($service, 'Updated');
-        } catch (ModelNotFoundException | QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при обновлении услуги']);
+            return $this->handleResponse($service);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -67,9 +66,9 @@ class ServiceController extends Controller
 
             $service->delete();
 
-            return $this->handleResponse($service, 'Deleted');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при посике услуги']);
+            return $this->handleResponse($service);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 }
