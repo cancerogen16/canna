@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Traits\ApiResponder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -22,7 +21,9 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return $this->handleResponse($users);
+        return $this->handleResponse([
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -36,9 +37,11 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            return $this->handleResponse($user->toArray());
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при поиске пользователя']);
+            return $this->handleResponse([
+                'user' => $user->toArray(),
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -58,9 +61,11 @@ class UserController extends Controller
 
             $user->update($data);
 
-            return $this->handleResponse($user, 'Updated');
-        } catch (ModelNotFoundException | QueryException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при обновлении данных пользователя']);
+            return $this->handleResponse([
+                'user' => $user,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -77,9 +82,11 @@ class UserController extends Controller
 
             $user->delete();
 
-            return $this->handleResponse($user, 'Deleted');
-        } catch (ModelNotFoundException $e) {
-            return $this->handleError($e->getMessage(), ['Ошибка при удалении пользователя']);
+            return $this->handleResponse([
+                'user' => $user,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 }
