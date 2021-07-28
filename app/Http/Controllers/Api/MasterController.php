@@ -18,9 +18,11 @@ class MasterController extends Controller
 
     public function index(): JsonResponse
     {
-        $data = Master::all();
+        $masters = Master::all();
 
-        return $this->handleResponse($data);
+        return $this->handleResponse([
+            'masters' => $masters
+        ]);
     }
 
     public function store(MasterRequest $request): JsonResponse
@@ -42,8 +44,9 @@ class MasterController extends Controller
 
             $master->save();
 
-            return $this->handleResponse($master, 201);
-
+            return $this->handleResponse([
+                'master' => $master
+            ], 201);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -54,7 +57,9 @@ class MasterController extends Controller
         try {
             $master = Master::findOrFail($id);
 
-            return $this->handleResponse($master->toArray());
+            return $this->handleResponse([
+                'master' => $master->toArray()
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -69,7 +74,9 @@ class MasterController extends Controller
 
             $master->update($data);
 
-            return $this->handleResponse($master);
+            return $this->handleResponse([
+                'master' => $master
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -82,7 +89,9 @@ class MasterController extends Controller
 
             $master->delete();
 
-            return $this->handleResponse($master);
+            return $this->handleResponse([
+                'master' => $master
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }

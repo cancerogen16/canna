@@ -17,7 +17,9 @@ class ServiceController extends Controller
     {
         $services = Service::all();
 
-        return $this->handleResponse($services);
+        return $this->handleResponse([
+            'services' => $services
+        ]);
     }
 
     public function store(ServiceRequest $request): JsonResponse
@@ -27,7 +29,9 @@ class ServiceController extends Controller
 
             $service->save();
 
-            return $this->handleResponse($service, 201);
+            return $this->handleResponse([
+                'service' => $service
+            ], 201);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -38,7 +42,9 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            return $this->handleResponse($service->toArray());
+            return $this->handleResponse([
+                'service' => $service->toArray()
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -53,7 +59,9 @@ class ServiceController extends Controller
 
             $service->update($data);
 
-            return $this->handleResponse($service);
+            return $this->handleResponse([
+                'service' => $service
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -66,7 +74,9 @@ class ServiceController extends Controller
 
             $service->delete();
 
-            return $this->handleResponse($service);
+            return $this->handleResponse([
+                'service' => $service
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
