@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin } from '../actions';
+import { fetchLogin } from '../../store/auth/actions';
 
-export const useHukLogin = () => {
+
+
+export const useHukLogin = (props) => {
     const [submitted, setSubmitted] = useState(false);
     const [credentials, setCredentials] = useState({
         email: '',
@@ -14,8 +16,13 @@ export const useHukLogin = () => {
     const auth = useSelector(state => state.auth);
 
     const handleSubmit = () => {
+        console.log('1',props.history)
         dispatch(fetchLogin(credentials))
         setSubmitted(true);
+        
+        
+        
+        
     }
 
     const handlerOnChangeField = (e) => {

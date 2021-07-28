@@ -3,18 +3,17 @@ import PropTypes from 'prop-types'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-const PrivateRoute = ({ component: Component, isAuthenticated, role, ...rest }) => {
+const DashboardRoute = ({ component: Component, isAuthenticated, isRole, ...rest }) => {
  
    
     return <Route {...rest} render={props => {
-      
         return <Suspense fallback={<div>Loading...</div>}>
           
             {
-                isAuthenticated
-                    ? <Component {...props} role={role}/>
+                  isRole == 2
+                    ? <Component {...props}/>
                     : <Redirect to={{
-                        pathname: '/login',
+                        pathname: '/',
                         state: { from: props.location },
                     }}/>
             }
@@ -22,18 +21,19 @@ const PrivateRoute = ({ component: Component, isAuthenticated, role, ...rest }) 
     }}/>
 }
 
-PrivateRoute.propTypes = {
+DashboardRoute.propTypes = {
   component: PropTypes.object.isRequired,
   location: PropTypes.object,
   isAuthenticated: PropTypes.bool.isRequired,
+  isRole: PropTypes.any,
 }
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
   return {
     isAuthenticated: store.auth.isAuthenticated,
-    role: store.profile.role_id
+    isRole: store.profile.role_id
   }
 }
 
-export default connect(mapStateToProps)(PrivateRoute)
+export default connect(mapStateToProps)(DashboardRoute)

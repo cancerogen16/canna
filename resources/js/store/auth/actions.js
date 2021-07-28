@@ -19,29 +19,38 @@ import {
                 dispatch(authLogin(res.data.data.token));
                 dispatch(editProfile(res.data.data.user));
                 return res.data.data.token;
-              }).then(token => {
-            localStorage.setItem('access_token', token);
-            HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
-          });
+              })
+              .then(token => {
+                localStorage.setItem('access_token', token);
+                HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+              });
         });
   }
 
   export const fetchRegistre = (credentials) => (dispatch, getState) => {
-    fetch('/api/authorization/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(credentials),
-    })
-    .then(res => res.json())
-    .then(res => {
-      dispatch(authLogin(res.data.token));
-      dispatch(editProfile(res.data.user));
-      return res.data.token;
-    }).then(token => localStorage.setItem('access_token', token));
+    HTTP.get('sanctum/csrf-cookie')
+    .then(() => {
+      HTTP.post('api/authorization/register', credentials)
+              .then(res => {
+                console.log(res)
+                dispatch(authLogin(res.data.data.token));
+                dispatch(editProfile(res.data.data.user));
+                return res.data.data.token;
+              })
+              .then(token => {
+                localStorage.setItem('access_token', token);
+                HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+              });
+      });
   }
   
+  export const fetchLogout = (credentials) => (dispatch, getState) => {
+    dispatch(authCheck())
+    HTTP.post('api/authorization/logout')
+      .then(dispatch(authLogout()));
+    } 
+      
+
   export function authCheck() {
     return {
       type: AUTH_CHECK,

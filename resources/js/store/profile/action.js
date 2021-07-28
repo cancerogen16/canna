@@ -1,9 +1,10 @@
 export const EDIT_PROFILE = 'PROFILE::EDIT_PROFILE';
 
-export const editProfile = ({name, email}) => ({
+export const editProfile = ({name, email, role_id}) => ({
     type: EDIT_PROFILE,
     name,
     email,
+    role_id
 });
 
 
