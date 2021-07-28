@@ -15,9 +15,11 @@ class SalonController extends Controller
 
     public function index(): JsonResponse
     {
-        $data = Salon::all();
+        $salons = Salon::all();
 
-        return $this->handleResponse($data);
+        return $this->handleResponse([
+            'salons' => $salons
+        ]);
     }
 
     public function store(SalonRequest $request): JsonResponse
@@ -27,8 +29,9 @@ class SalonController extends Controller
 
             $salon->save();
 
-            return $this->handleResponse($salon, 201);
-
+            return $this->handleResponse([
+                'salon' => $salon
+            ], 201);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -39,7 +42,9 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            return $this->handleResponse($salon->toArray());
+            return $this->handleResponse([
+                'salon' => $salon->toArray()
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -54,7 +59,9 @@ class SalonController extends Controller
 
             $salon->update($data);
 
-            return $this->handleResponse($salon);
+            return $this->handleResponse([
+                'salon' => $salon
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -67,7 +74,9 @@ class SalonController extends Controller
 
             $salon->delete();
 
-            return $this->handleResponse($salon);
+            return $this->handleResponse([
+                'salon' => $salon
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }

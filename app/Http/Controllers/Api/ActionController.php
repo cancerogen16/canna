@@ -20,7 +20,9 @@ class ActionController extends Controller
     {
         $actions = Action::all();
 
-        return $this->handleResponse($actions);
+        return $this->handleResponse([
+            'actions' => $actions
+        ]);
     }
 
     /**
@@ -34,7 +36,9 @@ class ActionController extends Controller
 
             $action->save();
 
-            return $this->handleResponse($action);
+            return $this->handleResponse([
+                'action' => $action
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -49,7 +53,9 @@ class ActionController extends Controller
         try {
             $action = Action::findOrFail($id);
 
-            return $this->handleResponse($action->toArray());
+            return $this->handleResponse([
+                'action' => $action->toArray()
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -69,7 +75,9 @@ class ActionController extends Controller
 
             $action->update($data);
 
-            return $this->handleResponse($action);
+            return $this->handleResponse([
+                'action' => $action
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -86,7 +94,9 @@ class ActionController extends Controller
 
             $action->delete();
 
-            return $this->handleResponse($action);
+            return $this->handleResponse([
+                'action' => $action
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }

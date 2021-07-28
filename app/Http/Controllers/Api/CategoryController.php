@@ -24,7 +24,9 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        return $this->handleResponse($categories);
+        return $this->handleResponse([
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -40,7 +42,9 @@ class CategoryController extends Controller
 
             $category->save();
 
-            return $this->handleResponse($category, 201);
+            return $this->handleResponse([
+                'category' => $category
+            ], 201);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -57,7 +61,9 @@ class CategoryController extends Controller
         try {
             $category = Category::findOrFail($id);
 
-            return $this->handleResponse($category->toArray());
+            return $this->handleResponse([
+                'category' => $category->toArray()
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -79,7 +85,9 @@ class CategoryController extends Controller
 
             $category->update($data);
 
-            return $this->handleResponse($category);
+            return $this->handleResponse([
+                'category' => $category
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
@@ -98,7 +106,9 @@ class CategoryController extends Controller
 
             $category->delete();
 
-            return $this->handleResponse($category);
+            return $this->handleResponse([
+                'category' => $category
+            ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
