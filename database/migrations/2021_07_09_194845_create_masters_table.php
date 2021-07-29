@@ -21,7 +21,10 @@ class CreateMastersTable extends Migration
                 ->cascadeOnDelete();
 
             $table->string('name', 191); // имя
+
             $table->string('slug', 191)->unique(); // ярлык
+
+            $table->string('position', 191); // должность
 
             $table->string('photo', 255)->nullable(); // фото
 

@@ -24,9 +24,9 @@ class ActionsSeeder extends Seeder
 
             $name = "Акция {$i}";
 
-            $start_at = $faker->dateTimeBetween('-2 months', '-1 month');
+            $start_at = $faker->dateTimeBetween('-2 months', '-1 month')->format('Y-m-d H');
 
-            $end_at = $faker->dateTimeBetween('+1 months', '+3 month');
+            $end_at = $faker->dateTimeBetween('+1 months', '+3 month')->format('Y-m-d H');
 
             $actions[] = [
 
@@ -37,7 +37,8 @@ class ActionsSeeder extends Seeder
                 'price' => $faker->numberBetween(500,10000),
                 'start_at' => $start_at,
                 'end_at' => $end_at,
-
+                'created_at' => $faker->dateTimeBetween('-3 months', '-2 months 2 weeks'),
+                'updated_at' => $faker->dateTimeBetween('-2 months -2 weeks', '-2 months'),
             ];
 
         }

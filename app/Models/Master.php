@@ -15,6 +15,7 @@ class Master extends Model
         'salon_id',
         'name',
         'slug',
+        'position',
         'photo',
         'experience',
         'description',
