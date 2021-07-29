@@ -36,6 +36,9 @@ Route::prefix('actions')
 Route::prefix('authorization')
     ->group(base_path('routes/api/authorization.php'));
 
+Route::prefix('users')
+    ->group(base_path('routes/api/users.php'));
+
 Route::any('/{any}', function () {
     return response()->json([
         'success' => false,
