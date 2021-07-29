@@ -19,7 +19,7 @@ class CreateRecordsTable extends Migration
             $table->foreignId('user_id') // привязка к пользователю, который создал запись (не обязательно клиент)
                 ->constrained('users')
                 ->cascadeOnDelete();
-            $table->foreignId('calendar_id') // привязка к пункту в календаре
+            $table->foreignId('calendar_id')->unique() // привязка к пункту в календаре
                 ->constrained('calendars')
                 ->cascadeOnDelete();
 

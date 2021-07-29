@@ -21,7 +21,7 @@ class RecordSeeder extends Seeder
             $createdAt = $faker->dateTimeBetween('-1 weeks', 'now');
             $records[] = [
                 'user_id' => $faker->numberBetween(2, 31),
-                'calendar_id' => $faker->numberBetween(1, 270),
+                'calendar_id' => $faker->unique()->numberBetween(1, 270),
                 'name' => "Клиент {$i}",
                 'phone' => '+7916'.$faker->randomNumber(7, true),
                 'comment' => $faker->text(200),
