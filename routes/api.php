@@ -27,6 +27,9 @@ Route::prefix('masters')
 Route::prefix('services')
     ->group(base_path('routes/api/services.php'));
 
+Route::prefix('calendars')
+    ->group(base_path('routes/api/calendars.php'));
+
 Route::prefix('actions')
     ->group(base_path('routes/api/actions.php'));
 
