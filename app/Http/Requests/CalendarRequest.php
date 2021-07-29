@@ -26,7 +26,6 @@ class CalendarRequest extends FormRequest
         return [
             'service_id' => 'required|integer|exists:services,id',
             'start_datetime' => 'required|date_format:Y-m-d H',
-            'end_datetime' => 'required|date_format:Y-m-d H|after:start_datetime',
         ];
     }
 }

@@ -21,9 +21,7 @@ class CalendarSeeder extends Seeder
             for ($j = 2; $j <= 10; $j++) {
                 $calendars[] = [
                     'service_id' => $i,
-                    'start_datetime' => $faker->dateTimeBetween("+{$j} days 1 hour", "+{$j} days 3 hours")
-                                        ->format('Y-m-d H'),
-                    'end_datetime' => $faker->dateTimeBetween("+{$j} days 4 hours", "+{$j} days 6 hours")
+                    'start_datetime' => $faker->dateTimeBetween("+{$j} days 1 hour", "+{$j} days 4 hours")
                                         ->format('Y-m-d H'),
                     'created_at' => $faker->dateTimeBetween('-2 weeks', '-1 week'),
                     'updated_at' => $faker->dateTimeBetween('-1 week', 'now'),

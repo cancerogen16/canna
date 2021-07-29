@@ -20,7 +20,6 @@ class Service extends Model
         'slug',
         'price',
         'duration',
-        'use_break',
         'image',
         'excerpt',
         'description',

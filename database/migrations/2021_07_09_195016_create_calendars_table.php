@@ -23,8 +23,6 @@ class CreateCalendarsTable extends Migration
 
             $table->dateTime('start_datetime'); // время начала
 
-            $table->dateTime('end_datetime'); // время окончания
-
             $table->timestamps();
         });
     }

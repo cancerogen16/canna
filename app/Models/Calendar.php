@@ -13,7 +13,6 @@ class Calendar extends Model
     protected $fillable = [
         'service_id',
         'start_datetime',
-        'end_datetime',
     ];
 
     public function service(): BelongsTo
