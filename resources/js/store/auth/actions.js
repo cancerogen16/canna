@@ -15,15 +15,13 @@ import {
         .then(() => {
           HTTP.post('api/authorization/login', credentials)
               .then(res => {
+                const {token, user} = res.data;
                 console.log(res)
-                dispatch(authLogin(res.data.data.token));
-                dispatch(editProfile(res.data.data.user));
-                return res.data.data.token;
-              })
-              .then(token => {
+                dispatch(authLogin(token));
+                dispatch(editProfile(user));
                 localStorage.setItem('access_token', token);
                 HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
-              });
+              })
         });
   }
 
@@ -32,12 +30,10 @@ import {
     .then(() => {
       HTTP.post('api/authorization/register', credentials)
               .then(res => {
+                const {token, user} = res.data;
                 console.log(res)
-                dispatch(authLogin(res.data.data.token));
-                dispatch(editProfile(res.data.data.user));
-                return res.data.data.token;
-              })
-              .then(token => {
+                dispatch(authLogin(token));
+                dispatch(editProfile(user));
                 localStorage.setItem('access_token', token);
                 HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
               });

@@ -40,7 +40,7 @@ export default function Register (){
             name="email"
             value={credentials.email}
             validators={['required', 'isEmail']}
-            errorMessages={['Поле обязательно для заполнения', 'Номер должен быть в фортмате +7(999) 999 99 99']}
+            errorMessages={['Поле обязательно для заполнения', 'Некорректный E-mail']}
         />
         <TextValidator
             className="form_registre__item"
