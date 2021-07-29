@@ -22,7 +22,8 @@ class CreateProfilesTable extends Migration
             $table->string('photo')->nullable();
             $table->string('address')->nullable();
             $table->string('email')->unique()->nullable();
-            $table->string('about')->nullable(); // о себе
+            $table->text('about')->nullable(); // о себе
+            $table->timestamps();
             $table->softDeletes();
         });
     }

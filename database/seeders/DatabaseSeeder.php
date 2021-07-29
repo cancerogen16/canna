@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiceSeeder::class);
         $this->call(ActionsSeeder::class);
         $this->call(CalendarSeeder::class);
+        $this->call(RecordSeeder::class);
     }
 }

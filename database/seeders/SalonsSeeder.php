@@ -20,10 +20,10 @@ class SalonsSeeder extends Seeder
         $titles = ['Салон красоты Стиль', 'Частный мастер Оксана', 'Парикмахерская для всей семьи', 'Салон Ромашка', 'Салон красоты Идеал', 'Naturel Studio', 'Agency beauty studio', 'Салон красоты Маверик', 'OldBoy Barbershop', 'Barbershop BRITVA'];
         $faker = Factory::create('ru_RU');
 
-
+        $i = 2;
         foreach ($titles as $title) {
             $salons[] = [
-                'user_id' => 1,
+                'user_id' => $i,
                 'title' => $title,
                 'slug' => Str::of($title)->slug(),
                 'main_photo' => $faker->imageUrl(300, 300, 'nails', true, 'haircut'),
@@ -31,10 +31,12 @@ class SalonsSeeder extends Seeder
                 'address' => $faker->streetAddress(),
                 'phone' => '+7495'.$faker->randomNumber(7, true),
                 'worktime' => '09:00 - 20:00',
-                'description' => $faker->text(200),
+                'description' => $faker->realText(200),
                 'rating' => $faker->randomDigit(),
-
+                'created_at' => $faker->dateTimeBetween('-2 month', '-1 month'),
+                'updated_at' => $faker->dateTimeBetween('-1 month', 'now'),
             ];
+            $i++;
         }
         DB::table('salons')->insert($salons);
     }

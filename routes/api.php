@@ -30,6 +30,9 @@ Route::prefix('services')
 Route::prefix('calendars')
     ->group(base_path('routes/api/calendars.php'));
 
+Route::prefix('records')
+    ->group(base_path('routes/api/records.php'));
+
 Route::prefix('actions')
     ->group(base_path('routes/api/actions.php'));
 
