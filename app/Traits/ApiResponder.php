@@ -21,7 +21,7 @@ trait ApiResponder
      * @param string $message
      * @return JsonResponse
      */
-    protected function handleError(int $code, string $message): JsonResponse
+    protected function handleError(string $code, string $message): JsonResponse
     {
         $res = [
             'code' => $code,
