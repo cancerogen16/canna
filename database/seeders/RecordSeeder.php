@@ -17,11 +17,11 @@ class RecordSeeder extends Seeder
     {
         $faker = Factory::create('ru_RU');
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 13; $i++) {
             $createdAt = $faker->dateTimeBetween('-1 weeks', 'now');
             $records[] = [
                 'user_id' => $faker->numberBetween(2, 31),
-                'calendar_id' => $faker->unique()->numberBetween(1, 270),
+                'service_id' => $i,
                 'name' => "Клиент {$i}",
                 'phone' => '+7916'.$faker->randomNumber(7, true),
                 'comment' => $faker->text(200),

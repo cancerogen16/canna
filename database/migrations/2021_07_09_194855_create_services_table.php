@@ -20,8 +20,8 @@ class CreateServicesTable extends Migration
                 ->constrained('categories')
                 ->cascadeOnDelete();
 
-            $table->foreignId('master_id') // привязка мастера к услуге
-            ->constrained('masters')
+            $table->foreignId('salon_id') // привязка салона к услуге
+                ->constrained('salons')
                 ->cascadeOnDelete();
 
             $table->string('title', 191); // название

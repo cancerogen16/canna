@@ -12,7 +12,7 @@ class Record extends Model
 
     protected $fillable = [
         'user_id',
-        'calendar_id',
+        'service_id',
         'name',
         'phone',
         'comment',
@@ -23,8 +23,8 @@ class Record extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function calendar(): BelongsTo
+    public function service(): BelongsTo
     {
-        return $this->belongsTo(Calendar::class);
+        return $this->belongsTo(Service::class);
     }
 }

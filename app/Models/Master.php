@@ -5,6 +5,8 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Master extends Model
 {
@@ -22,14 +24,14 @@ class Master extends Model
         'rating',
     ];
 
-    public function salon()
+    public function salon(): BelongsTo
     {
         return $this->belongsTo(Salon::class);
     }
 
-    public function services()
+    public function services(): BelongsToMany
     {
-        return $this->hasMany(Service::class);
+        return $this->belongsToMany(Service::class);
     }
 
     public function sluggable(): array

@@ -24,7 +24,8 @@ class CalendarRequest extends FormRequest
     public function rules()
     {
         return [
-            'service_id' => 'required|integer|exists:services,id',
+            'master_id' => 'required|integer|exists:masters,id',
+            'record_id' => 'nullable|integer|exists:records,id',
             'start_datetime' => 'required|date_format:Y-m-d H',
         ];
     }
