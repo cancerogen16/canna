@@ -21,7 +21,6 @@ class Salon extends Model
         'city',
         'address',
         'phone',
-        'worktime',
         'description',
         'rating',
     ];

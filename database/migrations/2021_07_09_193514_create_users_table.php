@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->default(3) // привязка к роли, 3-клиент, 2-салон. на фронтенде сделать выпадающее меню - салон/клиент
+            $table->foreignId('role_id')->default(2) // привязка к роли: 1-админ, 2-пользователь
                 ->constrained('roles')
                 ->cascadeOnDelete();
             $table->string('name');

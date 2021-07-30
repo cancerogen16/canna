@@ -30,9 +30,8 @@ class SalonsSeeder extends Seeder
                 'city' => 'Москва',
                 'address' => $faker->streetAddress(),
                 'phone' => '+7495'.$faker->randomNumber(7, true),
-                'worktime' => '09:00 - 20:00',
                 'description' => $faker->realText(200),
-                'rating' => $faker->randomDigit(),
+                'rating' => $faker->numberBetween(0,5),
                 'created_at' => $faker->dateTimeBetween('-2 month', '-1 month'),
                 'updated_at' => $faker->dateTimeBetween('-1 month', 'now'),
             ];

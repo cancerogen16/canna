@@ -13,7 +13,7 @@ trait ApiResponder
      */
     protected function handleResponse($data, int $code = 200): JsonResponse
     {
-        return response()->json($data, $code, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($data, $code, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
     /**
@@ -28,6 +28,6 @@ trait ApiResponder
             'message' => $message,
         ];
 
-        return response()->json($res, 200, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($res, 200, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 }
