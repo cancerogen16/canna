@@ -20,9 +20,21 @@ class SalonPolicy
      */
     public function before(User $user, $ability)
     {
-        if ($user->role()->first()->id === 1) {
+        if ($user->role()->first()->id == 1) {
             return true;
         }
+    }
+
+    /**
+     * Determine whether the user can create the model.
+     *
+     * @param User $user
+     * @param Salon $salon
+     * @return Response|bool
+     */
+    public function create(User $user, Salon $salon)
+    {
+        return $user->id == $salon->user_id;
     }
 
     /**
@@ -32,9 +44,9 @@ class SalonPolicy
      * @param Salon $salon
      * @return Response|bool
      */
-    public function update(User $user, Salon $salon)
+    public function update(User $user, Salon $salon, int $user_id)
     {
-        return $user->id === $salon->user_id;
+        return $user->id == $salon->user_id && $user->id == $user_id;
     }
 
     /**
@@ -46,6 +58,6 @@ class SalonPolicy
      */
     public function delete(User $user, Salon $salon)
     {
-        return $user->id === $salon->user_id;
+        return $user->id == $salon->user_id;
     }
 }

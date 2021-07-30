@@ -29,6 +29,12 @@ class SalonController extends Controller
         try {
             $salon = new Salon($request->validated());
 
+            if (Auth::user()->cannot('create', $salon)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
             $salon->save();
 
             return $this->handleResponse([
@@ -57,13 +63,13 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            if (Auth::user()->cannot('update', $salon)) {
+            $data = $request->validated();
+
+            if (Auth::user()->cannot('update', [$salon, $data['user_id']])) {
                 return $this->handleResponse([
                     'errors' => ['Нет доступа'],
                 ]);
             }
-
-            $data = $request->validated();
 
             $salon->update($data);
 
