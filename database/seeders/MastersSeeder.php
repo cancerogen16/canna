@@ -20,15 +20,14 @@ class MastersSeeder extends Seeder
         $faker = Factory::create('ru_RU');
         $names   = ['Оксана', 'Елена Николаевна', 'Ольга', 'Евгения', 'Александра Сергеевна', 'Ульяна', 'Наталья', 'Катя', 'Вера Иванова', 'Ксения', 'Лариса', 'Екатерина', 'Мария Евгеньевна'];
 
+        $i = 1;
         foreach ($names  as $name) {
-
-            $salon_id = $faker->numberBetween(1, 10);
 
         $data = [
             [
-                'salon_id' => $salon_id,
+                'salon_id' => ($i<=10) ? $i++ : ($i++ - 10),
                 'name' => $name,
-                'slug' => $salon_id.'-'.Str::of($name)->slug(),
+                'slug' => Str::of($name)->slug(),
                 'position' => $faker->jobTitle(),
                 'photo' => 'https://sun1-54.userapi.com/s/v1/if1/5Ir5r-6Y2bxqtAq48yrT9XDm25VGyPuxlXI1iwfzge4_ewW9lvwlmsTtZx87gILouxX4zwGp.jpg?size=400x0&quality=96&crop=205,0,541,541&ava=1',
                 'experience' => $faker->randomDigit().' лет',

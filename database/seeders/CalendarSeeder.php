@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Record;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,11 +18,18 @@ class CalendarSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 13; $i++) {
+            $duration = Record::find($i)->service()->first()->duration;
             for ($j = 2; $j <= 10; $j++) {
+                if ($j - 2 < $duration) {
+                    $record_id = $i;
+                } else {
+                    $record_id = null;
+                }
                 $calendars[] = [
-                    'service_id' => $i,
-                    'start_datetime' => $faker->dateTimeBetween("+{$j} days 1 hour", "+{$j} days 4 hours")
+                    'master_id' => $i,
+                    'record_id' => $record_id,
+                    'start_datetime' => $faker->dateTimeBetween("+{$i} days {$j} hours", "+{$i} days {$j} hours")
                                         ->format('Y-m-d H'),
                     'created_at' => $faker->dateTimeBetween('-2 weeks', '-1 week'),
                     'updated_at' => $faker->dateTimeBetween('-1 week', 'now'),

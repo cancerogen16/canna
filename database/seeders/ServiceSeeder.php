@@ -23,7 +23,7 @@ class ServiceSeeder extends Seeder
             $createdAt = $faker->dateTimeBetween('-2 months', '-1 month');
             $services[] = [
                 'category_id' => $faker->numberBetween(1, 4),
-                'master_id' => $faker->numberBetween(1,13),
+                'salon_id' => ($i <= 10) ? $i : (($i <= 20) ? ($i - 10) : ($i - 20)),
                 'title' => $title,
                 'slug' => Str::of($title)->slug(),
                 'price' => $faker->numberBetween(500,10000),

@@ -25,7 +25,7 @@ class RecordRequest extends FormRequest
     {
         return [
             'user_id' => 'required|integer|exists:users,id',
-            'calendar_id' => 'required|integer|exists:calendars,id',
+            'service_id' => 'required|integer|exists:services,id',
             'name' => 'required|string|between:3,191',
             'phone' => 'required|string|between:10,15',
             'comment' => 'nullable|string',

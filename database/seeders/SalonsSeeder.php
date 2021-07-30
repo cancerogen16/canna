@@ -23,7 +23,7 @@ class SalonsSeeder extends Seeder
         $i = 2;
         foreach ($titles as $title) {
             $salons[] = [
-                'user_id' => $i,
+                'user_id' => $i++,
                 'title' => $title,
                 'slug' => Str::of($title)->slug(),
                 'main_photo' => $faker->imageUrl(300, 300, 'nails', true, 'haircut'),
@@ -36,7 +36,6 @@ class SalonsSeeder extends Seeder
                 'created_at' => $faker->dateTimeBetween('-2 month', '-1 month'),
                 'updated_at' => $faker->dateTimeBetween('-1 month', 'now'),
             ];
-            $i++;
         }
         DB::table('salons')->insert($salons);
     }

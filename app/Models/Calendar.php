@@ -5,24 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Calendar extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'service_id',
+        'master_id',
+        'record_id',
         'start_datetime',
     ];
 
-    public function service(): BelongsTo
+    public function master(): BelongsTo
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Master::class);
     }
 
-    public function record(): HasOne
+    public function record(): BelongsTo
     {
-        return $this->hasOne(Record::class);
+        return $this->belongsTo(Record::class);
     }
 }
