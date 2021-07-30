@@ -34,7 +34,6 @@ class AuthController extends Controller
 
             if ($validator->fails()) {
                 return $this->handleResponse([
-                    'status' => 'error',
                     'errors' => $validator->messages()
                 ]);
             } else {
@@ -61,7 +60,6 @@ class AuthController extends Controller
     /**
      * @param LoginRequest $request
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -75,6 +73,10 @@ class AuthController extends Controller
             return $this->handleResponse([
                 'token' => $token->plainTextToken,
                 'user' => $user
+            ]);
+        } catch (ValidationException $e) {
+            return $this->handleResponse([
+                'errors' => $e->errors()
             ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
