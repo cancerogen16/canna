@@ -19,7 +19,7 @@ class UserPolicy
      */
     public function before(User $user, $ability)
     {
-        if ($user->role()->id === 1) {
+        if ($user->role()->first()->id === 1) {
             return true;
         }
     }
@@ -32,7 +32,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role()->id === 1;
+        return $user->role()->first()->id === 1;
     }
 
     /**

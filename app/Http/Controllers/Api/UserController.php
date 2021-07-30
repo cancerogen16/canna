@@ -9,6 +9,7 @@ use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
+use function PHPUnit\Framework\isNull;
 
 class UserController extends Controller
 {
@@ -132,7 +133,10 @@ class UserController extends Controller
                 ]);
             }
 
-            $profile = $user->profile();
+            $profile = $user->profile()->first();
+            if (isNull($profile)) {
+                $profile = collect([]);
+            }
 
             return $this->handleResponse([
                 'profile' => $profile->toArray(),
@@ -159,7 +163,7 @@ class UserController extends Controller
                 ]);
             }
 
-            $salons = $user->salons();
+            $salons = $user->salons()->get();
 
             return $this->handleResponse([
                 'salons' => $salons,
@@ -186,7 +190,7 @@ class UserController extends Controller
                 ]);
             }
 
-            $records = $user->records();
+            $records = $user->records()->get();
 
             return $this->handleResponse([
                 'records' => $records,

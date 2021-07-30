@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\UserController;
 
 Route::group([
     'middleware' => 'auth:sanctum',
-    //добавить посредник на проверку прав (юзер видит только свое, админ видит все)
 ], function () {
     Route::get('/', [UserController::class, 'index'])->name('users.index');
     Route::get('/{id}/profile', [UserController::class, 'getProfile'])->name('users.profile');
