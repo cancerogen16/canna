@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 
@@ -10,10 +10,13 @@ import PrivateLayout from './Private'
 import PublicLayout from './Public'
 import DashboardLayout from './Dashboard'
 
+
 function Layout(props) {
 
+  
+  
   const { isAuthenticated, children} = props
-
+  console.log(isAuthenticated)
   if (isAuthenticated) {
       if (props.location.pathname.includes("dashboard")) {
         return <DashboardLayout {...props} >{children}</DashboardLayout>
@@ -27,7 +30,7 @@ Layout.displayName = 'Layout';
 
 Layout.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  profile: PropTypes.object,
+  user: PropTypes.object,
   children: PropTypes.node.isRequired,
   //dispatch: PropTypes.func.isRequired,
 }
@@ -35,7 +38,7 @@ Layout.propTypes = {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    profile: state.profile
+    user: state.user
   }
 }
 

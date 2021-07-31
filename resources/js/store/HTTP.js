@@ -1,6 +1,7 @@
 import axios from 'axios'
-import {store} from './index'
+import data from './index'
 import { authLogout } from './auth/actions'
+const {store, persistor} = data();
 
 const API_URL = (process.env.NODE_ENV === 'test') ? process.env.BASE_URL || (`http://localhost:${process.env.PORT}/`) : `/`;
 

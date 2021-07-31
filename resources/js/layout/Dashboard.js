@@ -16,10 +16,11 @@ const propTypes = {
 
 
 
-function DashboardLayout({ children, history, profile }) {
+function DashboardLayout({ children, history, user }) {
   const handleNot = () => {
     history.push({
         pathname: '/',
+        state: {pathname: history.location.pathname}
       })
   }
   return <div>
@@ -28,7 +29,7 @@ function DashboardLayout({ children, history, profile }) {
     </Header>
     <main>
       <Alert 
-        open={profile.role_id == 3} 
+        open={user.role_id == 3} 
         title="Создать салон?"
         handleNot={handleNot} 
         >

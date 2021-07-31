@@ -5,7 +5,7 @@ import HTTP from "../../store/HTTP";
 
 export const useHukUserBar = () => {
     const dispatch = useDispatch();
-    const profile = useSelector(state => state.profile);
+    const user = useSelector(state => state.user);
 
     const handleLogout = () => {
         dispatch(fetchLogout())
@@ -13,7 +13,7 @@ export const useHukUserBar = () => {
     }
 
     return {
-        profile,
+        user,
         handleLogout
     }
 }

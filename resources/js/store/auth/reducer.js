@@ -17,7 +17,7 @@ const authReducer = (state = initialState, { type, payload = null }) => {
     case AUTH_LOGIN:
       return login(state, payload);
     case AUTH_CHECK:
-      return checkAuth(state);
+      return checkAuth(state, payload);
     case AUTH_LOGOUT:
       return logout(state);
     case AUTH_RESET_PASSWORD:
@@ -28,23 +28,26 @@ const authReducer = (state = initialState, { type, payload = null }) => {
 };
 
 function login(state, payload) {
-  
+  console.log(payload)
   return {
     ...state, isAuthenticated: true,
   }
 
 }
 
-function checkAuth(state) {
-  state = Object.assign({}, state, {
-    isAuthenticated: !!localStorage.getItem('access_token')
-  })
+function checkAuth(state, payload) {
+  // state = Object.assign({}, state, {
+  //   isAuthenticated: !!localStorage.getItem('access_token')
+  // })
 
-  if (state.isAuthenticated) {
-    HTTP.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
-  }
-
-  return state;
+  // if (state.isAuthenticated) {
+  //   HTTP.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+  // }
+  console.log('check', payload);
+  return {
+    ...state,
+      isAuthenticated: payload
+  };
 }
 
 function logout(state) {
