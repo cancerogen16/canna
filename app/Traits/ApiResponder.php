@@ -90,7 +90,7 @@ trait ApiResponder
     }
 
     /**
-     * Create Validation (422) API response.
+     * Create Forbidden (403) API response.
      *
      * @param string $message
      * @param array  $data
