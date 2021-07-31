@@ -1,3 +1,5 @@
+import HTTP from '../HTTP';
+
 export const ADD_CATEGORY = 'CATEGORY::ADD_CATEGORY';
 export const CLEAR_CATEGORY = 'CATEGORY::CLEAR_CATEGORY';
 
@@ -13,13 +15,14 @@ export const clearCategory = () => ({
 
 
 export const fetchCategoryAll = () => (dispatch, getState) => {
-            fetch("/api/categories").then(res => res.json()).then(res => {
+            HTTP.get("/api/categories").then(res => {
                 dispatch(clearCategory())
                 console.log(res);
-                res.data.forEach(element => {
+                res.data.categories.forEach(element => {
                     dispatch(addCategory(element))
                 });
                 
             })
         }
+
 
