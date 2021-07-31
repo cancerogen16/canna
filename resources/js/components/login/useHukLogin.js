@@ -16,7 +16,6 @@ export const useHukLogin = (props) => {
     const auth = useSelector(state => state.auth);
 
     const handleSubmit = () => {
-        console.log('1',props.history)
         dispatch(fetchLogin(credentials))
         setSubmitted(true);
         

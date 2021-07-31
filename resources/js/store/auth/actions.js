@@ -1,5 +1,5 @@
 import HTTP from '../HTTP';
-import { editProfile } from '../profile/action';
+import { clearUser, setUserWithThunk} from '../user/action';
 import {
     AUTH_CHECK,
     AUTH_LOGIN,
@@ -17,11 +17,13 @@ import {
               .then(res => {
                 const {token, user} = res.data;
                 console.log(res)
-                dispatch(authLogin(token));
-                dispatch(editProfile(user));
-                localStorage.setItem('access_token', token);
-                HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+                  dispatch(authLogin(token));
+                  dispatch(setUserWithThunk(user));
+                  localStorage.setItem('access_token', token);
+                  HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+                
               })
+              .catch(res => console.log(res));
         });
   }
 
@@ -33,23 +35,36 @@ import {
                 const {token, user} = res.data;
                 console.log(res)
                 dispatch(authLogin(token));
-                dispatch(editProfile(user));
+                dispatch(setUserWithThunk(user));
                 localStorage.setItem('access_token', token);
                 HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
               });
       });
   }
   
+
   export const fetchLogout = (credentials) => (dispatch, getState) => {
     dispatch(authCheck())
+    
     HTTP.post('api/authorization/logout')
-      .then(dispatch(authLogout()));
+      .then(dispatch(authLogout()))
+      .then(localStorage.removeItem('access_token'))
+      .then(dispatch(clearUser()));
     } 
-      
+  
+  export const checkTokenStorage = () => (dispatch, getState) => {
+    const isAuthenticated = !!localStorage.getItem('access_token');
+    dispatch(authCheck(isAuthenticated));
+    if (isAuthenticated) {
+      HTTP.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+    }
+  }
 
-  export function authCheck() {
+  export function authCheck(payload) {
+
     return {
       type: AUTH_CHECK,
+      payload
     }
   }
   

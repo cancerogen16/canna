@@ -33,6 +33,7 @@
         "@material-ui/icons": "^4.11.2",
         "react-material-ui-form-validator": "^2.1.4",
         "react-redux": "^7.2.4",
+        "redux-persist": "^6.0.0",
         "thunk": "0.0.1"
     }
 }

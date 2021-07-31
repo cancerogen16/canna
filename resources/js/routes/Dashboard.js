@@ -32,7 +32,7 @@ DashboardRoute.propTypes = {
 function mapStateToProps(store) {
   return {
     isAuthenticated: store.auth.isAuthenticated,
-    isRole: store.profile.role_id
+    isRole: store.user.role_id
   }
 }
 
