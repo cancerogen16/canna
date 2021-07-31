@@ -33,7 +33,7 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return $this->validation(null, $validator->messages());
+                return $this->validation(null, $validator->messages()->toArray());
             } else {
                 $user = User::create([
                     'name' => $request->name,
