@@ -15,7 +15,7 @@ import {
         .then(() => {
           HTTP.post('api/authorization/login', credentials)
               .then(res => {
-                const {token, user} = res.data;
+                const {token, user} = res.data.data;
                 console.log(res)
                   dispatch(authLogin(token));
                   dispatch(setUserWithThunk(user));
@@ -32,7 +32,7 @@ import {
     .then(() => {
       HTTP.post('api/authorization/register', credentials)
               .then(res => {
-                const {token, user} = res.data;
+                const {token, user} = res.data.data;
                 console.log(res)
                 dispatch(authLogin(token));
                 dispatch(setUserWithThunk(user));

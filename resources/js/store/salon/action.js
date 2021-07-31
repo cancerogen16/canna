@@ -26,7 +26,7 @@ export const fetchSalonsAll = () => (dispatch, getState) => {
                 HTTP.get('api/salons')
                 .then(res => {
                     dispatch(clearSalon())
-                    res.data.salons.forEach(element => {
+                    res.data.data.forEach(element => {
                         dispatch(addSalon(element))
                     });
                 });
