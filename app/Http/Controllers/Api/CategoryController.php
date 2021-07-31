@@ -24,9 +24,11 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        return $this->handleResponse([
-            'categories' => $categories
-        ]);
+        if ($categories) {
+            return $this->ok(null, $categories->toArray());
+        } else {
+            return $this->notFound();
+        }
     }
 
     /**
@@ -40,13 +42,18 @@ class CategoryController extends Controller
         try {
             $category = new Category($request->validated());
 
-            $category->save();
+            if ($category) {
+                $category->save();
 
-            return $this->handleResponse([
-                'category' => $category
-            ], 201);
+                return $this->ok(null, $category->toArray());
+            } else {
+                return $this->notFound();
+            }
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -61,11 +68,16 @@ class CategoryController extends Controller
         try {
             $category = Category::findOrFail($id);
 
-            return $this->handleResponse([
-                'category' => $category->toArray()
-            ]);
+            if ($category) {
+                return $this->ok(null, $category);
+            } else {
+                return $this->notFound();
+            }
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -81,15 +93,20 @@ class CategoryController extends Controller
         try {
             $category = Category::findOrFail($id);
 
-            $data = $request->validated();
+            if ($category) {
+                $data = $request->validated();
 
-            $category->update($data);
+                $category->update($data);
 
-            return $this->handleResponse([
-                'category' => $category
-            ]);
+                return $this->ok(null, $category);
+            } else {
+                return $this->notFound();
+            }
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -104,13 +121,18 @@ class CategoryController extends Controller
         try {
             $category = Category::findOrFail($id);
 
-            $category->delete();
+            if ($category) {
+                $category->delete();
 
-            return $this->handleResponse([
-                'category' => $category
-            ]);
+                return $this->ok(null, $category);
+            } else {
+                return $this->notFound();
+            }
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 }

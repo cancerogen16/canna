@@ -16,7 +16,7 @@ export const fetchCategoryAll = () => (dispatch, getState) => {
             fetch("/api/categories").then(res => res.json()).then(res => {
                 dispatch(clearCategory())
                 console.log(res);
-                res.categories.forEach(element => {
+                res.data.forEach(element => {
                     dispatch(addCategory(element))
                 });
                 
