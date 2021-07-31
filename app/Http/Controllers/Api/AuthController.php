@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
@@ -33,9 +33,7 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return $this->handleResponse([
-                    'errors' => $validator->messages()
-                ]);
+                return $this->validation(null, $validator->messages()->toArray());
             } else {
                 $user = User::create([
                     'name' => $request->name,
@@ -47,13 +45,16 @@ class AuthController extends Controller
 
                 $token = $user->createToken('authtoken');
 
-                return $this->handleResponse([
+                return $this->ok(null, [
                     'token' => $token->plainTextToken,
                     'user' => $user
                 ]);
             }
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -70,16 +71,17 @@ class AuthController extends Controller
 
             $token = $user->createToken('authtoken');
 
-            return $this->handleResponse([
+            return $this->ok(null, [
                 'token' => $token->plainTextToken,
                 'user' => $user
             ]);
         } catch (ValidationException $e) {
-            return $this->handleResponse([
-                'errors' => $e->errors()
-            ]);
+            return $this->validation(null, $e->errors());
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -94,11 +96,14 @@ class AuthController extends Controller
 
             $user->tokens()->delete();
 
-            return $this->handleResponse([
+            return $this->ok(null, [
                 'user' => $user
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 }
