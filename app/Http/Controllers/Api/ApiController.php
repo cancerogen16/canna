@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 abstract class ApiController extends Controller
 {
@@ -12,58 +14,86 @@ abstract class ApiController extends Controller
 
     protected $model;
 
-    public function index()
+    public function index(): JsonResponse
     {
         $result = $this->model->all();
 
         return $this->ok(null, $result->toArray());
     }
 
+    public function store(Request $request): JsonResponse
+    {
+        try {
+            $data = $request->validated();
+
+            $this->model->fill($data)->push();
+
+            return $this->response(201, 'Created');
+        } catch (Throwable $e) {
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function show(int $entityId)
     {
-        $entity = $this->model->find($entityId)->first();
+        try {
+            $entity = $this->model->find($entityId)->first();
 
-        if (!$entity) {
-            return $this->sendError('Not found', 404);
+            if (!$entity) {
+                return $this->notFound();
+            }
+
+            return $this->ok(null, $entity->toArray());
+        } catch (Throwable $e) {
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
-
-        return $this->ok(null, $entity);
     }
 
     public function update(int $entityId, Request $request)
     {
-        $entity = $this->model->find($entityId)->first();
+        try {
+            $entity = $this->model->find($entityId)->first();
 
-        if (!$entity) {
-            return $this->sendError('Not found', 404);
+            if (!$entity) {
+                return $this->notFound();
+            }
+
+            $data = $request->validated();
+
+            $this->model->fill($data)->push();
+
+            return $this->response(204, 'Updated');
+        } catch (Throwable $e) {
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
-
-        $data = $request->validated();
-
-        $this->model->fill($data)->push();
-
-        return response(204, 'Updated');
     }
 
     public function destroy(int $entityId)
     {
-        $entity = $this->model->find($entityId)->first();
+        try {
+            $entity = $this->model->find($entityId)->first();
 
-        if (!$entity) {
-            return $this->sendError('Not found', 404);
+            if (!$entity) {
+                return $this->notFound();
+            }
+
+            $entity->delete();
+
+            return $this->response(204, 'Deleted');
+        } catch (Throwable $e) {
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
-
-        $entity->delete();
-
-        return response(204, 'Deleted');
-    }
-
-    public function create(Request $request)
-    {
-        $data = $request->validated();
-
-        $this->model->fill($data)->push();
-
-        return response(201, 'Created');
     }
 }
