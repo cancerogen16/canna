@@ -2,16 +2,19 @@ require('./bootstrap');
 
 import React from 'react'
 import {render} from 'react-dom'
-import {Provider} from 'react-redux'
-import {store} from './store'
+import {Provider, useDispatch} from 'react-redux'
+
 import Routes from './routes'
-
-import {authCheck} from './store/auth/actions';
-
-store.dispatch(authCheck())
+import {authCheck, authLogin, checkTokenStorage} from './store/auth/actions';
+import { PersistGate } from 'redux-persist/integration/react'
+import data from './store'
+const { store, persistor } = data();
+store.dispatch(checkTokenStorage())
 
 render((<Provider store={store}>
-        <Routes/>
-    </Provider>),
+            <PersistGate loading={null} persistor={persistor}>
+                <Routes/>  
+            </PersistGate>
+        </Provider>),
     document.getElementById('app'),
 )

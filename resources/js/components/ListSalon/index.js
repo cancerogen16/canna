@@ -1,8 +1,9 @@
 
 import { Checkbox, Divider, FormControlLabel, FormGroup, Grid, Link, Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSalonsAll } from '../../store/salon/action';
 import CardSalon from './card';
 function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -30,11 +31,14 @@ function getModalStyle() {
   }));
 
 export default function ListSalon() {
-    const classes = useStyles();
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
+  const dispatch =  useDispatch();
+  
 
     const salons = useSelector(state => state.salons);
+    console.log(salons);
+    
+    
+
 
     const handleOpen = () => {
         setOpen(true);
@@ -44,9 +48,13 @@ export default function ListSalon() {
         setOpen(false);
       };
 
+      useEffect(() => {
+        dispatch(fetchSalonsAll());
+      },[]);
+
     return (
      <Grid container  spacing={3}>
-       {salons.map(salon =><Grid key={salon.id} item xs={6}> <CardSalon  salon={salon} /></Grid>)}
+       {salons.map(salon =><Grid key={salon.id} item xs={6}> <CardSalon key={salon.id}  salon={salon} /></Grid>)}
      </Grid>
         
        
