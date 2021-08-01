@@ -26,7 +26,6 @@ class CreateSalonsTable extends Migration
             $table->string('city')->index();
             $table->string('address');
             $table->string('phone', 50);
-            $table->string('worktime'); // время работы(можно в json)
             $table->text('description')->nullable();
             $table->integer('rating')->default(0); // рейтинг
             $table->timestamps();

@@ -23,12 +23,16 @@ class RecordRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id' => 'required|integer|exists:users,id',
-            'service_id' => 'required|integer|exists:services,id',
-            'name' => 'required|string|between:3,191',
-            'phone' => 'required|string|between:10,15',
-            'comment' => 'nullable|string',
-        ];
+        if ($this->getMethod() != 'GET') {
+            return [
+                'user_id' => 'required|integer|exists:users,id',
+                'service_id' => 'required|integer|exists:services,id',
+                'name' => 'required|string|between:3,191',
+                'phone' => 'required|string|between:10,15',
+                'comment' => 'nullable|string',
+            ];
+        } else {
+            return [];
+        }
     }
 }

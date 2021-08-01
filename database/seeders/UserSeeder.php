@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             $createdAt = $faker->dateTimeBetween('-1 month', 'now');
             $data[] = [
                 'name' => "Пользователь {$i}",
-                'role_id' => 3,
+                'role_id' => 2,
                 'email' => "user{$i}@email.ru",
                 'password' => Hash::make('123456'),
                 'created_at' => $createdAt,

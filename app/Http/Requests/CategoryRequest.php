@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class CategoryRequest extends FormRequest
 {
@@ -23,8 +24,12 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => 'required|min:3|max:250',
-        ];
+        if ($this->getMethod() != 'GET') {
+            return [
+                'title' => 'required|min:3|max:250',
+            ];
+        } else {
+            return [];
+        }
     }
 }

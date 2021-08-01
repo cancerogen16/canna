@@ -13,8 +13,12 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|string|between:3,191',
-        ];
+        if ($this->getMethod() != 'GET') {
+            return [
+                'name' => 'required|string|between:3,191',
+            ];
+        } else {
+            return [];
+        }
     }
 }

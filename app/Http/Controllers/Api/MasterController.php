@@ -2,30 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterRequest;
 use App\Models\Master;
-use App\Traits\ApiResponder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 
-
-class MasterController extends Controller
+class MasterController extends ApiController
 {
-    use ApiResponder;
-
-    public function index(): JsonResponse
+    public function __construct(Master $model, MasterRequest $request)
     {
-        $masters = Master::all();
-
-        return $this->handleResponse([
-            'masters' => $masters
-        ]);
+        $this->model = $model;
+        $this->request = $request;
     }
 
-    public function store(MasterRequest $request): JsonResponse
+    public function store($request): JsonResponse
     {
         try {
             $master = new Master($request->validated());
@@ -44,56 +36,12 @@ class MasterController extends Controller
 
             $master->save();
 
-            return $this->handleResponse([
-                'master' => $master
-            ], 201);
+            return $this->response(201, 'Created');
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
-        }
-    }
-
-    public function show(int $id): JsonResponse
-    {
-        try {
-            $master = Master::findOrFail($id);
-
-            return $this->handleResponse([
-                'master' => $master->toArray()
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
             ]);
-        } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
-        }
-    }
-
-    public function update(MasterRequest $request, int $id): JsonResponse
-    {
-        try {
-            $master = Master::findOrFail($id);
-
-            $data = $request->validated();
-
-            $master->update($data);
-
-            return $this->handleResponse([
-                'master' => $master
-            ]);
-        } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
-        }
-    }
-
-    public function delete(int $id): JsonResponse
-    {
-        try {
-            $master = Master::findOrFail($id);
-
-            $master->delete();
-
-            return $this->handleResponse([
-                'master' => $master
-            ]);
-        } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 }

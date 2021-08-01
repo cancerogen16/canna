@@ -32,7 +32,7 @@ PrivateRoute.propTypes = {
 function mapStateToProps(store) {
   return {
     isAuthenticated: store.auth.isAuthenticated,
-    role: store.profile.role_id
+    role: store.user.role_id
   }
 }
 

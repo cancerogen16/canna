@@ -23,15 +23,18 @@ class ActionRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'service_id' => 'required|integer|exists:services,id',
-            'name' => 'required|between:3,191',
-            'photo' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|integer|between:0,999999',
-            'start_at' => 'required|date_format:Y-m-d H:i:s',
-            'end_at' => 'required|date_format:Y-m-d H:i:s|after:start_at',
-
-        ];
+        if ($this->getMethod() != 'GET') {
+            return [
+                'service_id' => 'required|integer|exists:services,id',
+                'name' => 'required|between:3,191',
+                'photo' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|integer|between:0,999999',
+                'start_at' => 'required|date_format:Y-m-d H:i:s',
+                'end_at' => 'required|date_format:Y-m-d H:i:s|after:start_at',
+            ];
+        } else {
+            return [];
+        }
     }
 }
