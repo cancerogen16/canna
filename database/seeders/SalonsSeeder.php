@@ -27,7 +27,7 @@ class SalonsSeeder extends Seeder
                 'title' => $title,
                 'slug' => Str::of($title)->slug(),
                 'main_photo' => $faker->imageUrl(300, 300, 'nails', true, 'haircut'),
-                'city' => 'Москва',
+                'city' => $faker->city(),
                 'address' => $faker->streetAddress(),
                 'phone' => '+7495'.$faker->randomNumber(7, true),
                 'description' => $faker->realText(200),

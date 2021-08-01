@@ -19,6 +19,7 @@ export const fetchCategoryAll = () => (dispatch, getState) => {
                 dispatch(clearCategory())
                 console.log(res);
                 res.data.data.forEach(element => {
+
                     dispatch(addCategory(element))
                 });
                 

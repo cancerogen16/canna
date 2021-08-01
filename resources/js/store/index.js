@@ -8,6 +8,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { masterReducer } from './master/reducer';
 import { recordsReducer } from './records/reducer';
+
 const persistConfig = {
     key: 'canna',
     storage,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     salons: salonsReducer,
     masters: masterReducer,
     records: recordsReducer
+
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

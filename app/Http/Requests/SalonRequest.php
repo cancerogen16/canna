@@ -31,7 +31,7 @@ class SalonRequest extends FormRequest
             'city' => 'required|string|min:3|max:250',
             'address' => 'required|string|min:4|max:300',
             'phone' => 'required|string|between:10,15',
-            'description' => 'required|string|min:4|max:300',
+            'description' => 'nullable|string|min:4|max:300',
             'rating' => 'nullable|integer|between:0,5'
         ];
     }

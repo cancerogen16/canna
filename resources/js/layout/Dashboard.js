@@ -46,12 +46,11 @@ function DashboardLayout({ children, history, user }) {
       </ Grid>
       </Container>
       <Alert 
-        
           open={user.role_id == 2} 
           title="Создать салон?"
           handleNot={handleNot} 
           >
-            Мы не нашли в базе информацию о вашем салоне
+
         </Alert>
 
   </div>
