@@ -7,7 +7,9 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
+use function PHPUnit\Framework\isNull;
 
 class UserController extends Controller
 {
@@ -19,6 +21,12 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
+        if (Auth::user()->cannot('viewAny', User::class)) {
+            return $this->handleResponse([
+                'errors' => ['Нет доступа'],
+            ]);
+        }
+
         $users = User::all();
 
         return $this->handleResponse([
@@ -36,6 +44,12 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
+
+            if (Auth::user()->cannot('view', $user)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
 
             return $this->handleResponse([
                 'user' => $user->toArray(),
@@ -56,6 +70,12 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
+
+            if (Auth::user()->cannot('update', $user)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
 
             $data = $request->validated();
 
@@ -80,10 +100,100 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
+            if (Auth::user()->cannot('delete', $user)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
             $user->delete();
 
             return $this->handleResponse([
                 'user' => $user,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the profile of the specified resource.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function getProfile(int $id): JsonResponse
+    {
+        try {
+            $user = User::findOrFail($id);
+
+            if (Auth::user()->cannot('view', $user)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
+            $profile = $user->profile()->first();
+            if (isNull($profile)) {
+                $profile = collect([]);
+            }
+
+            return $this->handleResponse([
+                'profile' => $profile->toArray(),
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the salons listing of the specified resource.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function getSalons(int $id): JsonResponse
+    {
+        try {
+            $user = User::findOrFail($id);
+
+            if (Auth::user()->cannot('view', $user)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
+            $salons = $user->salons()->get();
+
+            return $this->handleResponse([
+                'salons' => $salons,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the records listing of the specified resource.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function getRecords(int $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+
+            if (Auth::user()->cannot('view', $user)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
+            $records = $user->records()->get();
+
+            return $this->handleResponse([
+                'records' => $records,
             ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
