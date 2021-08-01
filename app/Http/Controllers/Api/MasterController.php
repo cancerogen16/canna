@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterRequest;
 use App\Models\Master;
+use App\Models\Salon;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
@@ -95,5 +96,55 @@ class MasterController extends Controller
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
+    }
+
+    public function getServices(int $id)
+    {
+        try {
+            $master = Master::findOrFail($id);
+
+            $services = $master->services()->get();
+
+            return $this->handleResponse([
+                'services' => $services,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getCalendars(int $id)
+    {
+        try {
+            $master = Master::findOrFail($id);
+
+            $calendars = $master->calendars()->get();
+
+            return $this->handleResponse([
+                'calendars' => $calendars,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getCalendarsForDay()
+    {
+        try {
+            $master = Master::findOrFail($id);
+
+            $calendars = $master->calendars()->get();
+
+            return $this->handleResponse([
+                'calendars' => $calendars,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getRecords()
+    {
+        //
     }
 }
