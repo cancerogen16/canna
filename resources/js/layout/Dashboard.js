@@ -29,7 +29,7 @@ function DashboardLayout({ children, history, user }) {
     </Header>
     <main>
       <Alert 
-        open={user.role_id == 3} 
+        open={user.role_id > 1}
         title="Создать салон?"
         handleNot={handleNot} 
         >
