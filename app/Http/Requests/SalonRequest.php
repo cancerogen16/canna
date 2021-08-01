@@ -23,16 +23,20 @@ class SalonRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id' => 'required|integer|exists:users,id',
-            'title' => 'required|between:3,191',
-            'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
-            'main_photo' => 'nullable|string|max:255',
-            'city' => 'required|string|min:3|max:250',
-            'address' => 'required|string|min:4|max:300',
-            'phone' => 'required|string|between:10,15',
-            'description' => 'required|string|min:4|max:300',
-            'rating' => 'nullable|integer|between:0,5'
-        ];
+        if ($this->getMethod() != 'GET') {
+            return [
+                'user_id' => 'required|integer|exists:users,id',
+                'title' => 'required|between:3,191',
+                'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
+                'main_photo' => 'nullable|string|max:255',
+                'city' => 'required|string|min:3|max:250',
+                'address' => 'required|string|min:4|max:300',
+                'phone' => 'required|string|between:10,15',
+                'description' => 'required|string|min:4|max:300',
+                'rating' => 'nullable|integer|between:0,5',
+            ];
+        } else {
+            return [];
+        }
     }
 }

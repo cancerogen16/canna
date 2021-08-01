@@ -23,16 +23,20 @@ class ServiceRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'category_id' => 'required|integer|exists:categories,id',
-            'salon_id' => 'required|integer|exists:salons,id',
-            'title' => 'required|between:3,191',
-            'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
-            'price' => 'required|integer|between:0,999999',
-            'duration' => 'required|integer|between:1,10',
-            'image' => 'nullable|string|max:255',
-            'excerpt' => 'nullable|string',
-            'description' => 'nullable|string',
-        ];
+        if ($this->getMethod() != 'GET') {
+            return [
+                'category_id' => 'required|integer|exists:categories,id',
+                'salon_id' => 'required|integer|exists:salons,id',
+                'title' => 'required|between:3,191',
+                'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
+                'price' => 'required|integer|between:0,999999',
+                'duration' => 'required|integer|between:1,10',
+                'image' => 'nullable|string|max:255',
+                'excerpt' => 'nullable|string',
+                'description' => 'nullable|string',
+            ];
+        } else {
+            return [];
+        }
     }
 }

@@ -23,10 +23,14 @@ class CalendarRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'master_id' => 'required|integer|exists:masters,id',
-            'record_id' => 'nullable|integer|exists:records,id',
-            'start_datetime' => 'required|date_format:Y-m-d H',
-        ];
+        if ($this->getMethod() != 'GET') {
+            return [
+                'master_id' => 'required|integer|exists:masters,id',
+                'record_id' => 'nullable|integer|exists:records,id',
+                'start_datetime' => 'required|date_format:Y-m-d H',
+            ];
+        } else {
+            return [];
+        }
     }
 }
