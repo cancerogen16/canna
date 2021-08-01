@@ -15,13 +15,20 @@ import {
         .then(() => {
           HTTP.post('api/authorization/login', credentials)
               .then(res => {
-                const {token, user} = res.data;
-                console.log(res)
-                  dispatch(authLogin(token));
-                  dispatch(setUserWithThunk(user));
-                  localStorage.setItem('access_token', token);
-                  HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
-                
+                  console.log(res)
+                  if (res.data.errors) {
+                      let errors = '';
+                      for (let key in res.data.errors) {
+                          errors += res.data.errors[key];
+                      }
+                      alert(errors);
+                  } else {
+                      const {token, user} = res.data;
+                      dispatch(authLogin(token));
+                      dispatch(setUserWithThunk(user));
+                      localStorage.setItem('access_token', token);
+                      HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+                  }
               })
               .catch(res => console.log(res));
         });
