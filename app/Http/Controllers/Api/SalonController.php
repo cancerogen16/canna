@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SalonSearchRequest;
 use App\Models\Salon;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\SalonRequest;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class SalonController extends Controller
@@ -26,6 +28,12 @@ class SalonController extends Controller
     {
         try {
             $salon = new Salon($request->validated());
+
+            if (Auth::user()->cannot('create', $salon)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
 
             $salon->save();
 
@@ -57,6 +65,12 @@ class SalonController extends Controller
 
             $data = $request->validated();
 
+            if (Auth::user()->cannot('update', [$salon, $data['user_id']])) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
             $salon->update($data);
 
             return $this->handleResponse([
@@ -72,10 +86,64 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
+            if (Auth::user()->cannot('delete', $salon)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
             $salon->delete();
 
             return $this->handleResponse([
                 'salon' => $salon
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function search(SalonSearchRequest $request)
+    {
+        $result = [];
+
+        $salons = Salon::where('city', $request->input('city'))->get();
+
+        foreach ($salons as $salon) {
+            if ($salon->services()->where('category_id', $request->input('category_id'))->get()) {
+                $result[] = $salon;
+            }
+        }
+
+        return $this->handleResponse([
+            'salons' => $result,
+        ]);
+
+    }
+
+    public function masters(int $id): JsonResponse
+    {
+        try {
+            $salon = Salon::findOrFail($id);
+
+            $masters = $salon->masters()->get();
+
+            return $this->handleResponse([
+                'masters' => $masters,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function services(int $id): JsonResponse
+    {
+        try {
+            $salon = Salon::findOrFail($id);
+
+            $services = $salon->services()->get();
+
+            return $this->handleResponse([
+                'services' => $services,
             ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
