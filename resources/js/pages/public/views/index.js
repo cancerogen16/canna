@@ -4,7 +4,7 @@ import ListSalon from '../../../components/ListSalon'
 import SearchSalon from '../../../components/search-salon'
 export default function Page() {
 
-    return (<Container maxWidth="lg">
+    return (
         <Grid container spacing={3}>
             <Grid item xs={9}>
                 <ListSalon/>
@@ -12,6 +12,5 @@ export default function Page() {
             <Grid item xs={3}>
                 <SearchSalon/>
             </Grid>
-        </Grid>
-    </Container>)
+        </Grid>)
 }

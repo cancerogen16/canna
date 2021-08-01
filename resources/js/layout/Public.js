@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../components/header'
 import Auch from '../components/auch'
+import { Container } from '@material-ui/core'
 
 
 
@@ -20,9 +21,11 @@ function PublicLayout({ children }) {
     <Header>
     <Auch/>
     </Header>
+    <Container maxWidth="lg">
     <main >
       { children }
     </main>
+    </Container>
   </div>
 }
 

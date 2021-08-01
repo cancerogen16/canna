@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../components/header'
 import UserBar from '../components/userBar'
+import { Container } from '@material-ui/core'
 
 
 const containerStyle = {
@@ -18,10 +19,11 @@ function PrivateLayout({ children }) {
     <Header>
       <UserBar />
     </Header>
+    <Container maxWidth="lg">
     <main>
       { children }
     </main>
-
+    </Container>
   </div>
 }
 
