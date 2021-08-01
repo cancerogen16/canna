@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 use function PHPUnit\Framework\isNull;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
-    use ApiResponder;
+    public function __construct(User $model, UserRequest $request)
+    {
+        $this->model = $model;
+        $this->request = $request;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,16 +25,12 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         if (Auth::user()->cannot('viewAny', User::class)) {
-            return $this->handleResponse([
-                'errors' => ['Нет доступа'],
-            ]);
+            return $this->response(401, 'Нет доступа');
         }
 
         $users = User::all();
 
-        return $this->handleResponse([
-            'users' => $users,
-        ]);
+        return $this->ok(null, $users->toArray());
     }
 
     /**
@@ -46,46 +45,44 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             if (Auth::user()->cannot('view', $user)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, 'Нет доступа');
             }
 
-            return $this->handleResponse([
-                'user' => $user->toArray(),
-            ]);
+            return $this->ok(null, $user->toArray());
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  UserRequest  $request
-     * @param  int  $id
+     * @param int $id
+     * @param UserRequest $request
      * @return JsonResponse
      */
-    public function update(UserRequest $request, int $id): JsonResponse
+    public function update(int $id, UserRequest $request): JsonResponse
     {
         try {
             $user = User::findOrFail($id);
 
             if (Auth::user()->cannot('update', $user)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, 'Нет доступа');
             }
 
             $data = $request->validated();
 
             $user->update($data);
 
-            return $this->handleResponse([
-                'user' => $user,
-            ]);
+            return $this->ok(null, $user->toArray());
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -95,24 +92,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function delete(int $id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         try {
             $user = User::findOrFail($id);
 
             if (Auth::user()->cannot('delete', $user)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, 'Нет доступа');
             }
 
             $user->delete();
 
-            return $this->handleResponse([
-                'user' => $user,
-            ]);
+            return $this->ok(null, $user->toArray());
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -128,9 +124,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             if (Auth::user()->cannot('view', $user)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, 'Нет доступа');
             }
 
             $profile = $user->profile()->first();
@@ -138,11 +132,12 @@ class UserController extends Controller
                 $profile = collect([]);
             }
 
-            return $this->handleResponse([
-                'profile' => $profile->toArray(),
-            ]);
+            return $this->ok(null, $profile->toArray());
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -158,18 +153,17 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             if (Auth::user()->cannot('view', $user)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, 'Нет доступа');
             }
 
             $salons = $user->salons()->get();
 
-            return $this->handleResponse([
-                'salons' => $salons,
-            ]);
+            return $this->ok(null, $salons->toArray());
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -185,18 +179,17 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             if (Auth::user()->cannot('view', $user)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, 'Нет доступа');
             }
 
             $records = $user->records()->get();
 
-            return $this->handleResponse([
-                'records' => $records,
-            ]);
+            return $this->ok(null, $records->toArray());
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error(null, [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
     }
 }
