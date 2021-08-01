@@ -6,15 +6,5 @@ export default function Page(props) {
 
     
 
-    return (<Container maxWidth="lg">
-        <Grid container spacing={3}>
-            <Grid item xs={9}>
-                {console.log(props)}
-            </Grid>
-            <Grid item xs={3}>
-                
-            </Grid>
-        </Grid>
-            
-    </Container>)
+    return <h1>Главная</h1>
 }

@@ -15,6 +15,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Link } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   
@@ -46,7 +47,7 @@ export default function CardSalon(props) {
   };
   const {id, title, main_photo, city, address, phone, description, rating} = props.salon;
   return (
-    <>
+    <><Link href={`/salon/${id}`}>
        <Card elevation={4}>
       <CardHeader
         avatar={
@@ -76,6 +77,7 @@ export default function CardSalon(props) {
         </IconButton>
       </CardActions>
     </Card>
+    </Link>
     </>
    
   );

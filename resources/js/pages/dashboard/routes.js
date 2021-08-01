@@ -7,5 +7,12 @@ export default [
     auth: true,
     role: 2,
     component: lazy(() => import('./views/index')),
+  },
+  {
+    path: '/dashboard/masters',
+    exact: true,
+    auth: true,
+    role: 2,
+    component: lazy(() => import('./views/masters')),
   }
 ]
