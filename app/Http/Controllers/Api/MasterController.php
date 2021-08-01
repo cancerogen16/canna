@@ -11,12 +11,13 @@ use Throwable;
 
 class MasterController extends ApiController
 {
-    public function __construct(Master $model)
+    public function __construct(Master $model, MasterRequest $request)
     {
         $this->model = $model;
+        $this->request = $request;
     }
 
-    public function store(MasterRequest $request): JsonResponse
+    public function store($request): JsonResponse
     {
         try {
             $master = new Master($request->validated());
