@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RecordSeeder::class);
         $this->call(CalendarSeeder::class);
         $this->call(MasterServiceSeeder::class);
+        $this->call(ActionServiceSeeder::class);
     }
 }

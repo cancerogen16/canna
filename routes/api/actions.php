@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ActionController::class, 'index'])->name('actions.index');
 Route::get('/{id}', [ActionController::class, 'show'])->name('actions.show');
+Route::get('/{id}/services', [ActionController::class, 'getServices'])->name('actions.services');
 
 Route::group([
     'middleware' => 'auth:sanctum',

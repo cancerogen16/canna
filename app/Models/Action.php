@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Action extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'service_id',
+        'salon_id',
         'name',
         'photo',
         'description',
@@ -19,9 +20,10 @@ class Action extends Model
         'end_at',
     ];
 
-    public function service()
+
+    public function services(): BelongsToMany
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsToMany(Service::class);
     }
 
 }
