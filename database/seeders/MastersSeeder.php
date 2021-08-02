@@ -32,7 +32,7 @@ class MastersSeeder extends Seeder
                 'photo' => 'https://sun1-54.userapi.com/s/v1/if1/5Ir5r-6Y2bxqtAq48yrT9XDm25VGyPuxlXI1iwfzge4_ewW9lvwlmsTtZx87gILouxX4zwGp.jpg?size=400x0&quality=96&crop=205,0,541,541&ava=1',
                 'experience' => $faker->randomDigit().' лет',
                 'description' => $faker->realText(),
-                'rating' => $faker->randomDigit(),
+                'rating' => $faker->numberBetween(0,5),
                 'created_at' => $faker->dateTimeBetween('-2 weeks', '-1 week'),
                 'updated_at' => $faker->dateTimeBetween('-1 week'),
             ]
