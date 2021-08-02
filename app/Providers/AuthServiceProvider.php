@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Master;
 use App\Models\Salon;
 use App\Models\User;
+use App\Policies\MasterPolicy;
 use App\Policies\SalonPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -21,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         User::class => UserPolicy::class,
         Salon::class => SalonPolicy::class,
+        Master::class => MasterPolicy::class,
     ];
 
     /**

@@ -27,10 +27,11 @@ class MasterRequest extends FormRequest
             'name' => 'required|string|min:3|max:250',
             'salon_id' => 'required|integer|exists:salons,id',
             'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
+            'position' => 'required|string|max:191',
             'photo' => 'nullable|string|max:255',
             'experience' => 'nullable|string',
             'description' => 'nullable|string',
-            'rating' => 'required|integer|between:0,9',
+            'rating' => 'nullable|integer|between:0,5',
         ];
     }
 }

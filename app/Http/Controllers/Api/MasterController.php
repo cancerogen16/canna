@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterRequest;
 use App\Models\Master;
+use App\Models\User;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
 use Throwable;
+use function PHPUnit\Framework\isNull;
 
 
 class MasterController extends Controller
@@ -30,17 +34,25 @@ class MasterController extends Controller
         try {
             $master = new Master($request->validated());
 
-            $filename  = $master['photo']->getClientOriginalName();
+            if (Auth::user()->cannot('create', $master)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
 
-            $master['photo']->move(Storage::path('images').'origin/',$filename);
+            if (!isNull($request->input('photo'))) {
+                $filename  = $master['photo']->getClientOriginalName();
 
-            $thumbnail = Image::make(Storage::path('images').'origin/'.$filename);
+                $master['photo']->move(Storage::path('images').'origin/',$filename);
 
-            $thumbnail->fit(300, 300);
+                $thumbnail = Image::make(Storage::path('images').'origin/'.$filename);
 
-            $thumbnail->save(Storage::path('images').'thumbnail/'.$filename);
+                $thumbnail->fit(300, 300);
 
-            $master['photo'] = $filename;
+                $thumbnail->save(Storage::path('images').'thumbnail/'.$filename);
+
+                $master['photo'] = $filename;
+            }
 
             $master->save();
 
@@ -72,6 +84,12 @@ class MasterController extends Controller
 
             $data = $request->validated();
 
+            if (Auth::user()->cannot('update', [$master, $data['salon_id']])) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
             $master->update($data);
 
             return $this->handleResponse([
@@ -87,10 +105,97 @@ class MasterController extends Controller
         try {
             $master = Master::findOrFail($id);
 
+            if (Auth::user()->cannot('delete', $master)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
             $master->delete();
 
             return $this->handleResponse([
                 'master' => $master
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getServices(int $id)
+    {
+        try {
+            $master = Master::findOrFail($id);
+
+            $services = $master->services()->get();
+
+            return $this->handleResponse([
+                'services' => $services,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getCalendars(int $id)
+    {
+        try {
+            $master = Master::findOrFail($id);
+
+            $calendars = $master->calendars()->get();
+
+            return $this->handleResponse([
+                'calendars' => $calendars,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getCalendarsForDay(int $id, string $day)
+    {
+        try {
+            $validator = Validator::make(['day' => $day], ['day' => 'required|date_format:Y-m-d']);
+
+            if ($validator->fails()) {
+                return $this->handleResponse([
+                    'errors' => $validator->messages(),
+                ]);
+            }
+
+            $master = Master::findOrFail($id);
+
+            $calendars = $master->calendars()->whereDate('start_datetime', $day)->get();
+
+            return $this->handleResponse([
+                'calendars' => $calendars,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getRecords(int $id)
+    {
+        try {
+            $master = Master::findOrFail($id);
+
+            if (Auth::user()->cannot('viewRecords', $master)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
+            $calendars = $master->calendars()->get();
+
+            $records = [];
+
+            foreach ($calendars as $calendar) {
+                $record = $calendar->record()->get();
+                $records[] = $record;
+            }
+
+            return $this->handleResponse([
+                'records' => $records,
             ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());

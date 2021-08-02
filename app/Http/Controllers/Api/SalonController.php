@@ -120,7 +120,7 @@ class SalonController extends Controller
 
     }
 
-    public function masters(int $id): JsonResponse
+    public function getMasters(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -135,7 +135,7 @@ class SalonController extends Controller
         }
     }
 
-    public function services(int $id): JsonResponse
+    public function getServices(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
