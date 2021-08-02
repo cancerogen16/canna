@@ -24,7 +24,7 @@ class ActionRequest extends FormRequest
     public function rules()
     {
         return [
-            'service_id' => 'required|integer|exists:services,id',
+            'salon_id' => 'required|integer|exists:salons,id',
             'name' => 'required|between:3,191',
             'photo' => 'nullable|string|max:255',
             'description' => 'nullable|string',

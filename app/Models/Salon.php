@@ -40,6 +40,11 @@ class Salon extends Model
         return $this->hasMany(Service::class);
     }
 
+    public function actions(): HasMany
+    {
+        return $this->hasMany(Action::class);
+    }
+
     public function sluggable(): array
     {
         return [

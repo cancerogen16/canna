@@ -155,15 +155,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            $services = $salon->services()->get();
-
-            $actions = [];
-
-            foreach ($services as $service) {
-                foreach ($service->actions()->get() as $action) {
-                    $actions[] = $action;
-                }
-            }
+            $actions = $salon->actions()->get();
 
             return $this->handleResponse([
                 'actions' => $actions,

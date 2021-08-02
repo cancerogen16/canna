@@ -36,9 +36,9 @@ class Service extends Model
         return $this->belongsTo(Salon::class);
     }
 
-    public function actions(): HasMany
+    public function actions(): BelongsToMany
     {
-        return $this->hasMany(Action::class);
+        return $this->belongsToMany(Action::class);
     }
     public function records(): HasMany
     {
