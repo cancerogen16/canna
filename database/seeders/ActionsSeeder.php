@@ -20,7 +20,7 @@ class ActionsSeeder extends Seeder
 
         $faker = Factory::create('ru_RU');
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 30; $i++) {
             $name = "Акция {$i}";
 
             $start_at = $faker->dateTimeBetween('-2 months', '-1 month')->format('Y-m-d H');
@@ -28,7 +28,7 @@ class ActionsSeeder extends Seeder
             $end_at = $faker->dateTimeBetween('+1 months', '+3 month')->format('Y-m-d H');
 
             $actions[] = [
-                'service_id' => $faker->numberBetween(1, 29),
+                'salon_id' => ($i <= 10) ? $i : (($i <= 20) ? ($i - 10) : ($i - 20)),
                 'name' => $name,
                 'photo' => $faker->imageUrl(300, 300, 'actions', true, $name),
                 'description' => $faker->realText(500, 1),

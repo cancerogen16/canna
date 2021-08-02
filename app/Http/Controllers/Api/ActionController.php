@@ -101,4 +101,21 @@ class ActionController extends Controller
             return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
+
+
+    public function getServices(int $id)
+    {
+        try {
+            $action = Action::findOrFail($id);
+
+            $services = $action->services()->get();
+
+            return $this->handleResponse([
+                'services' => $services,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
 }

@@ -16,8 +16,8 @@ class CreateActionsTable extends Migration
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('service_id') // привязка к услуге
-                ->constrained('services')
+            $table->foreignId('salon_id') // привязка салона к услуге
+                ->constrained('salons')
                 ->cascadeOnDelete();
 
             $table->string('name', 255); // название акции
