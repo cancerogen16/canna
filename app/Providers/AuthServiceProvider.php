@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Models\Master;
 use App\Models\Salon;
+use App\Models\Service;
 use App\Models\User;
 use App\Policies\MasterPolicy;
 use App\Policies\SalonPolicy;
+use App\Policies\ServicePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -24,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
         Salon::class => SalonPolicy::class,
         Master::class => MasterPolicy::class,
+        Service::class => ServicePolicy::class,
     ];
 
     /**
