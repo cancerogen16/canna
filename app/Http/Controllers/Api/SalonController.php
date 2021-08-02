@@ -149,4 +149,56 @@ class SalonController extends Controller
             return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
+
+    public function getActions(int $id): JsonResponse
+    {
+        try {
+            $salon = Salon::findOrFail($id);
+
+            $services = $salon->services()->get();
+
+            $actions = [];
+
+            foreach ($services as $service) {
+                foreach ($service->actions()->get() as $action) {
+                    $actions[] = $action;
+                }
+            }
+
+            return $this->handleResponse([
+                'actions' => $actions,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function getRecords(int $id): JsonResponse
+    {
+        try {
+            $salon = Salon::findOrFail($id);
+
+            if (Auth::user()->cannot('viewRecords', $salon)) {
+                return $this->handleResponse([
+                    'errors' => ['Нет доступа'],
+                ]);
+            }
+
+            $services = $salon->services()->get();
+
+            $records = [];
+
+            foreach ($services as $service) {
+                foreach ($service->records()->get() as $record) {
+                    $records[] = $record;
+                }
+            }
+
+            return $this->handleResponse([
+                'records' => $records,
+            ]);
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
 }

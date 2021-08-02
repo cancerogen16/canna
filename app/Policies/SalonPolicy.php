@@ -26,6 +26,18 @@ class SalonPolicy
     }
 
     /**
+     * Determine whether the user can view the model.
+     *
+     * @param User $user
+     * @param  Salon  $salon
+     * @return Response|bool
+     */
+    public function viewRecords(User $user, Salon $salon)
+    {
+        return $user->id == $salon->user_id;
+    }
+
+    /**
      * Determine whether the user can create the model.
      *
      * @param User $user
