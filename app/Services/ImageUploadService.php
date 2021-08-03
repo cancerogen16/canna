@@ -3,12 +3,13 @@
 
 namespace App\Services;
 
+use App\Contracts\UploadImageServiceContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use Throwable;
 
-class ImageUploadService
+class ImageUploadService implements UploadImageServiceContract
 {
     /**
      * @param Request $request

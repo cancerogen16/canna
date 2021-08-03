@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\UploadImageServiceContract;
 use App\Services\ImageUploadService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ImageUploadService::class, ImageUploadService::class);
+        $this->app->bind(UploadImageServiceContract::class, ImageUploadService::class);
     }
 
     /**
