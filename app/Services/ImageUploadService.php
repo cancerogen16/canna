@@ -17,7 +17,7 @@ class ImageUploadService
      * @param int $height
      * @return string|null
      */
-    public function upload(Request $request, string $fieldName = 'image', int $width = 100, int $height = 100): ?string
+    public function upload(Request $request, string $fieldName = 'image', int $width = 0, int $height = 0): ?string
     {
         try {
             if ($request->hasFile($fieldName)) {
@@ -35,13 +35,15 @@ class ImageUploadService
                     throw new \Exception('Image upload error');
                 }
 
-                $thumbnail = Image::make(Storage::path('images') . '/origin/' . $originalName);
+                if ($width && $height) {
+                    $thumbnail = Image::make(Storage::path('images') . '/origin/' . $originalName);
 
-                $thumbnail->fit($width, $height);
+                    $thumbnail->fit($width, $height);
 
-                $newName = $filename . '-' . $width . 'x' . $height . '.' . $ext;
+                    $newName = $filename . '-' . $width . 'x' . $height . '.' . $ext;
 
-                $thumbnail->save(Storage::path('images') . '/thumbnail/' . $newName);
+                    $thumbnail->save(Storage::path('images') . '/thumbnail/' . $newName);
+                }
 
                 return $originalName;
             }
