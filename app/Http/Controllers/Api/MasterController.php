@@ -5,16 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterRequest;
 use App\Models\Master;
-use App\Models\User;
+use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\ImageManagerStatic as Image;
 use Throwable;
-use function PHPUnit\Framework\isNull;
-
 
 class MasterController extends Controller
 {
@@ -29,7 +25,7 @@ class MasterController extends Controller
         ]);
     }
 
-    public function store(MasterRequest $request): JsonResponse
+    public function store(MasterRequest $request, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $master = new Master($request->validated());
@@ -40,18 +36,10 @@ class MasterController extends Controller
                 ]);
             }
 
-            if (!isNull($request->input('photo'))) {
-                $filename  = $master['photo']->getClientOriginalName();
+            $photo = $uploadService->upload($request, 'photo');
 
-                $master['photo']->move(Storage::path('images').'origin/',$filename);
-
-                $thumbnail = Image::make(Storage::path('images').'origin/'.$filename);
-
-                $thumbnail->fit(300, 300);
-
-                $thumbnail->save(Storage::path('images').'thumbnail/'.$filename);
-
-                $master['photo'] = $filename;
+            if ($photo) {
+                $master['photo'] = $photo;
             }
 
             $master->save();
