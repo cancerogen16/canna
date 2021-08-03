@@ -53,7 +53,7 @@ class ImageUploadService implements UploadImageServiceContract
         } catch (Throwable $e) {
             report($e);
 
-            return null;
+            return $originalName;
         }
     }
 }
