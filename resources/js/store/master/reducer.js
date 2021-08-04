@@ -1,51 +1,21 @@
 import { CLEAR_USER } from "../user/action"
-import { ADD_MASTER, CLEAR_MASTER, DELETE_MASTER } from "./action"
+import { ADD_MASTERS, CLEAR_MASTER, DELETE_MASTER } from "./action"
 
-const initialState = [
-    {
-        id: 1,
-        salon_id: '',
-        name: 'Анастасия Иванова',
-        slug: '',
-        position: 'Мастер депиляции',
-        photo: '',
-        experience: '',
-        description: '',
-        rating: ''
-    },
-    {
-        id: 2,
-        salon_id: '',
-        name: 'Анастасия Иванова',
-        slug: '',
-        position: 'Мастер депиляции',
-        photo: '',
-        experience: '',
-        description: '',
-        rating: ''
-    },
-    {
-        id: 3,
-        salon_id: '',
-        name: 'Анастасия Иванова',
-        slug: '',
-        position: 'Мастер депиляции',
-        photo: '',
-        experience: '',
-        description: '',
-        rating: ''
-    }
+const initialMsastersState = [
+    
 ]
 
+const initialMsasterState = {
+    
+}
 
-export const masterReducer = (state = initialState, action) => {
+export const masterReducer = (state = initialMsastersState, action) => {
 
     switch(action.type){
-        case ADD_MASTER:{
-            return {
-                ...state,
-                ...action
-            }
+        case ADD_MASTERS:{
+            return [
+                ...action.masters
+            ]
         }
         case CLEAR_USER:{
             return [

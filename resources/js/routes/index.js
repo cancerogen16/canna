@@ -14,9 +14,7 @@ const Routes = () => (<>
                     {routes.map((route, i) => {
                         
                         if (route.auth) {
-                            // if (route.path == '/dashboard') {
-                            //     return <DashboardRoute key={i} {...route}/>
-                            // }
+                            
                             return <PrivateRoute key={i} {...route} />
                         }
                         return <PublicRoute key={i} {...route} />

@@ -3,7 +3,7 @@ import { userReducer } from './user/reducer';
 import thunk from 'redux-thunk';
 import authReducer from './auth/reducer';
 import {categoryReducer} from './category/reducer';
-import {salonsReducer} from './salon/reducer';
+import {salonReducer, salonsReducer} from './salon/reducer';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { masterReducer } from './master/reducer';
@@ -21,6 +21,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     categories: categoryReducer,
     salons: salonsReducer,
+    salon: salonReducer,
     masters: masterReducer,
     records: recordsReducer
 })
