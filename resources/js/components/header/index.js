@@ -9,7 +9,7 @@ export default function Header(props) {
         <AppBar className="header" position="static">
         <Toolbar className="toolbar">
           <Typography variant="h6" >
-            News
+            Canna
           </Typography>
           {props.children}
         </Toolbar>

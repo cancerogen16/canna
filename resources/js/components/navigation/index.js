@@ -21,7 +21,7 @@ export default function Navigation (props){
                         </ListItem>
                     </Link>
                     <Divider />
-                    <Link href="/dashboard/masters">
+                    <Link href="/dashboard/actions">
                         <ListItem button>
                             <ListItemText primary={"Акции"} />
                         </ListItem>
