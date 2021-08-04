@@ -1,17 +1,32 @@
+import { update } from 'lodash';
+import HTTP from '../HTTP';
 export const SET_USER = 'USER::SET_USER';
-export const CLEAR_USER = 'USER::CLEAR_USER'
+export const CLEAR_USER = 'USER::CLEAR_USER';
+export const UPDATE_SALON_USER = 'USER::UPDATE_SALON_USER'
 
 export const setUserWithThunk = (user) => (dispach, getState) => {
-    dispach(setUser(user))
-    localStorage.setItem('user', JSON.stringify(user));
+    console.log(user);
+    dispach(setUser(user));
+    
+
+}
+export const updateSalonUserFetch = (user_id) => (dispach, getState) => {
+    HTTP.get(`api/users/${user_id}/salons`)
+    .then(res => dispach(updateSalonUser(res.data.salons[0].id)))
 
 }
 
-export const setUser = ({name, email, role_id}) => ({
+export const setUser = ({id ,name, email, role_id}) => ({
     type: SET_USER,
+    id,
     name,
     email,
     role_id
+});
+
+export const updateSalonUser = (salon) => ({
+    type: UPDATE_SALON_USER,
+    salon
 });
 
 export const clearUser = () => ({

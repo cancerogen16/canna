@@ -1,5 +1,5 @@
 import HTTP from '../HTTP';
-import { clearUser, setUserWithThunk} from '../user/action';
+import { clearUser, setUserWithThunk, updateSalonUserFetch} from '../user/action';
 import {
     AUTH_CHECK,
     AUTH_LOGIN,
@@ -16,11 +16,12 @@ import {
           HTTP.post('api/authorization/login', credentials)
               .then(res => {
                 const {token, user} = res.data;
-                console.log(res)
+                console.log(res.data)
                   dispatch(authLogin(token));
                   dispatch(setUserWithThunk(user));
                   localStorage.setItem('access_token', token);
                   HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+                  dispatch(updateSalonUserFetch(getState().user.id));
                 
               })
               .catch(res => console.log(res));
@@ -47,6 +48,7 @@ import {
     dispatch(authCheck())
     
     HTTP.post('api/authorization/logout')
+      .then(res => console.log(res))
       .then(dispatch(authLogout()))
       .then(localStorage.removeItem('access_token'))
       .then(dispatch(clearUser()));

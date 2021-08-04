@@ -35,11 +35,6 @@ export default function ListSalon() {
   
 
     const salons = useSelector(state => state.salons);
-    console.log(salons);
-    
-    
-
-
     const handleOpen = () => {
         setOpen(true);
       };
@@ -51,7 +46,6 @@ export default function ListSalon() {
       useEffect(() => {
         dispatch(fetchSalonsAll());
       },[]);
-
     return (
      <Grid container  spacing={3}>
        {salons.map(salon =><Grid key={salon.id} item xs={6}> <CardSalon key={salon.id}  salon={salon} /></Grid>)}

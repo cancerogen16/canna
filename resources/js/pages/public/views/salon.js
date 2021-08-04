@@ -7,21 +7,23 @@ import priviewMaster from '../../../components/masters/preview/style';
 import Salon from '../../../components/salon'
 import styleSalon from '../../../components/salon/style';
 import { SimpleTabs, TabPanel } from '../../../components/tabs';
-import { fetchMasters } from '../../../store/master/action';
+import { fetchMasters, fetchMastersOfSalon } from '../../../store/master/action';
 import { fetchRecords } from '../../../store/records/action';
+import { fetchSalonsOneId } from '../../../store/salon/action';
 
 export default function Page(props) {
     const [value, setValue] = React.useState(0);
     const masters = useSelector(state => state.masters);
+    const salon = useSelector(state => state.salon);
     const classes = priviewMaster();
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
     
     const [open, setOpen] = React.useState(false);
     const records = useSelector(state => state.records)
     const handleClickOpen = () => {
-        dispath(fetchRecords(1));
+        dispatch(fetchRecords(1));
         setOpen(true);
-        console.log(records)
+        //console.log(records)
     };
     const handleClose = () => {
         setOpen(false);
@@ -30,13 +32,15 @@ export default function Page(props) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
-    // useEffect(() => {
-    //     dispatch(fetchMasters(props.match.params.id));
-    // }, [])
+    useEffect(() => {
+        dispatch(fetchMastersOfSalon(props.match.params.id));
+        dispatch(fetchSalonsOneId(props.match.params.id))
+    }, [])
+    console.log(salon)
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Salon/>
+                <Salon salon={salon}/>
                 <SimpleTabs value={value} handleChange={handleChange} tabs={[{label: 'Услуги', index: 0}, {label: 'Мастера', index: 1}]}>
                 <TabPanel value={value} index={0}>
                         Услуги

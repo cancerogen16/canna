@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Header from '../components/header'
 import UserBar from '../components/userBar'
 import Alert from '../components/alert'
 import Navigation from '../components/navigation'
 import { Container, Grid } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearSalon } from '../store/salon/action'
 
 
 const containerStyle = {
@@ -19,11 +21,19 @@ const propTypes = {
 
 
 function DashboardLayout({ children, history, user }) {
+  const [open, setOpen] = useState(!user.salon);
+  const dispatch = useDispatch();
   const handleNot = () => {
     history.push({
         pathname: '/',
         state: {pathname: history.location.pathname}
       })
+  }
+  const handleYes = () => {
+   
+    dispatch(clearSalon());
+    setOpen(false);
+
   }
   console.log(user)
   return <div>
@@ -47,9 +57,10 @@ function DashboardLayout({ children, history, user }) {
       </Container>
       <Alert 
         
-          open={user.role_id == 2} 
+          open={open} 
           title="Создать салон?"
           handleNot={handleNot} 
+          handleYes={handleYes}
           >
             Мы не нашли в базе информацию о вашем салоне
         </Alert>
