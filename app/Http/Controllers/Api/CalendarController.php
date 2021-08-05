@@ -7,7 +7,6 @@ use App\Http\Requests\CalendarRequest;
 use App\Models\Calendar;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class CalendarController extends Controller
@@ -114,7 +113,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * Schedule resource in storage.
+     * Сохранение в базу нового расписания для мастера
      *
      * @param CalendarRequest $request
      * @return JsonResponse
@@ -124,17 +123,17 @@ class CalendarController extends Controller
         try {
             $fields = $request->input();
 
-            $work_from = (int)$fields['work_from'];
-            $work_to = (int)$fields['work_to'];
-            $dates = $fields['dates'];
-            $master_id = $fields['master_id'];
+            $work_from = (int)$fields['work_from']; // время начала работы
+            $work_to = (int)$fields['work_to']; // время окончания работы
+            $dates = $fields['dates']; // массив дат, на которые распространяется новое расписание
+            $master_id = $fields['master_id']; // id мастера
 
-            $slotsByDays = [];
+            $slotsByDays = []; // массив слотов в новом расписании мастера, отсортированный по дням
 
             if (!empty($dates) && ($work_to > $work_from)) {
                 foreach ($dates as $date) {
                     for ($time = $work_from; $time < $work_to; $time++) {
-                        $slotTime = strlen($time) == 1 ? strval('0' . $time) : strval($time);
+                        $slotTime = strlen($time) == 1 ? strval('0' . $time) : strval($time); // часы в 2 разряда
 
                         $slotsByDays[$date][] = [
                             'master_id' => $fields['master_id'],
@@ -145,20 +144,17 @@ class CalendarController extends Controller
                     }
                 }
 
-                if (!empty($slotsByDays)) {
-                    $schedules = Calendar::where('master_id', $master_id)->get();
+                $schedules = Calendar::where('master_id', $master_id)->get(); // текущее расписание мастера в базе
 
-                    if ($schedules->isEmpty()) {
+                if (!empty($slotsByDays)) {
+                    if ($schedules->isEmpty()) { // если расписания ещё нет
                         foreach ($slotsByDays as $day => $slots) {
-                            Calendar::insert($slots);
+                            Calendar::insert($slots); // пишем в базу слоты очередного дня
                         }
                     } else {
                         foreach ($slotsByDays as $day => $slots) {
-                            foreach ($schedules as $schedule) {
-                                if (stripos($schedule['start_datetime'], $day) !== false) {
-                                    DB::table('calendars')->delete($schedule['id']);
-                                }
-                            }
+                            Calendar::where('master_id', $master_id)
+                                ->where('start_datetime', 'like', $day . '%')->delete();
 
                             Calendar::insert($slots);
                         }
