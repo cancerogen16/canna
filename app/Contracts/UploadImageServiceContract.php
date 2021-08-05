@@ -5,15 +5,15 @@ namespace App\Contracts;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 interface UploadImageServiceContract
 {
     /**
-     * @param Request $request
-     * @param string $fieldName название поля изображения в форме
+     * @param UploadedFile $file
      * @param int $width ширина для ресайза
      * @param int $height высота для ресайза
      * @return mixed
      */
-    public function upload(Request $request, string $fieldName = 'image', int $width = 0, int $height = 0);
+    public function upload(UploadedFile $file, int $width = 0, int $height = 0);
 }
