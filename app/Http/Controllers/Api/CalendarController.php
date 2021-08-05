@@ -135,7 +135,7 @@ class CalendarController extends Controller
                     for ($time = $work_from; $time < $work_to; $time++) {
                         $slotTime = strlen($time) == 1 ? strval('0' . $time) : strval($time); // часы в 2 разряда
 
-                        $slotsByDays[$date][] = [
+                        $slotsByDays[$date][$time] = [
                             'master_id' => $fields['master_id'],
                             'start_datetime' => $date . ' ' . $slotTime . ':00:00',
                             'created_at' => date('Y-m-d H:i:s'),
@@ -144,17 +144,32 @@ class CalendarController extends Controller
                     }
                 }
 
-                $schedules = Calendar::where('master_id', $master_id)->get(); // текущее расписание мастера в базе
+
 
                 if (!empty($slotsByDays)) {
+                    $schedules = Calendar::where('master_id', $master_id)->get(); // текущее расписание мастера в базе
+
                     if ($schedules->isEmpty()) { // если расписания ещё нет
-                        foreach ($slotsByDays as $day => $slots) {
+                        foreach ($slotsByDays as $date => $slots) {
                             Calendar::insert($slots); // пишем в базу слоты очередного дня
                         }
                     } else {
-                        foreach ($slotsByDays as $day => $slots) {
+                        foreach ($slotsByDays as $date => $slots) {
+                            $schedules = Calendar::where('master_id', $master_id)
+                                ->where('start_datetime', 'like', $date . '%')->get(); // расписание мастера в базе на очередной день
+
+                            foreach ($schedules as $schedule) {
+                                $time = date('H', strtotime($schedule['start_datetime']));
+
+                                if ($schedule['record_id']) {
+                                    $slots[$time]['record_id'] = $schedule['record_id'];
+                                } else {
+                                    $slots[$time]['record_id'] = null;
+                                }
+                            }
+
                             Calendar::where('master_id', $master_id)
-                                ->where('start_datetime', 'like', $day . '%')->delete();
+                                ->where('start_datetime', 'like', $date . '%')->delete();
 
                             Calendar::insert($slots);
                         }
