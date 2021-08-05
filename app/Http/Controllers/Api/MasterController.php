@@ -37,11 +37,7 @@ class MasterController extends Controller
             }
 
             if ($request->hasFile('photo')) {
-                $file = $request->file('photo');
-
-                $photo = $uploadService->upload($file, 300, 300);
-
-                if ($photo) {
+                if ($photo = $uploadService->upload($master['photo'])) {
                     $master['photo'] = $photo;
                 }
             }

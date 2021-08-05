@@ -13,11 +13,9 @@ class ImageUploadService implements UploadImageServiceContract
 {
     /**
      * @param UploadedFile $file
-     * @param int $width
-     * @param int $height
      * @return string|null
      */
-    public function upload(UploadedFile $file, int $width = 0, int $height = 0): ?string
+    public function upload(UploadedFile $file): ?string
     {
         try {
             $originalName = $file->getClientOriginalName();
@@ -26,10 +24,6 @@ class ImageUploadService implements UploadImageServiceContract
 
             if ($fileUploaded === false) {
                 throw new \Exception('Image upload error');
-            }
-
-            if ($width && $height) {
-                return $this->resize($originalName, $width, $height);
             }
 
             return $originalName;
