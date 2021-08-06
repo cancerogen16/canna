@@ -1,5 +1,5 @@
-import { CLEAR_USER } from "../user/action"
-import { ADD_MASTERS, CLEAR_MASTER, DELETE_MASTER } from "./action"
+import { ADD_MASTERS, DELETE_MASTER, CLEAR_MASTERS } from "./action-types"
+
 
 const initialMsastersState = [
     
@@ -9,21 +9,35 @@ const initialMsasterState = {
     
 }
 
+const addMasters = (state, action) => {
+    return [
+        ...action.masters
+    ]
+}
+
+const clearMasters = () => {
+    return [
+        
+    ]
+}
+
+const deleteMaster = (state, action) => {
+
+    return state.filter(item => item.id !== action.id);
+    
+}
+
 export const masterReducer = (state = initialMsastersState, action) => {
 
     switch(action.type){
         case ADD_MASTERS:{
-            return [
-                ...action.masters
-            ]
+            return addMasters(state, action);
         }
-        case CLEAR_USER:{
-            return [
-
-            ]
+        case CLEAR_MASTERS:{
+            return clearMasters();
         }
         case DELETE_MASTER:{
-            return state.filter(item => item.id !== action.id)
+            return deleteMaster(state, action);
         }
         default:{
             return state

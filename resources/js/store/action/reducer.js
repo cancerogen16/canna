@@ -1,5 +1,5 @@
-import { CLEAR_USER } from "../user/action"
-import { ADD_ACTION, CLEAR_ACTION, DELETE_ACTION } from "./action"
+import { ADD_ACTION, CLEAR_ACTION, DELETE_ACTION } from "./action-types"
+
 
 const initialState = [
     {
@@ -24,23 +24,34 @@ const initialState = [
     }
 ]
 
+const addAction = (state, action) => {
+    return {
+        ...state,
+        ...action
+    }
+}
+
+const clearAction = () => {
+    return [
+
+    ]
+}
+
+const deleteAction = (state, action) => {
+    return state.filter(item => item.id !== action.id)
+}
 
 export const actionReducer = (state = initialState, action) => {
 
     switch(action.type){
         case ADD_ACTION:{
-            return {
-                ...state,
-                ...action
-            }
+            return addAction(state, action);
         }
-        case CLEAR_USER:{
-            return [
-
-            ]
+        case CLEAR_ACTION:{
+            return clearAction();
         }
         case DELETE_ACTION:{
-            return state.filter(item => item.id !== action.id)
+            return deleteAction(state, action)
         }
         default:{
             return state

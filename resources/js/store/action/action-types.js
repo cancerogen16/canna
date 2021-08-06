@@ -1,0 +1,9 @@
+export const ADD_ACTION = 'ACTION::ADD_ACTION';
+export const CLEAR_ACTION = 'ACTION::CLEAR_ACTION';
+export const DELETE_ACTION = 'ACTION::CLEAR_ACTION';
+
+export default {
+  ADD_ACTION,
+  CLEAR_ACTION,
+  DELETE_ACTION,
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Header from '../components/header'
 import UserBar from '../components/userBar'
@@ -7,6 +7,7 @@ import Navigation from '../components/navigation'
 import { Container, Grid } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearSalon } from '../store/salon/action'
+import { updateSalonUserFetch } from '../store/user/action'
 
 
 const containerStyle = {
@@ -23,12 +24,16 @@ const propTypes = {
 function DashboardLayout({ children, history, user }) {
   const [open, setOpen] = useState(!user.salon);
   const dispatch = useDispatch();
+  
   const handleNot = () => {
     history.push({
         pathname: '/',
         state: {pathname: history.location.pathname}
       })
   }
+  useEffect(() =>{
+    
+  }, [])
   const handleYes = () => {
    
     dispatch(clearSalon());

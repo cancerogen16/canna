@@ -3,7 +3,7 @@ import { Checkbox, Divider, FormControlLabel, FormGroup, Grid, Link, Modal, Text
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSalonsAll } from '../../store/salon/action';
+import { fetchSalonsAll } from '../../store/salons/thunks';
 import CardSalon from './card';
 function rand() {
     return Math.round(Math.random() * 20) - 10;

@@ -1,5 +1,5 @@
 import { Avatar, Button, Divider, IconButton, Link, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Preview from '../masters/preview';
 import {SimpleTabs, TabPanel } from '../tabs';
@@ -13,8 +13,9 @@ export default function Salon (props){
     const dispatch = useDispatch();
     
     const [contenteditable, setContenteditable] = useState(false);
-    const [salon, setSalon] = useState({...props.salon});
-    const {user_id,title, slug, main_photo, city, address,rating, phone, description} = salon
+    //const [salon, setSalon] = useState({...props.salon});
+    console.log('salon',props)
+    const {title, main_photo, city, address, phone, description} = props.salon
     const classes = styleSalon();
     const user = useSelector(state => state.user)
     useEffect(() => {
@@ -24,35 +25,28 @@ export default function Salon (props){
     const editField = (e) => {
          switch(e.target.id){
              case 'title':
-                 setSalon({...salon, title: e.target.textContent})
+                 title = e.target.textContent
                  break;
             case 'phone':
-                setSalon({...salon, phone: e.target.textContent})
+                phone = e.target.textContent
                 break;
             case 'city':
-                setSalon({...salon, city: e.target.textContent})
+                city = e.target.textContent
                 break;
             case 'adress':
-                setSalon({...salon, address: e.target.textContent})
+                address = e.target.textContent
                 break;
             case 'desc':
-                setSalon({...salon, description: e.target.textContent})
+                description = e.target.textContent
                 break;
          }
         
     }
 
     const handleSave = () => {
-            setSalon({
-                ...salon,
-                user_id: user.id,
-                slug: '22ww',
-                rating: 0
-            })
-            
-            dispatch(fetchCreateSalon(salon));
+            console.log('salon',{user_id: user.id,title, main_photo, city, address, phone, description})
+            //dispatch(fetchCreateSalon({user_id: user.id,title, main_photo, city, address, phone, description}));
     }
-    console.log(salon);
     return  <>
                 <div className={classes.header}>
                     <Avatar className={classes.ava} alt={title} src="" />
@@ -70,7 +64,7 @@ export default function Salon (props){
                     <div className={classes.contact}>
                         <span className={classes.contactItem}>Телефон: <span id="phone" contentEditable={contenteditable} onBlur={editField}>{phone}</span></span>
                         <span className={classes.contactItem}>Город: <span id="city" onBlur={editField} contentEditable={contenteditable}>{city}</span></span>
-                        <span className={classes.contactItem}>Адрес: <span id="adress" onBlur={editField} contentEditable={contenteditable}>{address}</span>{address}</span>
+                        <span className={classes.contactItem}>Адрес: <span id="adress" onBlur={editField} contentEditable={contenteditable}>{address}</span></span>
                     </div>
                 </div>
                 <div className={classes.about}>

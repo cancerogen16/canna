@@ -7,9 +7,9 @@ import priviewMaster from '../../../components/masters/preview/style';
 import Salon from '../../../components/salon'
 import styleSalon from '../../../components/salon/style';
 import { SimpleTabs, TabPanel } from '../../../components/tabs';
-import { fetchMasters, fetchMastersOfSalon } from '../../../store/master/action';
-import { fetchRecords } from '../../../store/records/action';
-import { fetchSalonsOneId } from '../../../store/salon/action';
+import { fetchMastersOfSalon } from '../../../store/master/thunks';
+import { fetchRecords } from '../../../store/records/thunks';
+import { fetchSalonsOneId } from '../../../store/salon/thunks';
 
 export default function Page(props) {
     const [value, setValue] = React.useState(0);
@@ -36,7 +36,7 @@ export default function Page(props) {
         dispatch(fetchMastersOfSalon(props.match.params.id));
         dispatch(fetchSalonsOneId(props.match.params.id))
     }, [])
-    console.log(salon)
+    console.log('publick',salon)
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>

@@ -1,7 +1,5 @@
-import { LaptopWindows } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux"
-import { fetchLogout } from "../../store/auth/actions";
-import HTTP from "../../store/HTTP";
+import { fetchLogout } from "../../store/auth/thunks";
 
 export const useHukUserBar = () => {
     const dispatch = useDispatch();
