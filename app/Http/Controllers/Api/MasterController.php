@@ -16,9 +16,31 @@ class MasterController extends Controller
 {
     use ApiResponder;
 
-    public function index(): JsonResponse
+    public function index(ImageUploadService $uploadService): JsonResponse
     {
-        $masters = Master::all();
+        $width = 300;
+        $height = 300;
+
+        $masters = [];
+
+        $mastersCollection = Master::all();
+
+        foreach ($mastersCollection as $item) {
+            if ($item['photo']) {
+                $photo = $uploadService->resize($item['photo'], $width, $height);
+            }
+
+            $masters[] = [
+                'name' => $item['name'],
+                'salon_id' => $item['salon_id'],
+                'slug' => $item['slug'],
+                'position' => $item['position'],
+                'photo' => $photo,
+                'experience' => $item['experience'],
+                'description' => $item['description'],
+                'rating' => $item['rating'],
+            ];
+        }
 
         return $this->handleResponse([
             'masters' => $masters
@@ -36,12 +58,8 @@ class MasterController extends Controller
                 ]);
             }
 
-            if ($request->hasFile('photo')) {
-                $file = $request->file('photo');
-
-                $photo = $uploadService->upload($file, 300, 300);
-
-                if ($photo) {
+            if ($master['photo']) {
+                if ($photo = $uploadService->upload($master['photo'])) {
                     $master['photo'] = $photo;
                 }
             }
