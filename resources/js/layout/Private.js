@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Header from '../components/header'
-import UserBar from '../components/userBar'
+import Header from '../components/Header'
+
 import { Container } from '@material-ui/core'
+import UserBar from '../components/Private/UserBar'
 
 
 const containerStyle = {

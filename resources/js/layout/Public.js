@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Header from '../components/header'
-import Auch from '../components/auch'
+import Header from '../components/Header'
 import { Container } from '@material-ui/core'
+import Auth from '../components/Public/Auth'
 
 
 
@@ -19,7 +19,7 @@ const propTypes = {
 function PublicLayout({ children }) {
   return <div >
     <Header>
-    <Auch/>
+    <Auth/>
     </Header>
     <Container maxWidth="lg">
     <main >

@@ -1,42 +1,26 @@
-import { Button, Card, Container, Grid, List, ListItem } from '@material-ui/core'
-import React, { Component, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import DialogWindow from '../../../components/dialog';
-import Preview from '../../../components/masters/preview';
-import priviewMaster from '../../../components/masters/preview/style';
-import Salon from '../../../components/salon'
-import styleSalon from '../../../components/salon/style';
-import { SimpleTabs, TabPanel } from '../../../components/tabs';
-import { fetchMastersOfSalon } from '../../../store/master/thunks';
-import { fetchRecords } from '../../../store/records/thunks';
-import { fetchSalonsOneId } from '../../../store/salon/thunks';
+import { Button, Card, Grid, List, ListItem } from '@material-ui/core'
+import React from 'react';
+import useSalon from '../huks/useSalon';
+import priviewMaster from '../../../components/Public/MasterPreview/style';
+import MasterPreview from '../../../components/Public/MasterPreview';
+import Salon from '../../../components/Public/Salon';
+import { SimpleTabs, TabPanel } from '../../../components/Tabs';
+import Modal from '../../../components/Dialogs/Modal';
+
 
 export default function Page(props) {
-    const [value, setValue] = React.useState(0);
-    const masters = useSelector(state => state.masters);
-    const salon = useSelector(state => state.salon);
+    const {
+        value,
+        masters,
+        salon,
+        open,
+        records,
+        handleClickOpen,
+        handleClose,
+        handleChange
+    } = useSalon(props);
     const classes = priviewMaster();
-    const dispatch = useDispatch();
     
-    const [open, setOpen] = React.useState(false);
-    const records = useSelector(state => state.records)
-    const handleClickOpen = () => {
-        dispatch(fetchRecords(1));
-        setOpen(true);
-        //console.log(records)
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-      };
-    useEffect(() => {
-        dispatch(fetchMastersOfSalon(props.match.params.id));
-        dispatch(fetchSalonsOneId(props.match.params.id))
-    }, [])
-    console.log('publick',salon)
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -49,20 +33,20 @@ export default function Page(props) {
                         <List>
                             {masters.map(master =>{
                                 return  <ListItem className={classes.root}   key={master.id} button>
-                                            <Preview  master={master}>
+                                            <MasterPreview   master={master}>
                                                 <Button onClick={ handleClickOpen} >Записаться</Button>
-                                            </Preview>
+                                            </MasterPreview >
                                         </ListItem>
                             })}
                         </List>
                     </TabPanel>
                 </SimpleTabs>
-                <DialogWindow open={open} onClose={handleClose} closeButton={'Закрыть'}>
+                <Modal open={open} onClose={handleClose} closeButton={'Закрыть'}>
                             {records.map(record => {
                                 let date = new Date(record.start_datetime);
                                 return <Card>{`${date.getUTCHours()}:${date.getUTCMinutes()}`}</Card>
                             })}
-                </DialogWindow>
+                </Modal>
             </Grid>
         </Grid>)
 }

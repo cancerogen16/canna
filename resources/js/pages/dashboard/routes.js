@@ -16,10 +16,10 @@ export default [
     component: lazy(() => import('./views/masters')),
   },
   {
-    path: '/dashboard/actions',
+    path: '/dashboard/discount',
     exact: true,
     auth: true,
     role: 2,
-    component: lazy(() => import('./views/actions')),
+    component: lazy(() => import('./views/discount')),
   }
 ]
