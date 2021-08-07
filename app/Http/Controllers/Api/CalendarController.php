@@ -162,7 +162,7 @@ class CalendarController extends Controller
                                 foreach ($schedules as $schedule) {
                                     $time = date('H', strtotime($schedule['start_datetime'])); // время начала слота
 
-                                    if ($schedule['record_id']) { // если была запись на очередной слот
+                                    if ($schedule['record_id'] && array_key_exists($time, $slots)) { // если была запись на очередной слот
                                         $slots[$time]['record_id'] = $schedule['record_id'];
                                     }
                                 }
