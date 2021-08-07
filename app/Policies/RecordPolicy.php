@@ -2,11 +2,12 @@
 
 namespace App\Policies;
 
+use App\Models\Record;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class RecordPolicy
 {
     use HandlesAuthorization;
 
@@ -39,35 +40,50 @@ class UserPolicy
      * Determine whether the user can view the model.
      *
      * @param User $user
-     * @param  User  $model
+     * @param Record $record
      * @return Response|bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user, Record $record)
     {
-        return $user->id == $model->id;
+        return $user->id == $record->user_id ||
+            $user->id == $record->service()->first()->salon()->first()->user_id;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     *
+     * @param User $user
+     * @param Record $record
+     * @return Response|bool
+     */
+    public function create(User $user, Record $record)
+    {
+        return $user->id == $record->user_id;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param User  $model
+     * @param Record $record
+     * @param int $user_id
      * @return Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Record $record, int $user_id)
     {
-        return $user->id == $model->id;
+        return $user->id == $record->user_id &&
+            $user->id == $user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param User  $model
+     * @param Record $record
      * @return Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Record $record)
     {
-        return $user->id == $model->id;
+        return $user->id == $record->user_id;
     }
 }
