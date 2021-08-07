@@ -26,6 +26,8 @@ class RecordRequest extends FormRequest
         return [
             'user_id' => 'required|integer|exists:users,id',
             'service_id' => 'required|integer|exists:services,id',
+            'master_id' => 'required|integer|exists:masters,id',
+            'start_datetime' => 'required|date_format:Y-m-d H',
             'name' => 'required|string|between:3,191',
             'phone' => 'required|string|between:10,15',
             'comment' => 'nullable|string',

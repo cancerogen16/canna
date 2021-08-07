@@ -28,6 +28,7 @@ class CreateRecordsTable extends Migration
             $table->text('comment')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
