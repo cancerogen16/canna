@@ -1,0 +1,9 @@
+export const ADD_RECORD = 'RECORD::ADD_RECORD';
+export const CLEAR_RECORD = 'RECORD::CLEAR_RECORD';
+export const DELETE_RECORD = 'RECORD::CLEAR_RECORD';
+
+export default {
+  ADD_RECORD,
+  CLEAR_RECORD,
+  DELETE_RECORD
+}

@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom'
 
 const PublicRoutes = ({ component: Component, ...rest }) => {
   return <Route {...rest} render={props => {
+    
     return <Suspense fallback={<div>Loading...</div>}>
       <Component {...props}/>
       

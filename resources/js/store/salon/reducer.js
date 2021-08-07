@@ -1,58 +1,55 @@
-import { ADD_SALON, CLEAR_SALON, ADD_SALONS, CREATE_SALON } from "./action"
+import { ADD_SALON, CLEAR_SALON, CREATE_SALON } from "./action-types"
 
-const initialSalonsState = [
-    
-]
 const initialSalonState = {
     
 }
 
-export const salonsReducer = (state = initialSalonsState, action) => {
-
-    switch(action.type){
-        case ADD_SALONS:{
-            return [
-                ...action.salons
-            ]
-        }
-        case CLEAR_SALON:{
-            return [
-                
-            ]
-        }
-        default:{
-            return state
-        }
-
+const addSalon = (action) => {
+    
+    return {
+        ...action
     }
 
 }
+
+const createSalon = (action) => {
+    
+    return {
+        ...action
+    }
+
+}
+
+const clearSalon = () => {
+    
+    return {
+        user_id: '',
+        title: '', 
+        slug: '',
+        main_photo: '', 
+        city: '', 
+        address: '', 
+        phone: '', 
+        description: '', 
+        rating: '',
+        worktime: ''
+    }
+
+}
+
+
+
 export const salonReducer = (state = initialSalonState, action) => {
 
     switch(action.type){
         case ADD_SALON:{
-            return {
-                ...action
-            }
+            return addSalon(action)
         }
         case CREATE_SALON:{
-            return {
-                ...action
-            }
+            return createSalon(action)
         }
         case CLEAR_SALON:{
-            return {
-                user_id: '',
-                title: '', 
-                slug: '',
-                main_photo: '', 
-                city: '', 
-                address: '', 
-                phone: '', 
-                description: '', 
-                rating: '',
-                worktime: ''
-            }
+            return clearSalon();
         }
         default:{
             return state

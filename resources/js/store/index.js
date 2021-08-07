@@ -3,16 +3,17 @@ import { userReducer } from './user/reducer';
 import thunk from 'redux-thunk';
 import authReducer from './auth/reducer';
 import {categoryReducer} from './category/reducer';
-import {salonReducer, salonsReducer} from './salon/reducer';
+import {salonReducer} from './salon/reducer';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { masterReducer } from './master/reducer';
 import { recordsReducer } from './records/reducer';
 import {actionReducer} from "./action/reducer";
+import { salonsReducer } from './salons/reducer';
 const persistConfig = {
     key: 'canna',
     storage,
-    
+    blacklist: ['categoties', 'salons', 'salon', 'masters', 'records','actions']
   }
 
 

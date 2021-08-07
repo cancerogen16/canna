@@ -1,4 +1,5 @@
-import { ADD_RECORD, CLEAR_RECORD} from "./action"
+import { ADD_RECORD, CLEAR_RECORD } from "./action-types"
+
 
 const initialState = [
    

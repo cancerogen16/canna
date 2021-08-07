@@ -1,4 +1,3 @@
-import HTTP from '../HTTP';
 import {
   AUTH_CHECK,
   AUTH_LOGIN,
@@ -11,13 +10,13 @@ const initialState = {
   isAuthenticated: false,
 };
 
-const authReducer = (state = initialState, { type, payload = null }) => {
+const authReducer = (state = initialState, { type, action = null }) => {
   switch(type) {
     case AUTH_REFRESH_TOKEN:
     case AUTH_LOGIN:
-      return login(state, payload);
+      return login(state, action);
     case AUTH_CHECK:
-      return checkAuth(state, payload);
+      return checkAuth(state, action);
     case AUTH_LOGOUT:
       return logout(state);
     case AUTH_RESET_PASSWORD:
@@ -27,26 +26,17 @@ const authReducer = (state = initialState, { type, payload = null }) => {
   }
 };
 
-function login(state, payload) {
-  console.log(payload)
+function login(state, action) {
   return {
     ...state, isAuthenticated: true,
   }
 
 }
 
-function checkAuth(state, payload) {
-  // state = Object.assign({}, state, {
-  //   isAuthenticated: !!localStorage.getItem('access_token')
-  // })
-
-  // if (state.isAuthenticated) {
-  //   HTTP.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
-  // }
-  console.log('check', payload);
+function checkAuth(state, action) {
   return {
     ...state,
-      isAuthenticated: payload
+      isAuthenticated: action
   };
 }
 
@@ -64,6 +54,5 @@ function resetPassword(state) {
   }
 }
 
-//export const getAuth = state => state.auth.isAuthenticated;
 
 export default authReducer;

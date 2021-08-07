@@ -1,7 +1,8 @@
 import { Container, Grid } from '@material-ui/core'
 import React, { Component } from 'react'
-import ListSalon from '../../../components/ListSalon'
-import SearchSalon from '../../../components/search-salon'
+import ListSalon from '../../../components/Public/ListSalon'
+import SearchSalon from '../../../components/Public/SearchSalon'
+
 export default function Page() {
 
     return (
