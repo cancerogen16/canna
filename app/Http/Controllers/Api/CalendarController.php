@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CalendarRequest;
+use App\Http\Requests\CalendarScheduleRequest;
 use App\Models\Calendar;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
@@ -115,10 +116,10 @@ class CalendarController extends Controller
     /**
      * Сохранение в базу нового расписания для мастера
      *
-     * @param CalendarRequest $request
+     * @param CalendarScheduleRequest $request
      * @return JsonResponse
      */
-    public function schedule(CalendarRequest $request): JsonResponse
+    public function schedule(CalendarScheduleRequest $request): JsonResponse
     {
         try {
             $fields = $request->input();
@@ -128,7 +129,7 @@ class CalendarController extends Controller
             $dates = $fields['dates']; // массив дат, на которые распространяется новое расписание
             $master_id = $fields['master_id']; // id мастера
 
-            $slotsByDays = []; // массив слотов в новом расписании мастера, отсортированный по дням
+            $slotsByDays = []; // массив слотов в новом расписании мастера, отсортированный по дням и часам
 
             if (!empty($dates) && ($work_to > $work_from)) {
                 foreach ($dates as $date) {
@@ -136,15 +137,14 @@ class CalendarController extends Controller
                         $slotTime = strlen($time) == 1 ? strval('0' . $time) : strval($time); // часы в 2 разряда
 
                         $slotsByDays[$date][$time] = [
-                            'master_id' => $fields['master_id'],
+                            'master_id' => $master_id,
+                            'record_id' => null,
                             'start_datetime' => $date . ' ' . $slotTime . ':00:00',
                             'created_at' => date('Y-m-d H:i:s'),
                             'updated_at' => date('Y-m-d H:i:s'),
                         ];
                     }
                 }
-
-
 
                 if (!empty($slotsByDays)) {
                     $schedules = Calendar::where('master_id', $master_id)->get(); // текущее расписание мастера в базе
@@ -158,20 +158,20 @@ class CalendarController extends Controller
                             $schedules = Calendar::where('master_id', $master_id)
                                 ->where('start_datetime', 'like', $date . '%')->get(); // расписание мастера в базе на очередной день
 
-                            foreach ($schedules as $schedule) {
-                                $time = date('H', strtotime($schedule['start_datetime']));
+                            if (!empty($schedules)) {
+                                foreach ($schedules as $schedule) {
+                                    $time = date('H', strtotime($schedule['start_datetime'])); // время начала слота
 
-                                if ($schedule['record_id']) {
-                                    $slots[$time]['record_id'] = $schedule['record_id'];
-                                } else {
-                                    $slots[$time]['record_id'] = null;
+                                    if ($schedule['record_id']) { // если была запись на очередной слот
+                                        $slots[$time]['record_id'] = $schedule['record_id'];
+                                    }
                                 }
                             }
 
                             Calendar::where('master_id', $master_id)
-                                ->where('start_datetime', 'like', $date . '%')->delete();
+                                ->where('start_datetime', 'like', $date . '%')->delete(); // удаление расписания мастера на очередную дату
 
-                            Calendar::insert($slots);
+                            Calendar::insert($slots); // сохранение в базу заданных слотов
                         }
                     }
 
