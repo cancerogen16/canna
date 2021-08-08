@@ -95,18 +95,22 @@ class ImageUploadService implements UploadImageServiceContract
     /**
      * Выдаёт строку с путём к изображению с нужным размером
      *
-     * @param string $filename Название файла изображения
+     * @param string|null $filename Название файла изображения
      * @param string|int[] $size размер нужного изображения,
      * строкой с ключом массива sizes из файла config/image.php
      * или массивом [ширина, высота]
      * @return string
      */
-    public function getImage(string $filename, $size = 'medium'): string
+    public function getImage($filename = null, $size = 'medium'): string
     {
         /* Проверка, является ли изображение ссылкой */
         if (filter_var($filename, FILTER_VALIDATE_URL)) {
             return $filename;
         } else {
+            if (is_null($filename)) {
+                $filename = 'noimage.gif';
+            }
+
             if (is_array($size)) {
                 $filename = $this->resize($filename, $size[0], $size[1]);
             } else {
