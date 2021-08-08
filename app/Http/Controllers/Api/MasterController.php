@@ -61,6 +61,10 @@ class MasterController extends Controller
 
             $master->save();
 
+            if (isset($master['photo'])) {
+                $master['photo'] = $uploadService->getImage($master['photo'], 'large');
+            }
+
             return $this->handleResponse([
                 'master' => $master
             ], 201);
@@ -74,7 +78,7 @@ class MasterController extends Controller
      * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function show(int $id, ImageUploadService $uploadService): JsonResponse
+    public function show(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
@@ -95,7 +99,7 @@ class MasterController extends Controller
      * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function update(MasterRequest $request, int $id, ImageUploadService $uploadService): JsonResponse
+    public function update(MasterRequest $request, ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
@@ -118,6 +122,10 @@ class MasterController extends Controller
 
             $master->update($data);
 
+            if (isset($master['photo'])) {
+                $master['photo'] = $uploadService->getImage($master['photo'], 'large');
+            }
+
             return $this->handleResponse([
                 'master' => $master
             ]);
@@ -126,6 +134,10 @@ class MasterController extends Controller
         }
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function delete(int $id): JsonResponse
     {
         try {
@@ -147,12 +159,25 @@ class MasterController extends Controller
         }
     }
 
-    public function getServices(int $id)
+    /**
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getServices(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
 
-            $services = $master->services()->get();
+            $services = [];
+
+            $servicesCollection = $master->services()->get();
+
+            foreach ($servicesCollection as $item) {
+                $item['image'] = $uploadService->getImage($item['image'], 'medium');
+
+                $services[] = $item;
+            }
 
             return $this->handleResponse([
                 'services' => $services,
@@ -162,7 +187,11 @@ class MasterController extends Controller
         }
     }
 
-    public function getCalendars(int $id)
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getCalendars(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
@@ -177,7 +206,12 @@ class MasterController extends Controller
         }
     }
 
-    public function getCalendarsForDay(int $id, string $day)
+    /**
+     * @param int $id
+     * @param string $day
+     * @return JsonResponse
+     */
+    public function getCalendarsForDay(int $id, string $day): JsonResponse
     {
         try {
             $validator = Validator::make(['day' => $day], ['day' => 'required|date_format:Y-m-d']);
@@ -200,7 +234,11 @@ class MasterController extends Controller
         }
     }
 
-    public function getRecords(int $id)
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getRecords(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
