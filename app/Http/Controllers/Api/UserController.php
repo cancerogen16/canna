@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -119,10 +120,11 @@ class UserController extends Controller
     /**
      * Display the profile of the specified resource.
      *
-     * @param  int  $id
+     * @param ImageUploadService $uploadService
+     * @param int $id
      * @return JsonResponse
      */
-    public function getProfile(int $id): JsonResponse
+    public function getProfile(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $user = User::findOrFail($id);
@@ -136,6 +138,8 @@ class UserController extends Controller
             $profile = $user->profile()->first();
             if (isNull($profile)) {
                 $profile = collect([]);
+            } else {
+                $profile['photo'] = $uploadService->getImage($profile['photo'], 'large');
             }
 
             return $this->handleResponse([
@@ -149,10 +153,11 @@ class UserController extends Controller
     /**
      * Display the salons listing of the specified resource.
      *
-     * @param  int  $id
+     * @param ImageUploadService $uploadService
+     * @param int $id
      * @return JsonResponse
      */
-    public function getSalons(int $id): JsonResponse
+    public function getSalons(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $user = User::findOrFail($id);
@@ -163,7 +168,15 @@ class UserController extends Controller
                 ]);
             }
 
-            $salons = $user->salons()->get();
+            $salons = [];
+
+            $salonsCollection = $user->salons()->get();
+
+            foreach ($salonsCollection as $item) {
+                $item['main_photo'] = $uploadService->getImage($item['main_photo'], 'thumbnail');
+
+                $salons[] = $item;
+            }
 
             return $this->handleResponse([
                 'salons' => $salons,
@@ -179,7 +192,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function getRecords(int $id)
+    public function getRecords(int $id): JsonResponse
     {
         try {
             $user = User::findOrFail($id);
