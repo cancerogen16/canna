@@ -15,6 +15,16 @@ return [
     |
     */
 
-    'driver' => 'imagick'
+    'driver' => 'imagick',
 
+    /*
+     * Images sizes
+     * по умолчанию - 'medium'
+     * */
+
+    'sizes' => [
+        'thumbnail' => [100, 100],
+        'medium' => [300, 300],
+        'large' => [600, 600],
+    ],
 ];
