@@ -1,6 +1,6 @@
 import HTTP from '../../utils/HTTP';
 import { clearUser } from '../user/action';
-import { setUserWithThunk } from '../user/thunks';
+import { setUserWithThunk, updateSalonUserFetch } from '../user/thunks';
 import { authCheck, authLogin, authLogout } from './actions';
 
 export const fetchLogin = (credentials) => (dispatch, getState) => {
@@ -10,11 +10,12 @@ export const fetchLogin = (credentials) => (dispatch, getState) => {
             HTTP.post('api/authorization/login', credentials)
                 .then(res => {
                     const {token, user} = res.data;
-                    console.log(res.data)
                     dispatch(authLogin(token));
                     dispatch(setUserWithThunk(user));
+                    
                     localStorage.setItem('access_token', token);
                     HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+                    dispatch(updateSalonUserFetch(user.id))
                 })
                 .catch(res => console.log(res));
         });
@@ -28,7 +29,6 @@ export const fetchRegistre = (credentials) => (dispatch, getState) => {
             HTTP.post('api/authorization/register', credentials)
                 .then(res => {
                     const {token, user} = res.data;
-                    console.log(res)
                     dispatch(authLogin(token));
                     dispatch(setUserWithThunk(user));
                     localStorage.setItem('access_token', token);

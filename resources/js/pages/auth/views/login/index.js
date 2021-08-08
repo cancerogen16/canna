@@ -8,7 +8,10 @@ export default function Page(props){
     const auth = useSelector(state => state.auth)
     
     if(auth.isAuthenticated){
-        return <Redirect to={props.history.location.state.from.pathname}/>
+        return <Redirect to={{
+            pathname: props.history.location.state.from.pathname,
+            state: { from: props.location }
+        }}/>
     }
     return  <div className="login-page__block">
                 <Login  />

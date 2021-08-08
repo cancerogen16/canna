@@ -1,18 +1,27 @@
-import React, {Suspense} from 'react'
+import React, {Suspense, useEffect} from 'react'
 import PropTypes, { any } from 'prop-types'
 import { Route, Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
+import { Dashboard } from '@material-ui/icons'
+import { updateSalonUserFetch } from '../store/user/thunks'
+import FormSalon from '../components/Dashboard/FormSalon'
+import Modal from '../components/Dialogs/Modal'
+import { fetchSalonByUserId } from '../store/salon/thunks'
 
-const DashboardRoute = ({ component: Component, isAuthenticated, userSalon, isRole,  ...rest }) => {
-  
+const DashboardRoute = ({ component: Component, isAuthenticated, userSalon, user,  ...rest }) => {
+  const dispatch = useDispatch();
     return <Route {...rest} render={props => {
+        console.log('dash',props)
         return <Suspense fallback={<div>Loading...</div>}>
 
+            
+
             {
-                  userSalon
+              
+                  isAuthenticated
                     ? <Component {...props}/>
                     : <Redirect to={{
-                        pathname: '/',
+                        pathname: '/login',
                         state: { from: props.location },
                     }}/>
             }
@@ -24,16 +33,16 @@ DashboardRoute.propTypes = {
   component: PropTypes.object.isRequired,
   location: PropTypes.object,
   isAuthenticated: PropTypes.bool.isRequired,
-  isRole: PropTypes.any,
-  userSalon: PropTypes.any,
+  user: PropTypes.object
 }
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
   return {
     isAuthenticated: store.auth.isAuthenticated,
-    isRole: store.user.role_id,
-    userSalon: !!store.user.salon
+    role: store.user.role_id,
+    user: store.user
   }
 }
+
 export default connect(mapStateToProps)(DashboardRoute)
