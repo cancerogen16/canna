@@ -19,6 +19,7 @@ return [
 
     /*
      * Images sizes
+     * по умолчанию - 'medium'
      * */
 
     'sizes' => [
