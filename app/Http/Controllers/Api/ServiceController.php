@@ -7,6 +7,7 @@ use App\Http\Requests\ServiceRequest;
 use App\Models\Action;
 use App\Models\Master;
 use App\Models\Service;
+use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -16,16 +17,33 @@ class ServiceController extends Controller
 {
     use ApiResponder;
 
-    public function index(): JsonResponse
+    /**
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function index(ImageUploadService $uploadService): JsonResponse
     {
-        $services = Service::all();
+        $services = [];
+
+        $servicesCollection = Service::all();
+
+        foreach ($servicesCollection as $item) {
+            $item['image'] = $uploadService->getImage($item['image'], 'medium');
+
+            $services[] = $item;
+        }
 
         return $this->handleResponse([
             'services' => $services
         ]);
     }
 
-    public function store(ServiceRequest $request): JsonResponse
+    /**
+     * @param ServiceRequest $request
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function store(ServiceRequest $request, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $service = new Service($request->validated());
@@ -36,7 +54,17 @@ class ServiceController extends Controller
                 ]);
             }
 
+            if (isset($service['image'])) {
+                if ($photo = $uploadService->upload($service['image'])) {
+                    $service['image'] = $photo;
+                }
+            }
+
             $service->save();
+
+            if (isset($service['image'])) {
+                $service['image'] = $uploadService->getImage($service['image'], 'large');
+            }
 
             return $this->handleResponse([
                 'service' => $service
@@ -46,10 +74,17 @@ class ServiceController extends Controller
         }
     }
 
-    public function show(int $id): JsonResponse
+    /**
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function show(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
+
+            $service['image'] = $uploadService->getImage($service['image'], 'large');
 
             return $this->handleResponse([
                 'service' => $service->toArray()
@@ -59,7 +94,13 @@ class ServiceController extends Controller
         }
     }
 
-    public function update(ServiceRequest $request, int $id): JsonResponse
+    /**
+     * @param ServiceRequest $request
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(ServiceRequest $request, ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
@@ -72,7 +113,19 @@ class ServiceController extends Controller
                 ]);
             }
 
+            if (isset($service['image'])) {
+                if ($photo = $uploadService->upload($service['image'])) {
+                    $service['image'] = $photo;
+                }
+            } else {
+                $service['image'] = null;
+            }
+
             $service->update($data);
+
+            if (isset($service['image'])) {
+                $service['image'] = $uploadService->getImage($service['image'], 'large');
+            }
 
             return $this->handleResponse([
                 'service' => $service
@@ -103,12 +156,25 @@ class ServiceController extends Controller
         }
     }
 
-    public function getMasters(int $id)
+    /**
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getMasters(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
 
-            $masters = $service->masters()->get();
+            $masters = [];
+
+            $mastersCollection = $service->masters()->get();
+
+            foreach ($mastersCollection as $item) {
+                $item['photo'] = $uploadService->getImage($item['photo'], 'thumbnail');
+
+                $masters[] = $item;
+            }
 
             return $this->handleResponse([
                 'masters' => $masters,
@@ -118,12 +184,25 @@ class ServiceController extends Controller
         }
     }
 
-    public function getActions(int $id)
+    /**
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getActions(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
 
-            $actions = $service->actions()->get();
+            $actions = [];
+
+            $actionsCollection = $service->actions()->get();
+
+            foreach ($actionsCollection as $item) {
+                $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
+
+                $actions[] = $item;
+            }
 
             return $this->handleResponse([
                 'actions' => $actions,
@@ -133,7 +212,12 @@ class ServiceController extends Controller
         }
     }
 
-    public function attachMaster(int $id, int $master_id)
+    /**
+     * @param int $id
+     * @param int $master_id
+     * @return JsonResponse
+     */
+    public function attachMaster(int $id, int $master_id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
@@ -160,7 +244,12 @@ class ServiceController extends Controller
         }
     }
 
-    public function attachAction(int $id, int $action_id)
+    /**
+     * @param int $id
+     * @param int $action_id
+     * @return JsonResponse
+     */
+    public function attachAction(int $id, int $action_id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
@@ -187,7 +276,12 @@ class ServiceController extends Controller
         }
     }
 
-    public function detachMaster(int $id, int $master_id)
+    /**
+     * @param int $id
+     * @param int $master_id
+     * @return JsonResponse
+     */
+    public function detachMaster(int $id, int $master_id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
@@ -206,7 +300,12 @@ class ServiceController extends Controller
         }
     }
 
-    public function detachAction(int $id, int $action_id)
+    /**
+     * @param int $id
+     * @param int $action_id
+     * @return JsonResponse
+     */
+    public function detachAction(int $id, int $action_id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
