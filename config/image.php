@@ -15,6 +15,15 @@ return [
     |
     */
 
-    'driver' => 'imagick'
+    'driver' => 'imagick',
 
+    /*
+     * Images sizes
+     * */
+
+    'sizes' => [
+        'thumbnail' => [100, 100],
+        'medium' => [300, 300],
+        'large' => [600, 600],
+    ],
 ];
