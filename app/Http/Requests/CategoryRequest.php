@@ -25,6 +25,9 @@ class CategoryRequest extends FormRequest
     {
         return [
             'title' => 'required|min:3|max:250',
+            'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'nullable|string'
         ];
     }
 }
