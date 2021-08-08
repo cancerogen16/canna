@@ -174,7 +174,7 @@ class MasterController extends Controller
             $servicesCollection = $master->services()->get();
 
             foreach ($servicesCollection as $item) {
-                $item['image'] = $uploadService->getImage($item['image'], 'medium');
+                $item['image'] = $uploadService->getImage($item['image'], 'thumbnail');
 
                 $services[] = $item;
             }
