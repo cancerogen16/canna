@@ -27,7 +27,7 @@ class MasterController extends Controller
         $mastersCollection = Master::all();
 
         foreach ($mastersCollection as $item) {
-            $item['photo'] = $uploadService->getImage($item['photo'], 'large');
+            $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
 
             $masters[] = $item;
         }
