@@ -12,4 +12,6 @@ Route::group([
     Route::post('/', [CalendarController::class, 'store'])->name('calendars.store');
     Route::match(['put', 'patch'], '/{id}', [CalendarController::class, 'update'])->name('calendars.update');
     Route::delete('/{id}', [CalendarController::class, 'delete'])->name('calendars.delete');
+
+    Route::post('/schedule', [CalendarController::class, 'schedule'])->name('calendars.schedule');
 });
