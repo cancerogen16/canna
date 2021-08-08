@@ -16,30 +16,20 @@ class MasterController extends Controller
 {
     use ApiResponder;
 
+    /**
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
     public function index(ImageUploadService $uploadService): JsonResponse
     {
-        $width = 300;
-        $height = 300;
-
         $masters = [];
 
         $mastersCollection = Master::all();
 
         foreach ($mastersCollection as $item) {
-            if ($item['photo']) {
-                $photo = $uploadService->resize($item['photo'], $width, $height);
-            }
+            $item['photo'] = $uploadService->getImage($item['photo'], 'large');
 
-            $masters[] = [
-                'name' => $item['name'],
-                'salon_id' => $item['salon_id'],
-                'slug' => $item['slug'],
-                'position' => $item['position'],
-                'photo' => $photo,
-                'experience' => $item['experience'],
-                'description' => $item['description'],
-                'rating' => $item['rating'],
-            ];
+            $masters[] = $item;
         }
 
         return $this->handleResponse([
@@ -47,6 +37,11 @@ class MasterController extends Controller
         ]);
     }
 
+    /**
+     * @param MasterRequest $request
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
     public function store(MasterRequest $request, ImageUploadService $uploadService): JsonResponse
     {
         try {
@@ -58,7 +53,7 @@ class MasterController extends Controller
                 ]);
             }
 
-            if ($master['photo']) {
+            if (isset($master['photo'])) {
                 if ($photo = $uploadService->upload($master['photo'])) {
                     $master['photo'] = $photo;
                 }
@@ -74,10 +69,17 @@ class MasterController extends Controller
         }
     }
 
-    public function show(int $id): JsonResponse
+    /**
+     * @param int $id
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function show(int $id, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
+
+            $master['photo'] = $uploadService->getImage($master['photo'], 'large');
 
             return $this->handleResponse([
                 'master' => $master->toArray()
@@ -87,7 +89,13 @@ class MasterController extends Controller
         }
     }
 
-    public function update(MasterRequest $request, int $id): JsonResponse
+    /**
+     * @param MasterRequest $request
+     * @param int $id
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function update(MasterRequest $request, int $id, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
@@ -98,6 +106,14 @@ class MasterController extends Controller
                 return $this->handleResponse([
                     'errors' => ['Нет доступа'],
                 ]);
+            }
+
+            if (isset($master['photo'])) {
+                if ($photo = $uploadService->upload($master['photo'])) {
+                    $master['photo'] = $photo;
+                }
+            } else {
+                $master['photo'] = null;
             }
 
             $master->update($data);
