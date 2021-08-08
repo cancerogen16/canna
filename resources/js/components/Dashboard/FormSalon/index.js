@@ -62,7 +62,11 @@ export default function FormSalon (props){
                         validators={['required',]}
                         errorMessages={['Поле обязательно для заполнения' ]}
                     />
-                   <input type="file" />
+                   <input
+                       type="file"
+                       name='main_photo'
+                       onChange={handlerOnChangeField}
+                   />
                     <TextField
                         className={classes.areal}
                         label="Описание"

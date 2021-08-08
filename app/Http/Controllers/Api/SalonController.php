@@ -62,6 +62,10 @@ class SalonController extends Controller
 
             $salon->save();
 
+            if (isset($salon['main_photo'])) {
+                $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+            }
+
             return $this->handleResponse([
                 'salon' => $salon
             ], 201);

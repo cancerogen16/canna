@@ -30,7 +30,7 @@ class ServiceRequest extends FormRequest
             'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
             'price' => 'required|integer|between:0,999999',
             'duration' => 'required|integer|between:1,10',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'excerpt' => 'nullable|string',
             'description' => 'nullable|string',
         ];
