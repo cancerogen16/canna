@@ -9,6 +9,9 @@ import { clearSalon } from '../store/salon/action'
 import { updateSalonUserFetch } from '../store/user/action'
 import Navigation from '../components/Dashboard/Navigation'
 import Alert from '../components/Dialogs/Alert'
+import Modal from '../components/Dialogs/Modal'
+import FormSalon from '../components/Dashboard/FormSalon'
+import { fetchSalonsOneId } from '../store/salon/thunks'
 
 
 
@@ -36,11 +39,11 @@ function DashboardLayout({ children, history, user }) {
       })
   }
   useEffect(() =>{
-    
+    //dispatch(fetchSalonsOneId(user.id))
   }, [])
   const handleYes = () => {
    
-    dispatch(clearSalon());
+    //dispatch(clearSalon());
     setOpen(false);
 
   }
@@ -86,7 +89,7 @@ function DashboardLayout({ children, history, user }) {
           
       </ Grid>
       </Container>
-      <Alert 
+      {/* <Alert 
         
           open={open} 
           title="Создать салон?"
@@ -94,7 +97,10 @@ function DashboardLayout({ children, history, user }) {
           handleYes={handleYes}
           >
             Мы не нашли в базе информацию о вашем салоне
-        </Alert>
+        </Alert> */}
+        {/* <Modal open={open}>
+          <FormSalon  handleYes={handleYes}/>
+        </Modal> */}
 
   </div>
 }

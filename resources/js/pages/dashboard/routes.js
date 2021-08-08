@@ -5,21 +5,21 @@ export default [
     path: '/dashboard',
     exact: true,
     auth: true,
-    role: 2,
+    dashboard: true,
     component: lazy(() => import('./views/index')),
   },
   {
     path: '/dashboard/masters',
     exact: true,
     auth: true,
-    role: 2,
+    dashboard: true,
     component: lazy(() => import('./views/masters')),
   },
   {
     path: '/dashboard/discount',
     exact: true,
     auth: true,
-    role: 2,
+    dashboard: true,
     component: lazy(() => import('./views/discount')),
   }
 ]

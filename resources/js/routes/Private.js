@@ -6,10 +6,7 @@ import { updateSalonUserFetch } from '../store/user/thunks'
 
 
 const PrivateRoute = ({ component: Component, isAuthenticated, user, ...rest }) => {
-  const dispatch = useDispatch();
-  useEffect(() =>{
-    dispatch(updateSalonUserFetch(user.id));
-  })
+  
    console.log('privet', user);
     return <Route {...rest} render={props => {
       
