@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SalonRequest;
 use App\Http\Requests\SalonSearchRequest;
 use App\Models\Salon;
+use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\SalonRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
@@ -15,16 +17,33 @@ class SalonController extends Controller
 {
     use ApiResponder;
 
-    public function index(): JsonResponse
+    /**
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function index(ImageUploadService $uploadService): JsonResponse
     {
-        $salons = Salon::all();
+        $salons = [];
+
+        $salonsCollection = Salon::all();
+
+        foreach ($salonsCollection as $item) {
+            $item['main_photo'] = $uploadService->getImage($item['main_photo'], 'medium');
+
+            $salons[] = $item;
+        }
 
         return $this->handleResponse([
             'salons' => $salons
         ]);
     }
 
-    public function store(SalonRequest $request): JsonResponse
+    /**
+     * @param SalonRequest $request
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function store(SalonRequest $request, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $salon = new Salon($request->validated());
@@ -33,6 +52,12 @@ class SalonController extends Controller
                 return $this->handleResponse([
                     'errors' => ['Нет доступа'],
                 ]);
+            }
+
+            if (isset($salon['main_photo'])) {
+                if ($main_photo = $uploadService->upload($salon['main_photo'])) {
+                    $salon['main_photo'] = $main_photo;
+                }
             }
 
             $salon->save();
@@ -45,30 +70,51 @@ class SalonController extends Controller
         }
     }
 
-    public function show(int $id): JsonResponse
+    /**
+     * @param int $id
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function show(int $id, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
+            $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+
             return $this->handleResponse([
-                'salon' => $salon->toArray()
+                'salon' => $salon
             ]);
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
         }
     }
 
-    public function update(SalonRequest $request, int $id): JsonResponse
+    /**
+     * @param SalonRequest $request
+     * @param int $id
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function update(Request $request, int $id, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $data = $request->validated();
+            $data = $request->all();
 
             if (Auth::user()->cannot('update', [$salon, $data['user_id']])) {
                 return $this->handleResponse([
                     'errors' => ['Нет доступа'],
                 ]);
+            }
+
+            if (isset($salon['main_photo'])) {
+                if ($main_photo = $uploadService->upload($salon['main_photo'])) {
+                    $salon['main_photo'] = $main_photo;
+                }
+            } else {
+                $salon['main_photo'] = null;
             }
 
             $salon->update($data);
