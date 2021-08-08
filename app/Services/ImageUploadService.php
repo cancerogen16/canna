@@ -82,7 +82,12 @@ class ImageUploadService implements UploadImageServiceContract
                 }
             }
 
-            $thumbnail = Image::make($originDir . $filename);
+            try {
+                $thumbnail = Image::make($originDir . $filename);
+            } catch (Throwable $e) {
+                $thumbnail = Image::make($originDir . 'noimage.gif');
+                $newImage = 'noimage-' . $width . 'x' . $height . '.gif';
+            }
 
             $thumbnail->fit($width, $height);
 
