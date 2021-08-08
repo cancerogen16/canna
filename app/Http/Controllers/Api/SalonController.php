@@ -185,12 +185,25 @@ class SalonController extends Controller
         }
     }
 
-    public function getServices(int $id): JsonResponse
+    /**
+     * @param int $id
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function getServices(int $id, ImageUploadService $uploadService): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $services = $salon->services()->get();
+            $services = [];
+
+            $servicesCollection = $salon->services()->get();
+
+            foreach ($servicesCollection as $item) {
+                $item['image'] = $uploadService->getImage($item['image'], 'thumbnail');
+
+                $services[] = $item;
+            }
 
             return $this->handleResponse([
                 'services' => $services,
