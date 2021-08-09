@@ -11,6 +11,7 @@ use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class SalonController extends Controller
@@ -79,7 +80,7 @@ class SalonController extends Controller
      * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function show(int $id, ImageUploadService $uploadService): JsonResponse
+    public function show(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -100,7 +101,7 @@ class SalonController extends Controller
      * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function update(Request $request, int $id, ImageUploadService $uploadService): JsonResponse
+    public function update(Request $request, ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -123,6 +124,10 @@ class SalonController extends Controller
 
             $salon->update($data);
 
+            if (isset($salon['main_photo'])) {
+                $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+            }
+
             return $this->handleResponse([
                 'salon' => $salon
             ]);
@@ -131,6 +136,10 @@ class SalonController extends Controller
         }
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function delete(int $id): JsonResponse
     {
         try {
@@ -152,20 +161,30 @@ class SalonController extends Controller
         }
     }
 
-    public function search(SalonSearchRequest $request)
+    /**
+     * @param SalonSearchRequest $request
+     * @param ImageUploadService $uploadService
+     * @return JsonResponse
+     */
+    public function search(SalonSearchRequest $request, ImageUploadService $uploadService): JsonResponse
     {
-        $result = [];
+        $salons = [];
 
-        $salons = Salon::where('city', $request->input('city'))->get();
+        $salonsCollection = DB::table('salons')
+            ->join('services', 'salons.id', '=', 'services.salon_id')
+            ->where('city', $request->input('city'))
+            ->where('category_id', $request->input('category_id'))
+            ->select('salons.*')
+            ->get();
 
-        foreach ($salons as $salon) {
-            if ($salon->services()->where('category_id', $request->input('category_id'))->get()) {
-                $result[] = $salon;
-            }
+        foreach ($salonsCollection as $item) {
+            $item['main_photo'] = $uploadService->getImage($item['main_photo'], 'medium');
+
+            $salons[] = $item;
         }
 
         return $this->handleResponse([
-            'salons' => $result,
+            'salons' => $salons,
         ]);
 
     }
@@ -175,7 +194,7 @@ class SalonController extends Controller
      * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function getMasters(int $id, ImageUploadService $uploadService): JsonResponse
+    public function getMasters(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -199,11 +218,11 @@ class SalonController extends Controller
     }
 
     /**
-     * @param int $id
      * @param ImageUploadService $uploadService
+     * @param int $id
      * @return JsonResponse
      */
-    public function getServices(int $id, ImageUploadService $uploadService): JsonResponse
+    public function getServices(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -226,12 +245,25 @@ class SalonController extends Controller
         }
     }
 
-    public function getActions(int $id): JsonResponse
+    /**
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getActions(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $actions = $salon->actions()->get();
+            $actions = [];
+
+            $actionsCollection = $salon->actions()->get();
+
+            foreach ($actionsCollection as $item) {
+                $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
+
+                $actions[] = $item;
+            }
 
             return $this->handleResponse([
                 'actions' => $actions,
@@ -241,6 +273,10 @@ class SalonController extends Controller
         }
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getRecords(int $id): JsonResponse
     {
         try {
