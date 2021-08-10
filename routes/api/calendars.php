@@ -14,4 +14,5 @@ Route::group([
     Route::delete('/{id}', [CalendarController::class, 'delete'])->name('calendars.delete');
 
     Route::post('/schedule', [CalendarController::class, 'schedule'])->name('calendars.schedule');
+    Route::post('/clean-schedule', [CalendarController::class, 'cleanSchedule'])->name('calendars.cleanSchedule');
 });
