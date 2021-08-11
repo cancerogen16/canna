@@ -66,6 +66,10 @@ function DashboardLayout({ children, history, user }) {
                 title: 'Сотрудники'
               },
               {
+                href: '/dashboard/services',
+                title: 'Услуги салона'
+              },
+              {
                 href: '/dashboard/discount',
                 title: 'Акции'
               },

@@ -24,7 +24,7 @@ const priviewService = makeStyles({
     },
     btns: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
     }
   });
 
