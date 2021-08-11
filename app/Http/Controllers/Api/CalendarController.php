@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CalendarRequest;
 use App\Http\Requests\CalendarScheduleRequest;
+use App\Http\Requests\CleanCalendarScheduleRequest;
 use App\Models\Calendar;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
@@ -131,56 +132,84 @@ class CalendarController extends Controller
 
             $slotsByDays = []; // массив слотов в новом расписании мастера, отсортированный по дням и часам
 
-            if (!empty($dates) && ($work_to > $work_from)) {
-                foreach ($dates as $date) {
-                    for ($time = $work_from; $time < $work_to; $time++) {
-                        $slotTime = strlen($time) == 1 ? strval('0' . $time) : strval($time); // часы в 2 разряда
+            foreach ($dates as $date) {
+                for ($time = $work_from; $time < $work_to; $time++) {
+                    $slotTime = strlen($time) == 1 ? strval('0' . $time) : strval($time); // часы в 2 разряда
 
-                        $slotsByDays[$date][$time] = [
-                            'master_id' => $master_id,
-                            'record_id' => null,
-                            'start_datetime' => $date . ' ' . $slotTime . ':00:00',
-                            'created_at' => date('Y-m-d H:i:s'),
-                            'updated_at' => date('Y-m-d H:i:s'),
-                        ];
-                    }
+                    $slotsByDays[$date][$time] = [
+                        'master_id' => $master_id,
+                        'record_id' => null,
+                        'start_datetime' => $date . ' ' . $slotTime . ':00:00',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ];
                 }
+            }
 
-                if (!empty($slotsByDays)) {
-                    $schedules = Calendar::where('master_id', $master_id)->get(); // текущее расписание мастера в базе
+            if (!empty($slotsByDays)) {
+                $schedules = Calendar::where('master_id', $master_id)->get(); // текущее расписание мастера в базе
 
-                    if ($schedules->isEmpty()) { // если расписания ещё нет
-                        foreach ($slotsByDays as $date => $slots) {
-                            Calendar::insert($slots); // пишем в базу слоты очередного дня
-                        }
-                    } else {
-                        foreach ($slotsByDays as $date => $slots) {
-                            $schedules = Calendar::where('master_id', $master_id)
-                                ->where('start_datetime', 'like', $date . '%')->get(); // расписание мастера в базе на очередной день
+                if ($schedules->isEmpty()) { // если расписания ещё нет
+                    foreach ($slotsByDays as $date => $slots) {
+                        Calendar::insert($slots); // пишем в базу слоты очередного дня
+                    }
+                } else {
+                    foreach ($slotsByDays as $date => $slots) {
+                        $schedules = Calendar::where('master_id', $master_id)
+                            ->where('start_datetime', 'like', $date . '%')->get(); // расписание мастера в базе на очередной день
 
-                            if (!empty($schedules)) {
-                                foreach ($schedules as $schedule) {
-                                    $time = date('H', strtotime($schedule['start_datetime'])); // время начала слота
+                        if (!empty($schedules)) {
+                            foreach ($schedules as $schedule) {
+                                $time = date('H', strtotime($schedule['start_datetime'])); // время начала слота
 
-                                    if ($schedule['record_id'] && array_key_exists($time, $slots)) { // если была запись на очередной слот
-                                        $slots[$time]['record_id'] = $schedule['record_id'];
-                                    }
+                                if ($schedule['record_id'] && array_key_exists($time, $slots)) { // если была запись на очередной слот
+                                    $slots[$time]['record_id'] = $schedule['record_id'];
                                 }
                             }
-
-                            Calendar::where('master_id', $master_id)
-                                ->where('start_datetime', 'like', $date . '%')->delete(); // удаление расписания мастера на очередную дату
-
-                            Calendar::insert($slots); // сохранение в базу заданных слотов
                         }
-                    }
 
-                    return $this->handleResponse([]);
-                } else {
-                    return $this->handleResponse([
-                        'errors' => ['Нет слотов для записи']
-                    ]);
+                        Calendar::where('master_id', $master_id)
+                            ->where('start_datetime', 'like', $date . '%')->delete(); // удаление расписания мастера на очередную дату
+
+                        Calendar::insert($slots); // сохранение в базу заданных слотов
+                    }
                 }
+                return $this->handleResponse([]);
+            } else {
+                return $this->handleResponse([
+                    'errors' => ['Нет слотов для записи']
+                ]);
+            }
+        } catch (Throwable $e) {
+            return $this->handleError($e->getCode(), $e->getMessage());
+        }
+    }
+
+    /**
+     * Удаление из базы расписания на запрошенные дни
+     *
+     * @param CleanCalendarScheduleRequest $request
+     * @return JsonResponse
+     */
+    public function cleanSchedule(CleanCalendarScheduleRequest $request): JsonResponse
+    {
+        try {
+            $fields = $request->input();
+
+            $dates = $fields['dates'];
+            $master_id = $fields['master_id'];
+
+            if (!empty($dates)) {
+                foreach ($dates as $date) {
+                    Calendar::where('master_id', $master_id)
+                        ->where('start_datetime', 'like', $date . '%')
+                        ->delete();
+                }
+                return $this->handleResponse([]);
+            } else {
+                return $this->handleResponse([
+                    'errors' => ['Нет календаря на указанные дни']
+                ]);
             }
         } catch (Throwable $e) {
             return $this->handleError($e->getCode(), $e->getMessage());
