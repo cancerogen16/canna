@@ -17,15 +17,11 @@ export default function ServicePreview (props){
                 <Avatar className={classes.ava} alt={service.title} src={service.image} />
                 <div className={classes.info}>
                     <span className={classes.name}>{service.title}</span>
-                    <span className={classes.spec}>{service.description}</span>
-                </div>
-                <div>
-                    <p >Цена: {service.price} руб.</p>
-                    <p>Продолжительность услуги: {service.duration} ч.</p>
                 </div>
             </div>
-            
-            
+        <div className={classes.btns}>
+            {props.children}
+        </div>
             </>
                 
 }

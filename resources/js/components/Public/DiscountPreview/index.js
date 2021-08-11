@@ -15,6 +15,9 @@ export default function DiscountPreview (props){
                 <span className={classes.name}>{action.name}</span>
                 <span className={classes.spec}>{action.position}</span>
             </div>
+            <div>
+                <p> {action.end_at} ч.</p>
+            </div>
         </div>
         <div className={classes.btns}>
             {props.children}
