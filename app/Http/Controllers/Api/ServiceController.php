@@ -33,7 +33,7 @@ class ServiceController extends Controller
             $services[] = $item;
         }
 
-        return $this->handleResponse([
+        return $this->ok([
             'services' => $services
         ]);
     }
@@ -49,9 +49,7 @@ class ServiceController extends Controller
             $service = new Service($request->validated());
 
             if (Auth::user()->cannot('create', $service)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             if (isset($service['image'])) {
@@ -66,11 +64,11 @@ class ServiceController extends Controller
                 $service['image'] = $uploadService->getImage($service['image'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->response(201, [
                 'service' => $service
-            ], 201);
+            ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -86,11 +84,11 @@ class ServiceController extends Controller
 
             $service['image'] = $uploadService->getImage($service['image'], 'large');
 
-            return $this->handleResponse([
+            return $this->ok([
                 'service' => $service->toArray()
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -108,9 +106,7 @@ class ServiceController extends Controller
             $data = $request->validated();
 
             if (Auth::user()->cannot('update', [$service, $data['salon_id']])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             if (isset($service['image'])) {
@@ -127,11 +123,11 @@ class ServiceController extends Controller
                 $service['image'] = $uploadService->getImage($service['image'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'service' => $service
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -141,18 +137,16 @@ class ServiceController extends Controller
             $service = Service::findOrFail($id);
 
             if (Auth::user()->cannot('delete', $service)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $service->delete();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'service' => $service
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -176,11 +170,11 @@ class ServiceController extends Controller
                 $masters[] = $item;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'masters' => $masters,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -204,11 +198,11 @@ class ServiceController extends Controller
                 $actions[] = $item;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'actions' => $actions,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -223,9 +217,7 @@ class ServiceController extends Controller
             $service = Service::findOrFail($id);
 
             if (Auth::user()->cannot('editMasterConnection', [$service, $master_id])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $master = Master::findOrFail($master_id);
@@ -233,14 +225,12 @@ class ServiceController extends Controller
             if ($service->salon_id == $master->salon_id) {
                 $service->masters()->attach($master_id);
             } else {
-                return $this->handleResponse([
-                    'errors' => ['Услуга и мастер должны принадлежать одному салону']
-                ]);
+                return $this->response(422, [], 'Услуга и мастер должны принадлежать одному салону');
             }
 
-            return $this->handleResponse([]);
+            return $this->ok();
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -255,9 +245,7 @@ class ServiceController extends Controller
             $service = Service::findOrFail($id);
 
             if (Auth::user()->cannot('editActionConnection', [$service, $action_id])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $action = Action::findOrFail($action_id);
@@ -265,14 +253,12 @@ class ServiceController extends Controller
             if ($service->salon_id == $action->salon_id) {
                 $service->actions()->attach($action_id);
             } else {
-                return $this->handleResponse([
-                    'errors' => ['Услуга и акция должны принадлежать одному салону']
-                ]);
+                return $this->response(422, [], 'Услуга и мастер должны принадлежать одному салону');
             }
 
-            return $this->handleResponse([]);
+            return $this->ok();
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -287,16 +273,14 @@ class ServiceController extends Controller
             $service = Service::findOrFail($id);
 
             if (Auth::user()->cannot('editMasterConnection', [$service, $master_id])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $service->masters()->detach($master_id);
 
-            return $this->handleResponse([]);
+            return $this->ok();
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -311,16 +295,14 @@ class ServiceController extends Controller
             $service = Service::findOrFail($id);
 
             if (Auth::user()->cannot('editActionConnection', [$service, $action_id])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $service->actions()->detach($action_id);
 
-            return $this->handleResponse([]);
+            return $this->ok();
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 }

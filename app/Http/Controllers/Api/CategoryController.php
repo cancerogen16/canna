@@ -33,7 +33,7 @@ class CategoryController extends Controller
             $categories[] = $item;
         }
 
-        return $this->handleResponse([
+        return $this->ok([
             'categories' => $categories
         ]);
     }
@@ -58,11 +58,11 @@ class CategoryController extends Controller
 
             $category->save();
 
-            return $this->handleResponse([
+            return $this->response(201, [
                 'category' => $category
-            ], 201);
+            ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -80,11 +80,11 @@ class CategoryController extends Controller
 
             $category['image'] = $uploadService->getImage($category['image'], 'large');
 
-            return $this->handleResponse([
-                'category' => $category->toArray()
+            return $this->ok([
+                'category' => $category
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -117,11 +117,11 @@ class CategoryController extends Controller
                 $category['image'] = $uploadService->getImage($category['image'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'category' => $category
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -138,11 +138,11 @@ class CategoryController extends Controller
 
             $category->delete();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'category' => $category
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 }

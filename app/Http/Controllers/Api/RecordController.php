@@ -24,14 +24,12 @@ class RecordController extends Controller
     public function index(): JsonResponse
     {
         if (Auth::user()->cannot('viewAny', Record::class)) {
-            return $this->handleResponse([
-                'errors' => ['Нет доступа'],
-            ]);
+            return $this->response(401, [], 'Нет доступа');
         }
 
         $records = Record::all();
 
-        return $this->handleResponse([
+        return $this->ok([
             'records' => $records,
         ]);
     }
@@ -50,17 +48,13 @@ class RecordController extends Controller
             $record = new Record($data);
 
             if (Auth::user()->cannot('create', $record)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $service = $record->service()->first();
 
             if (!$service->masters->contains($data['master_id'])) {
-                return $this->handleResponse([
-                    'errors' => ['Мастер не оказывает запрашиваемую услугу']
-                ]);
+                return $this->response(422, [], 'Мастер не оказывает запрашиваемую услугу');
             }
 
             $datetimeModifier = $service->duration - 1;
@@ -75,9 +69,7 @@ class RecordController extends Controller
                 ->get();
 
             if ($calendars->count() != $service->duration) {
-                return $this->handleResponse([
-                    'errors' => ['Свободных часов мастера недостаточно для записи на данную услугу в это время']
-                ]);
+                return $this->response(422, [], 'Свободных часов мастера недостаточно для записи на данную услугу в это время');
             }
 
             $record->save();
@@ -87,11 +79,11 @@ class RecordController extends Controller
                 $calendar->save();
             }
 
-            return $this->handleResponse([
+            return $this->response(201, [
                 'record' => $record,
-            ], 201);
+            ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -107,16 +99,14 @@ class RecordController extends Controller
             $record = Record::findOrFail($id);
 
             if (Auth::user()->cannot('view', $record)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'record' => $record->toArray(),
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -135,17 +125,13 @@ class RecordController extends Controller
             $data = $request->validated();
 
             if (Auth::user()->cannot('update', [$record, $data['user_id']])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $service = Service::findOrFail($data['service_id']);
 
             if (!$service->masters->contains($data['master_id'])) {
-                return $this->handleResponse([
-                    'errors' => ['Мастер не оказывает запрашиваемую услугу']
-                ]);
+                return $this->response(422, [], 'Мастер не оказывает запрашиваемую услугу');
             }
 
             $datetimeModifier = $service->duration - 1;
@@ -163,9 +149,7 @@ class RecordController extends Controller
                 ->count();
 
             if ($slotsCount != $service->duration) {
-                return $this->handleResponse([
-                    'errors' => ['Свободных часов мастера недостаточно для записи на данную услугу в это время']
-                ]);
+                return $this->response(422, [], 'Свободных часов мастера недостаточно для записи на данную услугу в это время');
             }
 
             $record->calendars()->update(['record_id' => null]);
@@ -176,11 +160,11 @@ class RecordController extends Controller
                 ->whereBetween('start_datetime', [$startDatetime, $endDatetime])
                 ->update(['record_id' => $record->id]);
 
-            return $this->handleResponse([
+            return $this->ok([
                 'record' => $record,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -196,20 +180,18 @@ class RecordController extends Controller
             $record = Record::findOrFail($id);
 
             if (Auth::user()->cannot('delete', $record)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $record->calendars()->update(['record_id' => null]);
 
             $record->delete();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'record' => $record,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -223,18 +205,16 @@ class RecordController extends Controller
             $record = Record::findOrFail($id);
 
             if (Auth::user()->cannot('view', $record)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $calendars = $record->calendars()->get();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'calendars' => $calendars,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 }

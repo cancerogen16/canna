@@ -24,7 +24,7 @@ class CalendarController extends Controller
     {
         $calendars = Calendar::all();
 
-        return $this->handleResponse([
+        return $this->ok([
             'calendars' => $calendars,
         ]);
     }
@@ -42,11 +42,11 @@ class CalendarController extends Controller
 
             $calendar->save();
 
-            return $this->handleResponse([
+            return $this->response(201, [
                 'calendar' => $calendar,
-            ], 201);
+            ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -61,11 +61,11 @@ class CalendarController extends Controller
         try {
             $calendar = Calendar::findOrFail($id);
 
-            return $this->handleResponse([
+            return $this->ok([
                 'calendar' => $calendar->toArray(),
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -85,11 +85,11 @@ class CalendarController extends Controller
 
             $calendar->update($data);
 
-            return $this->handleResponse([
+            return $this->ok([
                 'calendar' => $calendar,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -106,11 +106,11 @@ class CalendarController extends Controller
 
             $calendar->delete();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'calendar' => $calendar,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -134,7 +134,7 @@ class CalendarController extends Controller
 
             foreach ($dates as $date) {
                 for ($time = $work_from; $time < $work_to; $time++) {
-                    $slotTime = strlen($time) == 1 ? strval('0' . $time) : strval($time); // часы в 2 разряда
+                    $slotTime = strlen($time) === 1 ? ('0' . $time) : (string)$time; // часы в 2 разряда
 
                     $slotsByDays[$date][$time] = [
                         'master_id' => $master_id,
@@ -174,14 +174,12 @@ class CalendarController extends Controller
                         Calendar::insert($slots); // сохранение в базу заданных слотов
                     }
                 }
-                return $this->handleResponse([]);
+                return $this->ok();
             } else {
-                return $this->handleResponse([
-                    'errors' => ['Нет слотов для записи']
-                ]);
+                return $this->response(422, [], 'Нет слотов для записи');
             }
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -205,14 +203,12 @@ class CalendarController extends Controller
                         ->where('start_datetime', 'like', $date . '%')
                         ->delete();
                 }
-                return $this->handleResponse([]);
+                return $this->ok();
             } else {
-                return $this->handleResponse([
-                    'errors' => ['Нет календаря на указанные дни']
-                ]);
+                return $this->response(422, [], 'Нет календаря на указанные дни');
             }
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 }
