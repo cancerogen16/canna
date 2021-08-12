@@ -187,7 +187,7 @@ class SalonController extends Controller
      * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function getMasters(ImageUploadService $uploadService, int $id): JsonResponse
+    public function masters(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -215,7 +215,7 @@ class SalonController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getServices(ImageUploadService $uploadService, int $id): JsonResponse
+    public function services(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -243,7 +243,7 @@ class SalonController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getActions(ImageUploadService $uploadService, int $id): JsonResponse
+    public function actions(ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -270,7 +270,7 @@ class SalonController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getRecords(int $id): JsonResponse
+    public function records(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
