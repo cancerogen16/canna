@@ -32,8 +32,8 @@ class MasterController extends Controller
             $masters[] = $item;
         }
 
-        return $this->handleResponse([
-            'masters' => $masters
+        return $this->ok([
+            'masters' => $masters,
         ]);
     }
 
@@ -48,9 +48,7 @@ class MasterController extends Controller
             $master = new Master($request->validated());
 
             if (Auth::user()->cannot('create', $master)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             if (isset($master['photo'])) {
@@ -65,11 +63,11 @@ class MasterController extends Controller
                 $master['photo'] = $uploadService->getImage($master['photo'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->response(201, [
                 'master' => $master
-            ], 201);
+            ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -85,11 +83,11 @@ class MasterController extends Controller
 
             $master['photo'] = $uploadService->getImage($master['photo'], 'large');
 
-            return $this->handleResponse([
+            return $this->ok([
                 'master' => $master->toArray()
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -107,9 +105,7 @@ class MasterController extends Controller
             $data = $request->validated();
 
             if (Auth::user()->cannot('update', [$master, $data['salon_id']])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             if (isset($master['photo'])) {
@@ -126,11 +122,11 @@ class MasterController extends Controller
                 $master['photo'] = $uploadService->getImage($master['photo'], 'large');
             }
 
-            return $this->handleResponse([
-                'master' => $master
+            return $this->ok([
+                'master' => $master->toArray()
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -144,18 +140,16 @@ class MasterController extends Controller
             $master = Master::findOrFail($id);
 
             if (Auth::user()->cannot('delete', $master)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $master->delete();
 
-            return $this->handleResponse([
-                'master' => $master
+            return $this->ok([
+                'master' => $master->toArray()
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -179,11 +173,11 @@ class MasterController extends Controller
                 $services[] = $item;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'services' => $services,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -198,11 +192,11 @@ class MasterController extends Controller
 
             $calendars = $master->calendars()->get();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'calendars' => $calendars,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -217,20 +211,18 @@ class MasterController extends Controller
             $validator = Validator::make(['day' => $day], ['day' => 'required|date_format:Y-m-d']);
 
             if ($validator->fails()) {
-                return $this->handleResponse([
-                    'errors' => $validator->messages(),
-                ]);
+                return $this->response(401, $validator->messages());
             }
 
             $master = Master::findOrFail($id);
 
             $calendars = $master->calendars()->whereDate('start_datetime', $day)->get();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'calendars' => $calendars,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -244,9 +236,7 @@ class MasterController extends Controller
             $master = Master::findOrFail($id);
 
             if (Auth::user()->cannot('viewRecords', $master)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $calendars = $master->calendars()->get();
@@ -258,11 +248,11 @@ class MasterController extends Controller
                 $records[] = $record;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'records' => $records,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 }

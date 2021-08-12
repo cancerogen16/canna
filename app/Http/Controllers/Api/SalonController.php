@@ -34,7 +34,7 @@ class SalonController extends Controller
             $salons[] = $item;
         }
 
-        return $this->handleResponse([
+        return $this->ok([
             'salons' => $salons
         ]);
     }
@@ -50,9 +50,7 @@ class SalonController extends Controller
             $salon = new Salon($request->validated());
 
             if (Auth::user()->cannot('create', $salon)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             if (isset($salon['main_photo'])) {
@@ -67,11 +65,11 @@ class SalonController extends Controller
                 $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->response(201, [
                 'salon' => $salon
-            ], 201);
+            ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -87,11 +85,11 @@ class SalonController extends Controller
 
             $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
 
-            return $this->handleResponse([
+            return $this->ok([
                 'salon' => $salon
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -109,9 +107,7 @@ class SalonController extends Controller
             $data = $request->all();
 
             if (Auth::user()->cannot('update', [$salon, $data['user_id']])) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             if (isset($salon['main_photo'])) {
@@ -128,11 +124,11 @@ class SalonController extends Controller
                 $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'salon' => $salon
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -146,18 +142,16 @@ class SalonController extends Controller
             $salon = Salon::findOrFail($id);
 
             if (Auth::user()->cannot('delete', $salon)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $salon->delete();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'salon' => $salon
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -183,10 +177,9 @@ class SalonController extends Controller
             $salons[] = $item;
         }
 
-        return $this->handleResponse([
-            'salons' => $salons,
+        return $this->ok([
+            'salons' => $salons
         ]);
-
     }
 
     /**
@@ -209,11 +202,11 @@ class SalonController extends Controller
                 $masters[] = $item;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'masters' => $masters,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -237,11 +230,11 @@ class SalonController extends Controller
                 $services[] = $item;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'services' => $services,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -265,11 +258,11 @@ class SalonController extends Controller
                 $actions[] = $item;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'actions' => $actions,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -283,9 +276,7 @@ class SalonController extends Controller
             $salon = Salon::findOrFail($id);
 
             if (Auth::user()->cannot('viewRecords', $salon)) {
-                return $this->handleResponse([
-                    'errors' => ['Нет доступа'],
-                ]);
+                return $this->response(401, [], 'Нет доступа');
             }
 
             $services = $salon->services()->get();
@@ -298,11 +289,11 @@ class SalonController extends Controller
                 }
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'records' => $records,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 }

@@ -7,6 +7,7 @@ use App\Contracts\UploadImageServiceContract;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use RuntimeException;
 use Throwable;
 
 class ImageUploadService implements UploadImageServiceContract
@@ -17,21 +18,21 @@ class ImageUploadService implements UploadImageServiceContract
      */
     public function upload(UploadedFile $file): ?string
     {
+        $originalName = '';
+
         try {
             $originalName = $file->getClientOriginalName();
 
             $fileUploaded = $file->move(Storage::path('images') . '/origin/', $originalName);
 
             if ($fileUploaded === false) {
-                throw new \Exception('Image upload error');
+                throw new RuntimeException('Image upload error');
             }
-
-            return $originalName;
         } catch (Throwable $e) {
             report($e);
-
-            return $originalName;
         }
+
+        return $originalName;
     }
 
     /**
@@ -50,7 +51,7 @@ class ImageUploadService implements UploadImageServiceContract
         if (isset($info['extension'])) {
             $extensions = ['jpeg', 'png', 'jpg', 'gif']; // допустимые расширения файлов
 
-            if (in_array($info['extension'], $extensions)) {
+            if (in_array($info['extension'], $extensions, true)) {
                 $extension = $info['extension'];
 
                 $newImage = $info['filename'] . '-' . $width . 'x' . $height . '.' . $extension;
@@ -75,28 +76,19 @@ class ImageUploadService implements UploadImageServiceContract
             $directories = explode('/', dirname(str_replace('../', '', $newImage)));
 
             foreach ($directories as $directory) {
-                $path = $path . '/' . $directory;
+                $path .= '/' . $directory;
 
-                if (!file_exists($thumbnailDir . $path)) {
-                    @mkdir($thumbnailDir . $path, 0777);
+                if (!file_exists($thumbnailDir . $path) && !mkdir($concurrentDirectory = $thumbnailDir . $path, 0777) && !is_dir($concurrentDirectory)) {
+                    throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
                 }
             }
 
             try {
                 $thumbnail = Image::make($originDir . $filename);
             } catch (Throwable $e) {
-                $newImage = 'noimage-' . $width . 'x' . $height . '.gif';
+                report($e);
 
-                if (file_exists($thumbnailDir . $newImage) && is_file($thumbnailDir . $newImage)) {
-                    return 'thumbnail/' . $newImage;
-                }
-
-                try {
-                    $thumbnail = Image::make($originDir . 'noimage.gif');
-                    $newImage = 'noimage-' . $width . 'x' . $height . '.gif';
-                } catch (Throwable $e) {
-                    return false;
-                }
+                return null;
             }
 
             $thumbnail->fit($width, $height);
@@ -121,19 +113,19 @@ class ImageUploadService implements UploadImageServiceContract
         /* Проверка, является ли изображение ссылкой */
         if (filter_var($filename, FILTER_VALIDATE_URL)) {
             return $filename;
-        } else {
-            if (is_null($filename)) {
-                $filename = 'noimage.gif';
-            }
-
-            if (is_array($size)) {
-                $filename = $this->resize($filename, $size[0], $size[1]);
-            } else {
-                $sizes = config('image.sizes');
-                $filename = $this->resize($filename, $sizes[$size][0], $sizes[$size][1]);
-            }
-
-            return '/images/' . $filename;
         }
+
+        if (is_null($filename)) {
+            $filename = 'noimage.gif';
+        }
+
+        if (is_array($size)) {
+            $filename = $this->resize($filename, $size[0], $size[1]);
+        } else {
+            $sizes = config('image.sizes');
+            $filename = $this->resize($filename, $sizes[$size][0], $sizes[$size][1]);
+        }
+
+        return '/images/' . $filename;
     }
 }

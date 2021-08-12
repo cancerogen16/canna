@@ -30,7 +30,7 @@ class ActionController extends Controller
             $actions[] = $item;
         }
 
-        return $this->handleResponse([
+        return $this->ok([
             'actions' => $actions
         ]);
     }
@@ -57,11 +57,11 @@ class ActionController extends Controller
                 $action['photo'] = $uploadService->getImage($action['photo'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'action' => $action
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -77,11 +77,11 @@ class ActionController extends Controller
 
             $action['photo'] = $uploadService->getImage($action['photo'], 'large');
 
-            return $this->handleResponse([
+            return $this->ok([
                 'action' => $action->toArray()
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -112,11 +112,11 @@ class ActionController extends Controller
                 $action['photo'] = $uploadService->getImage($action['photo'], 'large');
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'action' => $action
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -131,11 +131,11 @@ class ActionController extends Controller
 
             $action->delete();
 
-            return $this->handleResponse([
+            return $this->ok([
                 'action' => $action
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
@@ -159,11 +159,11 @@ class ActionController extends Controller
                 $services[] = $item;
             }
 
-            return $this->handleResponse([
+            return $this->ok([
                 'services' => $services,
             ]);
         } catch (Throwable $e) {
-            return $this->handleError($e->getCode(), $e->getMessage());
+            return $this->error([], $e->getMessage());
         }
     }
 
