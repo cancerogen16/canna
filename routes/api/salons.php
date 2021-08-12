@@ -9,6 +9,7 @@ Route::get('/{id}/masters', [SalonController::class, 'masters'])->name('salons.m
 Route::get('/{id}/services', [SalonController::class, 'services'])->name('salons.services');
 Route::get('/{id}/actions', [SalonController::class, 'actions'])->name('salons.actions');
 Route::get('/{id}', [SalonController::class, 'show'])->name('salons.show');
+Route::get('/{id}/info', [SalonController::class, 'info'])->name('salons.info');
 
 Route::group([
     'middleware' => 'auth:sanctum',

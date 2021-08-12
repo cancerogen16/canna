@@ -183,6 +183,66 @@ class SalonController extends Controller
     }
 
     /**
+     * @param ImageUploadService $uploadService
+     * @param Salon $salon
+     * @return array
+     */
+    public function getMasters(ImageUploadService $uploadService, Salon $salon): array
+    {
+        $masters = [];
+
+        $mastersCollection = $salon->masters()->get();
+
+        foreach ($mastersCollection as $item) {
+            $item['photo'] = $uploadService->getImage($item['photo'], 'thumbnail');
+
+            $masters[] = $item;
+        }
+
+        return $masters;
+    }
+
+    /**
+     * @param ImageUploadService $uploadService
+     * @param Salon $salon
+     * @return array
+     */
+    public function getServices(ImageUploadService $uploadService, Salon $salon): array
+    {
+        $services = [];
+
+        $servicesCollection = $salon->services()->get();
+
+        foreach ($servicesCollection as $item) {
+            $item['image'] = $uploadService->getImage($item['image'], 'thumbnail');
+
+            $services[] = $item;
+        }
+
+        return $services;
+    }
+
+    /**
+     * @param ImageUploadService $uploadService
+     * @param Salon $salon
+     * @return array
+     */
+    public function getActions(ImageUploadService $uploadService, Salon $salon): array
+    {
+        $actions = [];
+
+        $actionsCollection = $salon->actions()->get();
+
+        foreach ($actionsCollection as $item) {
+            $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
+
+            $actions[] = $item;
+        }
+
+        return $actions;
+    }
+
+    /**
      * @param int $id
      * @param ImageUploadService $uploadService
      * @return JsonResponse
@@ -192,15 +252,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            $masters = [];
-
-            $mastersCollection = $salon->masters()->get();
-
-            foreach ($mastersCollection as $item) {
-                $item['photo'] = $uploadService->getImage($item['photo'], 'thumbnail');
-
-                $masters[] = $item;
-            }
+            $masters = $this->getMasters($uploadService, $salon);
 
             return $this->ok([
                 'masters' => $masters,
@@ -220,15 +272,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            $services = [];
-
-            $servicesCollection = $salon->services()->get();
-
-            foreach ($servicesCollection as $item) {
-                $item['image'] = $uploadService->getImage($item['image'], 'thumbnail');
-
-                $services[] = $item;
-            }
+            $services = $this->getServices($uploadService, $salon);
 
             return $this->ok([
                 'services' => $services,
@@ -248,15 +292,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            $actions = [];
-
-            $actionsCollection = $salon->actions()->get();
-
-            foreach ($actionsCollection as $item) {
-                $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
-
-                $actions[] = $item;
-            }
+            $actions = $this->getActions($uploadService, $salon);
 
             return $this->ok([
                 'actions' => $actions,
@@ -294,6 +330,63 @@ class SalonController extends Controller
             ]);
         } catch (Throwable $e) {
             return $this->error([], $e->getMessage());
+        }
+    }
+
+    /**
+     * Получает параметры салона: салон, мастеров, услуги, акции
+     *
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function info(ImageUploadService $uploadService, int $id): JsonResponse
+    {
+        try {
+            $salon = Salon::findOrFail($id);
+
+            $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+
+            $salon['masters'] = $this->getMasters($uploadService, $salon);
+
+            $salon['services'] = $this->getServices($uploadService, $salon);
+
+            $salon['actions'] = $this->getActions($uploadService, $salon);
+
+            return $this->ok([
+                'salon' => $salon,
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getRecords(int $id)
+    {
+        try {
+            $salon = Salon::findOrFail($id);
+
+            if (Auth::user()->cannot('viewRecords', $salon)) {
+                return $this->response(401, [], 'Нет доступа');
+            }
+
+            $services = $salon->services()->get();
+
+            $records = [];
+
+            foreach ($services as $service) {
+                foreach ($service->records()->get() as $record) {
+                    $records[] = $record;
+                }
+            }
+
+            return $records;
+        } catch (Throwable $e) {
+            return $e->getMessage();
         }
     }
 }
