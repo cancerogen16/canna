@@ -31,3 +31,15 @@ export const fetchSalonsOneId = (id) => (dispatch, getState) => {
             }
         });
 }
+
+export const fetchSalonInfo = (id) => (dispatch, getState) => {
+    HTTP.get(`/api/salons/${id}/info`)
+        .then(res => {
+            if (res.data.code) {
+                dispatch(clearSalon())
+            } else {
+                console.log('sad', res)
+                dispatch(addSalon(res.data.salon))
+            }
+        });
+}
