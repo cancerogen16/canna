@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 const formSalon = makeStyles({
     root: {
@@ -8,7 +8,7 @@ const formSalon = makeStyles({
         justifyContent: 'center'
     },
     item: {
-       
+
         margin: '10px'
     },
     areal: {

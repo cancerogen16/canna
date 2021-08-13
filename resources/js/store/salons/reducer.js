@@ -1,37 +1,27 @@
-import {ADD_SALONS, CLEAR_SALONS } from "./action-types"
+import {ADD_SALONS, CLEAR_SALONS} from "./action-types"
 
-
-const initialSalonsState = [
-    
-]
+const initialSalonsState = []
 
 const addSalons = (action) => {
-    
     return [
         ...action.salons
     ]
 }
 
 const clearSalons = () => {
-    
-    return [
-        
-    ]
+    return []
 }
 
 export const salonsReducer = (state = initialSalonsState, action) => {
-
-    switch(action.type){
-        case ADD_SALONS:{
+    switch (action.type) {
+        case ADD_SALONS: {
             return addSalons(action)
         }
-        case CLEAR_SALONS:{
+        case CLEAR_SALONS: {
             return clearSalons()
         }
-        default:{
+        default: {
             return state
         }
-
     }
-
 }

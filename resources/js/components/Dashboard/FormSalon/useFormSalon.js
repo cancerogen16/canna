@@ -19,7 +19,7 @@ export default function useFormSalon(props) {
 
     const handleSubmit = (e) => {
         const form = new FormData(e.target.form);
-        form.append('user_id',credentials.user_id);
+        form.append('user_id', credentials.user_id);
         form.append('title', credentials.title)
         form.append('city', credentials.city)
         form.append('phone', credentials.phone)

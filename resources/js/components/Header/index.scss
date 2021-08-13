@@ -1,15 +1,17 @@
-.header{
-    margin: 0 0 20px 0;
+.header {
+  margin: 0 0 20px 0;
 }
-.toolbar{
-    
-    justify-content: space-between;
-    &__auth{
-        z-index: 100;
-        position: absolute;
-        padding: 15px;
-        width: 300px;
-        top: 65px;
-        right: 0;
-    }
+
+.toolbar {
+
+  justify-content: space-between;
+
+  &__auth {
+    z-index: 100;
+    position: absolute;
+    padding: 15px;
+    width: 300px;
+    top: 65px;
+    right: 0;
+  }
 }

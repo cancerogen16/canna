@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { ValidatorForm } from 'react-material-ui-form-validator';
-import { fetchRegistre } from '../../../store/auth/thunks';
-
-
+import {useEffect, useState} from 'react'
+import {useDispatch} from 'react-redux';
+import {ValidatorForm} from 'react-material-ui-form-validator';
+import {fetchRegistre} from '../../../store/auth/thunks';
 
 export const useReg = () => {
     const dispatch = useDispatch();
-    
+
     const [submitted, setSubmitted] = useState(false);
     const [credentials, setCredentials] = useState({
         name: '',
@@ -22,37 +20,35 @@ export const useReg = () => {
     }
 
     const handlerOnChangeField = (e) => {
-        switch (e.target.name){
+        switch (e.target.name) {
             case 'email':
                 setCredentials({
                     ...credentials,
                     email: e.target.value
                 })
                 break;
-            case 'password': 
+            case 'password':
                 setCredentials({
                     ...credentials,
                     password: e.target.value
                 })
-            break;
-            case 'name': 
+                break;
+            case 'name':
                 setCredentials({
                     ...credentials,
                     name: e.target.value
                 })
-            break;
-            case 'repeatPassword': 
+                break;
+            case 'repeatPassword':
                 setCredentials({
                     ...credentials,
                     password_confirmation: e.target.value
                 })
-            break;
+                break;
         }
     }
-    
-    
-    
-    
+
+
     useEffect(() => {
         setTimeout(() => setSubmitted(false), 1000)
         if (!ValidatorForm.hasValidationRule('isPasswordMatch')) {
@@ -66,9 +62,9 @@ export const useReg = () => {
             if (ValidatorForm.hasValidationRule('isPasswordMatch')) {
                 ValidatorForm.removeValidationRule('isPasswordMatch');
             }
-          }
+        }
     })
-    
+
     return {
         handlerOnChangeField,
         handleSubmit,

@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 const styleSalon = makeStyles({
     header: {
@@ -6,18 +6,18 @@ const styleSalon = makeStyles({
         'justify-content': 'flex-start',
         'align-items': 'center'
     },
-    ava:{
+    ava: {
         marginRight: '10px'
     },
     info: {
         display: 'flex',
         justifyContent: 'space-between;'
     },
-    img:{
+    img: {
         maxWidth: '850px',
         minWidth: '200px'
     },
-    contact:{
+    contact: {
         display: 'flex',
         flexDirection: 'column'
     },
@@ -26,7 +26,6 @@ const styleSalon = makeStyles({
         fontSize: '24px',
         fontWeight: '600'
     }
-
-  });
+});
 
 export default styleSalon;

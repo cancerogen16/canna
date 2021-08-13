@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 const priviewMaster = makeStyles({
     root: {
@@ -7,8 +7,8 @@ const priviewMaster = makeStyles({
         'align-items': 'center'
     },
     ava: {
-      width: '100px',
-      height: '100px'
+        width: '100px',
+        height: '100px'
     },
     name: {
         margin: '10px 0 10px 0'
@@ -25,6 +25,6 @@ const priviewMaster = makeStyles({
         display: 'flex',
         flexDirection: 'column'
     }
-  });
+});
 
 export default priviewMaster;
