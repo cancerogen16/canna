@@ -34,9 +34,7 @@ export default function useSalon(props) {
     };
 
     useEffect(() => {
-        dispatch(fetchMastersOfSalon(props.match.params.id));
         dispatch(fetchSalonInfo(props.match.params.id))
-        dispatch(fetchServicesBySalonId(props.match.params.id))
     }, [])
 
     return {
