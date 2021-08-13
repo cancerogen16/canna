@@ -10,6 +10,7 @@ export default function useSalon(props) {
     const [open, setOpen] = useState(false);
 
     const masters = useSelector(state => state.masters);
+    const actions = useSelector(state => state.actions);
     const salon = useSelector(state => state.salon);
     const records = useSelector(state => state.records);
     const services = useSelector(state => state.services);
@@ -39,14 +40,15 @@ export default function useSalon(props) {
 
     return {
         value,
-        masters,
         salon,
+        services,
+        masters,
+        actions,
         open,
         records,
-        services,
         handleClickOpen,
         handleClose,
         handleChange,
-        handleClickMaster,
+        handleClickMaster
     }
 }
