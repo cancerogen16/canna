@@ -184,23 +184,14 @@ class SalonController extends Controller
 
     /**
      * @param int $id
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function getMasters(ImageUploadService $uploadService, int $id): JsonResponse
+    public function masters(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $masters = [];
-
-            $mastersCollection = $salon->masters()->get();
-
-            foreach ($mastersCollection as $item) {
-                $item['photo'] = $uploadService->getImage($item['photo'], 'thumbnail');
-
-                $masters[] = $item;
-            }
+            $masters = $salon->getMasters('thumbnail');
 
             return $this->ok([
                 'masters' => $masters,
@@ -211,24 +202,15 @@ class SalonController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function getServices(ImageUploadService $uploadService, int $id): JsonResponse
+    public function services(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $services = [];
-
-            $servicesCollection = $salon->services()->get();
-
-            foreach ($servicesCollection as $item) {
-                $item['image'] = $uploadService->getImage($item['image'], 'thumbnail');
-
-                $services[] = $item;
-            }
+            $services = $salon->getServices('thumbnail');
 
             return $this->ok([
                 'services' => $services,
@@ -239,24 +221,15 @@ class SalonController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function getActions(ImageUploadService $uploadService, int $id): JsonResponse
+    public function actions(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $actions = [];
-
-            $actionsCollection = $salon->actions()->get();
-
-            foreach ($actionsCollection as $item) {
-                $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
-
-                $actions[] = $item;
-            }
+            $actions = $salon->getActions('thumbnail');
 
             return $this->ok([
                 'actions' => $actions,
@@ -270,7 +243,7 @@ class SalonController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getRecords(int $id): JsonResponse
+    public function records(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -291,6 +264,34 @@ class SalonController extends Controller
 
             return $this->ok([
                 'records' => $records,
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
+        }
+    }
+
+    /**
+     * Получает параметры салона: салон, мастеров, услуги, акции
+     *
+     * @param ImageUploadService $uploadService
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function info(ImageUploadService $uploadService, int $id): JsonResponse
+    {
+        try {
+            $salon = Salon::findOrFail($id);
+
+            $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+
+            $salon['masters'] = $salon->getMasters('thumbnail');
+
+            $salon['services'] = $salon->getServices('thumbnail');
+
+            $salon['actions'] = $salon->getActions('thumbnail');
+
+            return $this->ok([
+                'salon' => $salon,
             ]);
         } catch (Throwable $e) {
             return $this->error([], $e->getMessage());
