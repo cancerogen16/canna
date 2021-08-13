@@ -1,22 +1,22 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { userReducer } from './user/reducer';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
+import {userReducer} from './user/reducer';
 import thunk from 'redux-thunk';
 import authReducer from './auth/reducer';
 import {categoryReducer} from './category/reducer';
 import {salonReducer} from './salon/reducer';
-import { persistStore, persistReducer } from 'redux-persist'
+import {persistReducer, persistStore} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { masterReducer } from './master/reducer';
-import { recordsReducer } from './records/reducer';
+import {masterReducer} from './master/reducer';
+import {recordsReducer} from './records/reducer';
 import {actionReducer} from "./action/reducer";
-import { salonsReducer } from './salons/reducer';
-import { servicesReducer } from './services/reducer';
+import {salonsReducer} from './salons/reducer';
+import {servicesReducer} from './services/reducer';
+
 const persistConfig = {
     key: 'canna',
     storage,
-    blacklist: ['categoties', 'salons', 'salon', 'masters', 'records','actions']
-  }
-
+    blacklist: ['categoties', 'salons', 'salon', 'masters', 'records', 'actions']
+}
 
 
 const rootReducer = combineReducers({
@@ -38,5 +38,5 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 export default () => {
     let store = createStore(persistedReducer, applyMiddleware(thunk))
     let persistor = persistStore(store)
-    return { store, persistor }
-  } 
+    return {store, persistor}
+}

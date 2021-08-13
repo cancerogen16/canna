@@ -1,8 +1,6 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin } from '../../../store/auth/thunks';
-
-
+import {useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchLogin} from '../../../store/auth/thunks';
 
 
 export const useLogin = (props) => {
@@ -11,7 +9,7 @@ export const useLogin = (props) => {
         email: '',
         password: '',
         //remember: false,
-        
+
     });
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
@@ -19,41 +17,39 @@ export const useLogin = (props) => {
     const handleSubmit = () => {
         dispatch(fetchLogin(credentials))
         setSubmitted(true);
-        
-        
-        
-        
+
+
     }
 
     const handlerOnChangeField = (e) => {
-        switch (e.target.name){
+        switch (e.target.name) {
             case 'email':
                 setCredentials({
                     ...credentials,
                     email: e.target.value
                 })
                 break;
-            case 'password': 
+            case 'password':
                 setCredentials({
                     ...credentials,
                     password: e.target.value
                 })
-            break;
-            case 'remember': 
+                break;
+            case 'remember':
                 setCredentials({
                     ...credentials,
                     remember: !credentials.remember
                 })
-            break;
+                break;
         }
     }
 
-    return { 
-            handlerOnChangeField,
-            handleSubmit,
-            credentials,
-            setCredentials,
-            submitted,
-            setSubmitted
-        }
+    return {
+        handlerOnChangeField,
+        handleSubmit,
+        credentials,
+        setCredentials,
+        submitted,
+        setSubmitted
+    }
 }

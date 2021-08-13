@@ -1,4 +1,4 @@
-import { ADD_ACTION, CLEAR_ACTION, DELETE_ACTION } from "./action-types"
+import {ADD_ACTION, CLEAR_ACTION, DELETE_ACTION} from "./action-types"
 
 
 const initialState = [
@@ -32,9 +32,7 @@ const addAction = (state, action) => {
 }
 
 const clearAction = () => {
-    return [
-
-    ]
+    return []
 }
 
 const deleteAction = (state, action) => {
@@ -43,17 +41,17 @@ const deleteAction = (state, action) => {
 
 export const actionReducer = (state = initialState, action) => {
 
-    switch(action.type){
-        case ADD_ACTION:{
+    switch (action.type) {
+        case ADD_ACTION: {
             return addAction(state, action);
         }
-        case CLEAR_ACTION:{
+        case CLEAR_ACTION: {
             return clearAction();
         }
-        case DELETE_ACTION:{
+        case DELETE_ACTION: {
             return deleteAction(state, action)
         }
-        default:{
+        default: {
             return state
         }
 

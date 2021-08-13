@@ -1,12 +1,11 @@
 import React from 'react'
-import { Button} from '@material-ui/core';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { useLogin } from './useLogin';
-import { formLogin } from './style';
+import {Button} from '@material-ui/core';
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {useLogin} from './useLogin';
+import {formLogin} from './style';
 
 
-
-export default function Login (props){
+export default function Login(props) {
     const classes = formLogin();
     const {
         handlerOnChangeField,
@@ -15,9 +14,9 @@ export default function Login (props){
         submitted,
     } = useLogin(props);
 
-    
+
     return (
-        <ValidatorForm 
+        <ValidatorForm
             className={classes.root}
             onSubmit={handleSubmit}
         >
@@ -32,7 +31,7 @@ export default function Login (props){
                 validators={['required', 'isEmail']}
                 errorMessages={['Поле обязательно для заполнения', 'Некорректный e-mail']}
             />
-            <br />
+            <br/>
             <TextValidator
                 className={classes.item}
                 label="Пароль"
@@ -43,7 +42,7 @@ export default function Login (props){
                 validators={['required']}
                 errorMessages={['Поле обязательно для заполнения']}
             />
-            <br />
+            <br/>
             <Button
                 className={classes.item}
                 color="primary"

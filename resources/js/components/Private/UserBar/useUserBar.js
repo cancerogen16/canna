@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux"
-import { fetchLogout } from "../../../store/auth/thunks";
+import {useDispatch, useSelector} from "react-redux"
+import {fetchLogout} from "../../../store/auth/thunks";
 
 
 export const useUserBar = () => {
@@ -8,7 +8,7 @@ export const useUserBar = () => {
 
     const handleLogout = () => {
         dispatch(fetchLogout())
-        
+
     }
 
     return {

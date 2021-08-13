@@ -1,10 +1,10 @@
-
 import React from 'react'
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import { Dialog, Button, DialogContent, DialogContentText, DialogTitle, DialogActions, TextField } from '@material-ui/core'
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
+import {Button, Dialog, DialogContent, DialogTitle, TextField} from '@material-ui/core'
 import formSalon from './style';
 import useFormSalon from './useFormSalon'
-export default function FormSalon (props){
+
+export default function FormSalon(props) {
     const classes = formSalon()
     const {
         handlerOnChangeField,
@@ -14,18 +14,18 @@ export default function FormSalon (props){
         open,
     } = useFormSalon(props)
 
-    return  (<Dialog
-                open={open}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+    return (<Dialog
+            open={open}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="alert-dialog-title">Укажите информацию о своем салоне</DialogTitle>
+            <DialogContent>
+                <ValidatorForm
+                    className={classes.root}
+                    //ref="/"
+                    onSubmit={handleSubmit}
                 >
-                <DialogTitle id="alert-dialog-title">Укажите информацию о своем салоне</DialogTitle>
-                <DialogContent>
-                    <ValidatorForm
-                        className={classes.root}
-                        //ref="/"
-                        onSubmit={handleSubmit}
-                    >
                     <TextValidator
                         className={classes.item}
                         label="Название салона"
@@ -60,13 +60,13 @@ export default function FormSalon (props){
                         name="address"
                         value={credentials.address}
                         validators={['required',]}
-                        errorMessages={['Поле обязательно для заполнения' ]}
+                        errorMessages={['Поле обязательно для заполнения']}
                     />
-                   <input
-                       type="file"
-                       name='main_photo'
-                       onChange={handlerOnChangeField}
-                   />
+                    <input
+                        type="file"
+                        name='main_photo'
+                        onChange={handlerOnChangeField}
+                    />
                     <TextField
                         className={classes.areal}
                         label="Описание"
@@ -77,7 +77,7 @@ export default function FormSalon (props){
                         onChange={handlerOnChangeField}
                     />
                     <br/>
-                    
+
                     <Button
                         className={classes.item}
                         color="primary"
@@ -88,7 +88,7 @@ export default function FormSalon (props){
                         Сохранить
                     </Button>
                     <Button
-                        onClick={()=>  props.history.push('/')}
+                        onClick={() => props.history.push('/')}
                         className={classes.item}
                         color="secondary"
                         variant="contained"
@@ -97,9 +97,9 @@ export default function FormSalon (props){
                         Отмена
                     </Button>
                 </ValidatorForm>
-                </DialogContent>
-                
-            </Dialog>
-                
+            </DialogContent>
+
+        </Dialog>
+
     )
 }

@@ -1,12 +1,12 @@
-import { CLEAR_USER, SET_USER, UPDATE_SALON_USER } from "./action-types"
+import {CLEAR_USER, SET_USER, UPDATE_SALON_USER} from "./action-types"
 
 
 const initialState = {
-    id:'',
+    id: '',
     name: '',
     email: '',
     role_id: '',
-    salon: ''  
+    salon: ''
 }
 
 const setUser = (state, action) => {
@@ -21,7 +21,7 @@ const clearUser = () => {
         id: '',
         name: '',
         email: '',
-        role_id: '' ,
+        role_id: '',
         salon: ''
     }
 }
@@ -35,17 +35,17 @@ const updateSalon = (state, action) => {
 
 export const userReducer = (state = initialState, action) => {
 
-    switch(action.type){
-        case SET_USER:{
+    switch (action.type) {
+        case SET_USER: {
             return setUser(state, action);
         }
-        case CLEAR_USER:{
+        case CLEAR_USER: {
             return clearUser();
         }
-        case UPDATE_SALON_USER:{
+        case UPDATE_SALON_USER: {
             return updateSalon(state, action)
         }
-        default:{
+        default: {
             return state
         }
 

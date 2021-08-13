@@ -1,4 +1,4 @@
-import {  ADD_SALONS, CLEAR_SALONS} from "./action-types";
+import {ADD_SALONS, CLEAR_SALONS} from "./action-types";
 
 
 export const addSalons = (salons) => ({
@@ -11,7 +11,7 @@ export const addSalons = (salons) => ({
 export const clearSalons = () => ({
 
     type: CLEAR_SALONS,
-    
+
 }) 
 
 

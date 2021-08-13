@@ -1,6 +1,6 @@
-import { CLEAR_USER, SET_USER, UPDATE_SALON_USER } from "./action-types";
+import {CLEAR_USER, SET_USER, UPDATE_SALON_USER} from "./action-types";
 
-export const setUser = ({id ,name, email, role_id}) => ({
+export const setUser = ({id, name, email, role_id}) => ({
     type: SET_USER,
     id,
     name,

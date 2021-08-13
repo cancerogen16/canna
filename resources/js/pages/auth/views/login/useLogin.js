@@ -1,9 +1,3 @@
-import { useState } from 'react'
-
-
-
-
-
 export const useLogin = (props) => {
 
     const auth = useSelector(state => state.auth)
@@ -12,11 +6,11 @@ export const useLogin = (props) => {
         console.log('login', props)
         props.history.push({
             pathname: '/',
-          })
+        })
     }
 
-    return { 
-            auth,
-            handleAuth
-        }
+    return {
+        auth,
+        handleAuth
+    }
 }

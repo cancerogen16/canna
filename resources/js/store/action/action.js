@@ -1,4 +1,4 @@
-import { ADD_ACTION, CLEAR_ACTION, DELETE_ACTION } from "./action-types";
+import {ADD_ACTION, CLEAR_ACTION, DELETE_ACTION} from "./action-types";
 
 export const addAction = ({id, salon_id, name, photo, description, price, start_at, end_at}) => ({
     type: ADD_ACTION,

@@ -1,5 +1,5 @@
-import { Container, Grid } from '@material-ui/core'
-import React, { Component } from 'react'
+import {Grid} from '@material-ui/core'
+import React from 'react'
 import ListSalon from '../../../components/Public/ListSalon'
 import SearchSalon from '../../../components/Public/SearchSalon'
 

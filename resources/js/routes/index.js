@@ -13,14 +13,14 @@ const Routes = () => (<>
                 <Switch>
                     {routes.map((route, i) => {
                         console.log(route)
-                        
+
                         if (route.auth) {
                             if (route.dashboard) {
                                 return <DashboardRoute key={i} {...route} />
                             }
                             return <PrivateRoute key={i} {...route} />
                         }
-                       
+
                         return <PublicRoute key={i} {...route} />
                     })}
                 </Switch>
