@@ -4,7 +4,7 @@ const initialMastersState = []
 
 const addMasters = (state, action) => {
     return [
-        ...action.masters
+        ...action
     ]
 }
 

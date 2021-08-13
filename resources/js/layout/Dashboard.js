@@ -26,6 +26,7 @@ function DashboardLayout({children, history, user}) {
             state: {pathname: history.location.pathname}
         })
     }
+
     useEffect(() => {
         //dispatch(fetchSalonsOneId(user.id))
     }, [])
@@ -33,7 +34,9 @@ function DashboardLayout({children, history, user}) {
     const handleYes = () => {
         //dispatch(clearSalon());
         setOpen(false);
+
     }
+
     console.log(user)
     return <div>
         <Header>
@@ -42,7 +45,6 @@ function DashboardLayout({children, history, user}) {
         <Container maxWidth="lg">
             <Grid container spacing={3}>
                 <Grid item xs={2}>
-
                     <Navigation items={[
                         {
                             href: '/dashboard',
@@ -76,7 +78,6 @@ function DashboardLayout({children, history, user}) {
                         {children}
                     </main>
                 </Grid>
-
             </ Grid>
         </Container>
         {/* <Alert
@@ -91,7 +92,6 @@ function DashboardLayout({children, history, user}) {
         {/* <Modal open={open}>
           <FormSalon  handleYes={handleYes}/>
         </Modal> */}
-
     </div>
 }
 
