@@ -6,12 +6,15 @@ import UserBar from '../components/Private/UserBar'
 import { Container, Grid } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearSalon } from '../store/salon/action'
+import { clearMaster } from '../store/master/action'
 import { updateSalonUserFetch } from '../store/user/action'
 import Navigation from '../components/Dashboard/Navigation'
 import Alert from '../components/Dialogs/Alert'
 import Modal from '../components/Dialogs/Modal'
 import FormSalon from '../components/Dashboard/FormSalon'
+import FormMaster from '../components/Dashboard/FormMaster'
 import { fetchSalonsOneId } from '../store/salon/thunks'
+import { fetchMasters } from '../store/master/thunks'
 
 
 

@@ -1,17 +1,17 @@
 import { ADD_MASTERS, DELETE_MASTER, CLEAR_MASTERS } from "./action-types"
 
 
-const initialMsastersState = [
+const initialMastersState = [
     
 ]
 
-const initialMsasterState = {
+const initialMasterState = {
     
 }
 
 const addMasters = (state, action) => {
     return [
-        ...action.masters
+        ...action
     ]
 }
 
@@ -27,7 +27,7 @@ const deleteMaster = (state, action) => {
     
 }
 
-export const masterReducer = (state = initialMsastersState, action) => {
+export const masterReducer = (state = initialMastersState, action) => {
 
     switch(action.type){
         case ADD_MASTERS:{
