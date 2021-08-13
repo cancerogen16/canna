@@ -1,6 +1,7 @@
 import HTTP from '../../utils/HTTP';
 import {updateSalonUser} from '../user/action';
 import {addSalon, clearSalon} from './action';
+import {addMasters} from "../master/action";
 
 export const fetchCreateSalon = (form) => (dispatch, getState) => {
     HTTP.post('api/salons', form, {
@@ -39,7 +40,8 @@ export const fetchSalonInfo = (id) => (dispatch, getState) => {
                 dispatch(clearSalon())
             } else {
                 console.log('sad', res)
-                dispatch(addSalon(res.data.salon))
+                dispatch(addSalon(res.data.salon));
+                dispatch(addMasters(res.data.salon.masters));
             }
         });
 }
