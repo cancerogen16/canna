@@ -1,15 +1,10 @@
-import { ADD_RECORD, CLEAR_RECORD } from "./action-types"
+import {ADD_RECORD, CLEAR_RECORD} from "./action-types"
 
-
-const initialState = [
-   
-]
-
+const initialState = []
 
 export const recordsReducer = (state = initialState, action) => {
-
-    switch(action.type){
-        case ADD_RECORD:{
+    switch (action.type) {
+        case ADD_RECORD: {
             return [
                 ...state,
                 {
@@ -17,15 +12,11 @@ export const recordsReducer = (state = initialState, action) => {
                 }
             ]
         }
-        case CLEAR_RECORD:{
-            return [
-
-            ]
+        case CLEAR_RECORD: {
+            return []
         }
-        default:{
+        default: {
             return state
         }
-
     }
-
 }

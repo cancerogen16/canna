@@ -1,5 +1,4 @@
-import { ADD_CATEGORY, CLEAR_CATEGORY } from './action-types';
-
+import {ADD_CATEGORY, CLEAR_CATEGORY} from './action-types';
 
 export const addCategory = ({id, title, slug}) => ({
     type: ADD_CATEGORY,
