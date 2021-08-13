@@ -7,7 +7,6 @@ const PublicRoutes = ({component: Component, ...rest}) => {
 
         return <Suspense fallback={<div>Loading...</div>}>
             <Component {...props}/>
-
         </Suspense>
     }}/>
 }

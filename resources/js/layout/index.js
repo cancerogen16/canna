@@ -7,10 +7,7 @@ import PrivateLayout from './Private'
 import PublicLayout from './Public'
 import DashboardLayout from './Dashboard'
 
-
 function Layout(props) {
-
-
     const {isAuthenticated, children} = props
     console.log(isAuthenticated)
     if (isAuthenticated) {

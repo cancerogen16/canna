@@ -4,7 +4,6 @@ import FormSalon from '../../../components/Dashboard/FormSalon';
 import Salon from '../../../components/Public/Salon';
 import {fetchSalonsOneId} from '../../../store/salon/thunks';
 
-
 export default function Page(props) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user)
@@ -18,5 +17,6 @@ export default function Page(props) {
     if (!!user.salon) {
         return <Salon salon={salon}/>
     }
+
     return <FormSalon {...props}/>
 }

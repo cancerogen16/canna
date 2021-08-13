@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import Login from '../../../../components/Public/Login';
 
-
 export default function Page(props) {
     const auth = useSelector(state => state.auth)
 

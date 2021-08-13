@@ -2,7 +2,6 @@ import {Avatar} from '@material-ui/core'
 import React from 'react'
 import styleSalon from './style';
 
-
 export default function Salon(props) {
     const {title, main_photo, city, address, phone, description} = props.salon
     const classes = styleSalon();

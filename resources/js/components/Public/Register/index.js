@@ -3,9 +3,7 @@ import {Button} from '@material-ui/core';
 import {TextValidator} from 'react-material-ui-form-validator';
 import {useReg} from './useReg';
 
-
 export default function Register() {
-
 
     const {
         handleSubmit,

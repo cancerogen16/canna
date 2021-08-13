@@ -4,7 +4,6 @@ import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {useLogin} from './useLogin';
 import {formLogin} from './style';
 
-
 export default function Login(props) {
     const classes = formLogin();
     const {
@@ -13,7 +12,6 @@ export default function Login(props) {
         handleSubmit,
         submitted,
     } = useLogin(props);
-
 
     return (
         <ValidatorForm

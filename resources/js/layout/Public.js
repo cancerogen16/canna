@@ -4,7 +4,6 @@ import Header from '../components/Header'
 import {Container} from '@material-ui/core'
 import Auth from '../components/Public/Auth'
 
-
 const containerStyle = {
     paddingTop: '3.5rem',
 }

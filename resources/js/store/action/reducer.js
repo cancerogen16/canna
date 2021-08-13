@@ -54,7 +54,5 @@ export const actionReducer = (state = initialState, action) => {
         default: {
             return state
         }
-
     }
-
 }

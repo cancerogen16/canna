@@ -5,7 +5,6 @@ import DiscountPreview from '../../../components/Public/DiscountPreview'
 import discountPreview from '../../../components/Public/DiscountPreview/style'
 import {delAction} from '../../../store/action/action'
 
-
 export default function Page(props) {
     const dispatch = useDispatch();
     const classes = discountPreview()
@@ -19,7 +18,6 @@ export default function Page(props) {
                     <Button onClick={() => dispatch(delAction(action.id))}>Удалить</Button>
                 </DiscountPreview>
             </ListItem>
-
         })}
 
     </List>

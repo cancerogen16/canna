@@ -7,7 +7,6 @@ import {Container, Grid} from '@material-ui/core'
 import {useDispatch} from 'react-redux'
 import Navigation from '../components/Dashboard/Navigation'
 
-
 const containerStyle = {
     paddingTop: '3.5rem',
 }
@@ -16,7 +15,6 @@ const displayName = 'Мой салон'
 const propTypes = {
     children: PropTypes.node.isRequired,
 }
-
 
 function DashboardLayout({children, history, user}) {
     const [open, setOpen] = useState(!user.salon);
@@ -31,11 +29,10 @@ function DashboardLayout({children, history, user}) {
     useEffect(() => {
         //dispatch(fetchSalonsOneId(user.id))
     }, [])
-    const handleYes = () => {
 
+    const handleYes = () => {
         //dispatch(clearSalon());
         setOpen(false);
-
     }
     console.log(user)
     return <div>
@@ -79,7 +76,6 @@ function DashboardLayout({children, history, user}) {
                         {children}
                     </main>
                 </Grid>
-
 
             </ Grid>
         </Container>

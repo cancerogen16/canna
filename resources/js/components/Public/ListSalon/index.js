@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ListSalon() {
     const dispatch = useDispatch();
 
-
     const salons = useSelector(state => state.salons);
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -52,7 +52,5 @@ export default function ListSalon() {
         <Grid container spacing={3}>
             {salons.map(salon => <Grid key={salon.id} item xs={6}> <CardSalon key={salon.id} salon={salon}/></Grid>)}
         </Grid>
-
-
     );
 }

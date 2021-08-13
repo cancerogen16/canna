@@ -3,14 +3,12 @@ import PropTypes from 'prop-types'
 import {Redirect, Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-
 const PrivateRoute = ({component: Component, isAuthenticated, user, ...rest}) => {
 
     console.log('privet', user);
     return <Route {...rest} render={props => {
 
         return <Suspense fallback={<div>Loading...</div>}>
-
             {
                 isAuthenticated
                     ? <Component {...props}/>

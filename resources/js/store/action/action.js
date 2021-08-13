@@ -10,7 +10,6 @@ export const addAction = ({id, salon_id, name, photo, description, price, start_
     price,
     start_at,
     end_at
-
 });
 
 export const delAction = (id) => ({

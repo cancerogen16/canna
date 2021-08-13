@@ -1,9 +1,7 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
 import React from 'react'
 
-
 export default function Alert(props) {
-
     return <Dialog
         open={props.open}
         aria-labelledby="alert-dialog-title"

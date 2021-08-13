@@ -1,6 +1,5 @@
 import {CLEAR_USER, SET_USER, UPDATE_SALON_USER} from "./action-types"
 
-
 const initialState = {
     id: '',
     name: '',
@@ -34,7 +33,6 @@ const updateSalon = (state, action) => {
 }
 
 export const userReducer = (state = initialState, action) => {
-
     switch (action.type) {
         case SET_USER: {
             return setUser(state, action);
@@ -48,7 +46,5 @@ export const userReducer = (state = initialState, action) => {
         default: {
             return state
         }
-
     }
-
 }

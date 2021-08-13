@@ -11,7 +11,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import {Link} from '@material-ui/core';
 import {cardSalon} from './style';
 
-
 export default function CardSalon(props) {
 
     const classes = cardSalon();
@@ -47,6 +46,5 @@ export default function CardSalon(props) {
             </Card>
         </Link>
         </>
-
     );
 }

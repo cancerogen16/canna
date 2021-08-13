@@ -16,7 +16,6 @@ export default function useSalon(props) {
 
     const dispatch = useDispatch();
 
-
     const handleClickMaster = (id) => {
         dispatch(fetchServicesByMasterId(id));
     }
@@ -35,7 +34,6 @@ export default function useSalon(props) {
     };
 
     useEffect(() => {
-
         dispatch(fetchMastersOfSalon(props.match.params.id));
         dispatch(fetchSalonsOneId(props.match.params.id))
         dispatch(fetchServicesBySalonId(props.match.params.id))
@@ -52,6 +50,5 @@ export default function useSalon(props) {
         handleClose,
         handleChange,
         handleClickMaster,
-
     }
 }

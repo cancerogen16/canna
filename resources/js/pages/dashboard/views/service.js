@@ -5,7 +5,6 @@ import ServicePreview from '../../../components/Public/ServicePreview'
 import priviewService from '../../../components/Public/ServicePreview/style'
 import {delServices} from '../../../store/services/action'
 
-
 export default function Page(props) {
     const dispatch = useDispatch();
     const classes = priviewService()

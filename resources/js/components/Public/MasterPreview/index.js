@@ -2,7 +2,6 @@ import {Avatar} from '@material-ui/core'
 import priviewMaster from './style';
 import React from 'react'
 
-
 export default function MasterPreview(props) {
 
     const {master} = props;
@@ -21,5 +20,4 @@ export default function MasterPreview(props) {
             {props.children}
         </div>
     </>
-
 }

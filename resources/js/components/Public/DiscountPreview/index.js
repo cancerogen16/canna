@@ -2,7 +2,6 @@ import {Avatar} from '@material-ui/core'
 import discountPreview from './style';
 import React from 'react'
 
-
 export default function DiscountPreview(props) {
 
     const {action} = props;

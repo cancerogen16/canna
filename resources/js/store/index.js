@@ -18,7 +18,6 @@ const persistConfig = {
     blacklist: ['categoties', 'salons', 'salon', 'masters', 'records', 'actions']
 }
 
-
 const rootReducer = combineReducers({
     user: userReducer,
     auth: authReducer,

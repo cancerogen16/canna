@@ -1,8 +1,6 @@
 import {ADD_CATEGORY, CLEAR_CATEGORY} from "./action-types"
 
-
 const initialState = []
-
 
 const addCategory = (action, state) => {
     return [
@@ -18,7 +16,6 @@ const clearCategory = (action, state) => {
 }
 
 export const categoryReducer = (state = initialState, action) => {
-
     switch (action.type) {
         case ADD_CATEGORY: {
             return addCategory(action, state);
@@ -29,7 +26,5 @@ export const categoryReducer = (state = initialState, action) => {
         default: {
             return state
         }
-
     }
-
 }

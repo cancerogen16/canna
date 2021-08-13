@@ -3,7 +3,6 @@ import {useDispatch} from 'react-redux';
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {fetchRegistre} from '../../../store/auth/thunks';
 
-
 export const useReg = () => {
     const dispatch = useDispatch();
 

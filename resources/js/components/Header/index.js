@@ -1,9 +1,7 @@
 import {AppBar, Button, Toolbar, Typography} from '@material-ui/core';
 import React from 'react';
 
-
 export default function Header(props) {
-
     return (<>
             <AppBar className="header" position="static">
                 <Toolbar className="toolbar">
@@ -27,9 +25,7 @@ export default function Header(props) {
                     </Button>
                     {props.children}
                 </Toolbar>
-
             </AppBar>
-
         </>
     );
 }

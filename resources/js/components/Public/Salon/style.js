@@ -26,7 +26,6 @@ const styleSalon = makeStyles({
         fontSize: '24px',
         fontWeight: '600'
     }
-
 });
 
 export default styleSalon;

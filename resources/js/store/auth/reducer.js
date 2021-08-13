@@ -24,7 +24,6 @@ function login(state, action) {
     return {
         ...state, isAuthenticated: true,
     }
-
 }
 
 function checkAuth(state, action) {
@@ -47,6 +46,5 @@ function resetPassword(state) {
         ...state, resetPassword: true,
     }
 }
-
 
 export default authReducer;

@@ -9,7 +9,6 @@ import {SimpleTabs, TabPanel} from '../../../components/Tabs';
 import Modal from '../../../components/Dialogs/Modal';
 import ControlledAccordions from '../../../components/Public/ControlledAccordions';
 
-
 export default function Page(props) {
     const {
         value,
@@ -23,6 +22,7 @@ export default function Page(props) {
         handleChange,
         handleClickMaster
     } = useSalon(props);
+
     const classes = priviewMaster();
 
     return (

@@ -4,7 +4,6 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategoryAll} from '../../../store/category/thunks';
 
-
 function rand() {
     return Math.round(Math.random() * 20) - 10;
 }

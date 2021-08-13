@@ -5,7 +5,6 @@ import Header from '../components/Header'
 import {Container} from '@material-ui/core'
 import UserBar from '../components/Private/UserBar'
 
-
 const containerStyle = {
     paddingTop: '3.5rem',
 }

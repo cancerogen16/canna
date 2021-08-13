@@ -8,10 +8,7 @@ const DashboardRoute = ({component: Component, isAuthenticated, userSalon, user,
     return <Route {...rest} render={props => {
         console.log('dash', props)
         return <Suspense fallback={<div>Loading...</div>}>
-
-
             {
-
                 isAuthenticated
                     ? <Component {...props}/>
                     : <Redirect to={{
