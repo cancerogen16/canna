@@ -104,7 +104,7 @@ class Salon extends Model
         $actionsCollection = $this->actions()->get();
 
         foreach ($actionsCollection as $item) {
-            $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
+            $item['photo'] = ImageUpload::getImage($item['photo'], $imageSize);
 
             $actions[] = $item;
         }
