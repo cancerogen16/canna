@@ -2,11 +2,13 @@
 
 namespace App\Policies;
 
+use App\Models\Action;
+use App\Models\Salon;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class ActionPolicy
 {
     use HandlesAuthorization;
 
@@ -24,49 +26,43 @@ class UserPolicy
     }
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can create models.
      *
      * @param User $user
+     * @param Action $action
      * @return Response|bool
      */
-    public function viewAny(User $user)
+    public function create(User $user, Action $action)
     {
-        return $user->role()->first()->id == 1;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     * @param  User  $model
-     * @return Response|bool
-     */
-    public function view(User $user, User $model)
-    {
-        return $user->id == $model->id;
+        return $user->id == $action->salon()->first()->user_id;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param User  $model
+     * @param Action $action
+     * @param int $salon_id
      * @return Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Action $action, int $salon_id)
     {
-        return $user->id == $model->id;
+        $new_salon = Salon::find($salon_id);
+        return $user->id == $action->salon()->first()->user_id
+            && $user->id == $new_salon->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param User  $model
+     * @param Action $action
      * @return Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Action $action)
     {
-        return $user->id == $model->id;
+        return $user->id == $action->salon()->first()->user_id;
     }
+
+
 }

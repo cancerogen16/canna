@@ -16,10 +16,9 @@ class MasterPolicy
      * Perform pre-authorization checks.
      *
      * @param User $user
-     * @param  string  $ability
      * @return void|bool
      */
-    public function before(User $user, $ability)
+    public function before(User $user)
     {
         if ($user->role()->first()->id == 1) {
             return true;
