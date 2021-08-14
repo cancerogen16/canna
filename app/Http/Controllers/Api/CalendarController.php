@@ -9,7 +9,6 @@ use App\Http\Requests\CleanCalendarScheduleRequest;
 use App\Models\Calendar;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class CalendarController extends Controller

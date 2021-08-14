@@ -8,7 +8,6 @@ use App\Models\Action;
 use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class ActionController extends Controller
@@ -46,9 +45,7 @@ class ActionController extends Controller
         try {
             $action = new Action($request->validated());
 
-            if (Auth::user()->cannot('create', $action)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('create', $action);
 
             if (isset($action['photo'])) {
                 if ($photo = $uploadService->upload($action['photo'])) {
@@ -103,9 +100,7 @@ class ActionController extends Controller
 
             $data = $request->validated();
 
-            if (Auth::user()->cannot('update', [$action, $data['salon_id']])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('update', [$action, $data['salon_id']]);
 
             if (isset($action['photo'])) {
                 if ($photo = $uploadService->upload($action['photo'])) {
@@ -138,9 +133,7 @@ class ActionController extends Controller
         try {
             $action = Action::findOrFail($id);
 
-            if (Auth::user()->cannot('delete', $action)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('delete', $action);
 
             $action->delete();
 

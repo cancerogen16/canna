@@ -10,7 +10,6 @@ use App\Models\Service;
 use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class ServiceController extends Controller
@@ -48,9 +47,7 @@ class ServiceController extends Controller
         try {
             $service = new Service($request->validated());
 
-            if (Auth::user()->cannot('create', $service)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('create', $service);
 
             if (isset($service['image'])) {
                 if ($photo = $uploadService->upload($service['image'])) {
@@ -105,9 +102,7 @@ class ServiceController extends Controller
 
             $data = $request->validated();
 
-            if (Auth::user()->cannot('update', [$service, $data['salon_id']])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('update', [$service, $data['salon_id']]);
 
             if (isset($service['image'])) {
                 if ($photo = $uploadService->upload($service['image'])) {
@@ -136,9 +131,7 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            if (Auth::user()->cannot('delete', $service)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('delete', $service);
 
             $service->delete();
 
@@ -216,9 +209,7 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            if (Auth::user()->cannot('editMasterConnection', [$service, $master_id])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('editMasterConnection', [$service, $master_id]);
 
             $master = Master::findOrFail($master_id);
 
@@ -244,9 +235,7 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            if (Auth::user()->cannot('editActionConnection', [$service, $action_id])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('editActionConnection', [$service, $action_id]);
 
             $action = Action::findOrFail($action_id);
 
@@ -272,9 +261,7 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            if (Auth::user()->cannot('editMasterConnection', [$service, $master_id])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('editMasterConnection', [$service, $master_id]);
 
             $service->masters()->detach($master_id);
 
@@ -294,9 +281,7 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            if (Auth::user()->cannot('editActionConnection', [$service, $action_id])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('editActionConnection', [$service, $action_id]);
 
             $service->actions()->detach($action_id);
 
