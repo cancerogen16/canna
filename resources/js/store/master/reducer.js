@@ -1,4 +1,5 @@
 import {ADD_MASTERS, CLEAR_MASTERS, DELETE_MASTER} from "./action-types"
+const initialMsasterState = {
 
 const initialMastersState = []
 
