@@ -30,9 +30,9 @@ class ActionPolicy
      *
      * @param User $user
      * @param Action $action
-     * @return Response|bool
+     * @return bool
      */
-    public function create(User $user, Action $action)
+    public function create(User $user, Action $action): bool
     {
         return $user->id == $action->salon()->first()->user_id;
     }
@@ -43,9 +43,9 @@ class ActionPolicy
      * @param User $user
      * @param Action $action
      * @param int $salon_id
-     * @return Response|bool
+     * @return bool
      */
-    public function update(User $user, Action $action, int $salon_id)
+    public function update(User $user, Action $action, int $salon_id): bool
     {
         $new_salon = Salon::find($salon_id);
         return $user->id == $action->salon()->first()->user_id
@@ -57,9 +57,9 @@ class ActionPolicy
      *
      * @param User $user
      * @param Action $action
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, Action $action)
+    public function delete(User $user, Action $action): bool
     {
         return $user->id == $action->salon()->first()->user_id;
     }

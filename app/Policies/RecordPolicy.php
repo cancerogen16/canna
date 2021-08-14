@@ -28,9 +28,9 @@ class RecordPolicy
      * Determine whether the user can view any models.
      *
      * @param User $user
-     * @return Response|bool
+     * @return bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->role()->first()->id == 1;
     }
@@ -40,9 +40,9 @@ class RecordPolicy
      *
      * @param User $user
      * @param Record $record
-     * @return Response|bool
+     * @return bool
      */
-    public function view(User $user, Record $record)
+    public function view(User $user, Record $record): bool
     {
         return $user->id == $record->user_id ||
             $user->id == $record->service()->first()->salon()->first()->user_id;
@@ -53,9 +53,9 @@ class RecordPolicy
      *
      * @param User $user
      * @param Record $record
-     * @return Response|bool
+     * @return bool
      */
-    public function create(User $user, Record $record)
+    public function create(User $user, Record $record): bool
     {
         return $user->id == $record->user_id;
     }
@@ -66,9 +66,9 @@ class RecordPolicy
      * @param User $user
      * @param Record $record
      * @param int $user_id
-     * @return Response|bool
+     * @return bool
      */
-    public function update(User $user, Record $record, int $user_id)
+    public function update(User $user, Record $record, int $user_id): bool
     {
         return $user->id == $record->user_id &&
             $user->id == $user_id;
@@ -79,9 +79,9 @@ class RecordPolicy
      *
      * @param User $user
      * @param Record $record
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, Record $record)
+    public function delete(User $user, Record $record): bool
     {
         return $user->id == $record->user_id;
     }

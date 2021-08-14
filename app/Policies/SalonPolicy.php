@@ -29,9 +29,9 @@ class SalonPolicy
      *
      * @param User $user
      * @param  Salon  $salon
-     * @return Response|bool
+     * @return bool
      */
-    public function viewRecords(User $user, Salon $salon)
+    public function viewRecords(User $user, Salon $salon): bool
     {
         return $user->id == $salon->user_id;
     }
@@ -41,9 +41,9 @@ class SalonPolicy
      *
      * @param User $user
      * @param Salon $salon
-     * @return Response|bool
+     * @return bool
      */
-    public function create(User $user, Salon $salon)
+    public function create(User $user, Salon $salon): bool
     {
         return $user->id == $salon->user_id;
     }
@@ -53,9 +53,9 @@ class SalonPolicy
      *
      * @param User $user
      * @param Salon $salon
-     * @return Response|bool
+     * @return bool
      */
-    public function update(User $user, Salon $salon, int $user_id)
+    public function update(User $user, Salon $salon, int $user_id): bool
     {
         return $user->id == $salon->user_id && $user->id == $user_id;
     }
@@ -65,9 +65,9 @@ class SalonPolicy
      *
      * @param User $user
      * @param Salon $salon
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, Salon $salon)
+    public function delete(User $user, Salon $salon): bool
     {
         return $user->id == $salon->user_id;
     }

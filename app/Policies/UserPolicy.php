@@ -27,9 +27,9 @@ class UserPolicy
      * Determine whether the user can view any models.
      *
      * @param User $user
-     * @return Response|bool
+     * @return bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->role()->first()->id == 1;
     }
@@ -39,9 +39,9 @@ class UserPolicy
      *
      * @param User $user
      * @param  User  $model
-     * @return Response|bool
+     * @return bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user, User $model): bool
     {
         return $user->id == $model->id;
     }
@@ -51,9 +51,9 @@ class UserPolicy
      *
      * @param User $user
      * @param User  $model
-     * @return Response|bool
+     * @return bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user, User $model): bool
     {
         return $user->id == $model->id;
     }
@@ -63,9 +63,9 @@ class UserPolicy
      *
      * @param User $user
      * @param User  $model
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, User $model): bool
     {
         return $user->id == $model->id;
     }
