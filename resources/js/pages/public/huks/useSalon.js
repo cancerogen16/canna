@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMastersOfSalon } from "../../../store/master/thunks";
 import { fetchRecords } from "../../../store/records/thunks";
-import { fetchSalonsOneId } from "../../../store/salon/thunks";
+import {fetchSalonInfo} from "../../../store/salon/thunks";
 import { fetchServicesByMasterId, fetchServicesBySalonId } from '../../../store/services/thunks';
 
 export default function useSalon(props){
@@ -15,7 +15,6 @@ export default function useSalon(props){
     const services = useSelector(state => state.services);
 
     const dispatch = useDispatch();
-    
     
     const handleClickMaster = (id) => {
         dispatch(fetchServicesByMasterId(id));
@@ -35,10 +34,7 @@ export default function useSalon(props){
     };
 
     useEffect(() => {
-
-        dispatch(fetchMastersOfSalon(props.match.params.id));
-        dispatch(fetchSalonsOneId(props.match.params.id))
-        dispatch(fetchServicesBySalonId(props.match.params.id))
+        dispatch(fetchSalonInfo(props.match.params.id))
     }, [])
 
     return {
@@ -52,6 +48,5 @@ export default function useSalon(props){
         handleClose,
         handleChange,
         handleClickMaster,
-        
     }
 }
