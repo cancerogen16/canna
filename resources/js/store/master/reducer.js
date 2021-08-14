@@ -1,10 +1,9 @@
-import {ADD_MASTERS, CLEAR_MASTERS, DELETE_MASTER} from "./action-types"
+import {ADD_MASTER, CLEAR_MASTER, DELETE_MASTER} from "./action-types"
 
 const initialMastersState = []
 
-const addMasters = (state, action) => {
+const addMaster = (state, action) => {
     return [
-        ...action.masters
     ]
 }
 
@@ -18,10 +17,10 @@ const deleteMaster = (state, action) => {
 
 export const masterReducer = (state = initialMastersState, action) => {
     switch (action.type) {
-        case ADD_MASTERS: {
+        case ADD_MASTER: {
             return addMasters(state, action);
         }
-        case CLEAR_MASTERS: {
+        case CLEAR_MASTER: {
             return clearMasters();
         }
         case DELETE_MASTER: {

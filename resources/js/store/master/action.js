@@ -1,8 +1,15 @@
-import {ADD_MASTERS, CLEAR_MASTERS, DELETE_MASTER} from "./action-types";
+import {ADD_MASTER, CLEAR_MASTER, DELETE_MASTER} from "./action-types";
 
-export const addMasters = (masters) => ({
-    type: ADD_MASTERS,
-    masters
+export const addMaster = ({ salon_id, name, slug, position, photo, experience, description, rating}) => ({
+    type: ADD_MASTER,
+    salon_id,
+    name,
+    slug,
+    position,
+    photo,
+    experience,
+    description,
+    rating
 });
 
 export const delMaster = (id) => ({
@@ -11,7 +18,7 @@ export const delMaster = (id) => ({
 });
 
 export const clearMaster = () => ({
-    type: CLEAR_MASTERS,
+    type: CLEAR_MASTER,
 });
 
 
