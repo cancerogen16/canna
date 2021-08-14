@@ -1,9 +1,9 @@
-export const ADD_MASTERS = 'MASTER::ADD_MASTERS';
-export const CLEAR_MASTERS = 'MASTER::CLEAR_MASTERS';
+export const ADD_MASTER = 'MASTER::ADD_MASTERS';
+export const CLEAR_MASTER = 'MASTER::CLEAR_MASTER';
 export const DELETE_MASTER = 'MASTER::DELETE_MASTER';
 
 export default {
-    ADD_MASTERS,
-    CLEAR_MASTERS,
+    ADD_MASTER,
+    CLEAR_MASTER,
     DELETE_MASTER
 }
