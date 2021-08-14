@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMastersOfSalon } from "../../../store/master/thunks";
 import { fetchRecords } from "../../../store/records/thunks";
 import {fetchSalonInfo} from "../../../store/salon/thunks";
 import { fetchServicesByMasterId, fetchServicesBySalonId } from '../../../store/services/thunks';
@@ -13,6 +12,7 @@ export default function useSalon(props){
     const salon = useSelector(state => state.salon);
     const records = useSelector(state => state.records);
     const services = useSelector(state => state.services);
+    const actions = useSelector(state => state.actions);
 
     const dispatch = useDispatch();
     
@@ -39,14 +39,15 @@ export default function useSalon(props){
 
     return {
         value,
-        masters,
         salon,
+        services,
+        masters,
+        actions,
         open,
         records,
-        services,
         handleClickOpen,
         handleClose,
         handleChange,
-        handleClickMaster,
+        handleClickMaster
     }
 }
