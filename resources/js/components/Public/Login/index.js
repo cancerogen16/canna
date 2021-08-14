@@ -49,12 +49,8 @@ export default function Login (props){
                 color="primary"
                 variant="contained"
                 type="submit"
-                disabled={submitted}
             >
-                {
-                    (submitted && 'Отправлено!')
-                    || (!submitted && 'Войти')
-                }
+                Войти
             </Button>
         </ValidatorForm>
     );

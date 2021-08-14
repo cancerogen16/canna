@@ -2,6 +2,7 @@ import HTTP from '../../utils/HTTP';
 import { clearUser } from '../user/action';
 import { setUserWithThunk, updateSalonUserFetch } from '../user/thunks';
 import { authCheck, authLogin, authLogout } from './actions';
+import { addError} from '../error/action';
 
 export const fetchLogin = (credentials) => (dispatch, getState) => {
 
@@ -17,8 +18,26 @@ export const fetchLogin = (credentials) => (dispatch, getState) => {
                     HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
                     dispatch(updateSalonUserFetch(user.id))
                 })
-                .catch(res => console.log(res));
-        });
+                .catch(err => { 
+                    if (err.response) { 
+                        console.log(err.response)
+                        dispatch(addError({code: status, message: err.response.data.email})) 
+                    } else if (err.request) { 
+                        console.log(err.request)
+                        dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+                    } else { 
+                        dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+                    }})
+        }).catch(err => { 
+            if (err.response) { 
+                console.log(err.response)
+                dispatch(addError({code: status, message: err.response.data.email})) 
+            } else if (err.request) { 
+                console.log(err.request)
+                dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+            } else { 
+                dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+            }})
 
 }
 
@@ -33,7 +52,14 @@ export const fetchRegistre = (credentials) => (dispatch, getState) => {
                     dispatch(setUserWithThunk(user));
                     localStorage.setItem('access_token', token);
                     HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
-                });
+                }).catch(err => { 
+                    if (err.response) { 
+                        dispatch(addError({code: status, message: err.response.data.email})) 
+                    } else if (err.request) { 
+                        dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+                    } else { 
+                        dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+                    }})
         });
 
   }
@@ -44,10 +70,9 @@ export const fetchLogout = (credentials) => (dispatch, getState) => {
     dispatch(authCheck())
 
     HTTP.post('api/authorization/logout')
-      .then(res => console.log(res))
       .then(dispatch(authLogout()))
       .then(localStorage.removeItem('access_token'))
-      .then(dispatch(clearUser()));
+      .then(dispatch(clearUser()))
     } 
   
 export const checkTokenStorage = () => (dispatch, getState) => {

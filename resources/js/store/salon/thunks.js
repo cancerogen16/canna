@@ -32,7 +32,15 @@ export const fetchSalonsOneId = (id) => (dispatch, getState) => {
                 console.log('sad', res)
                 dispatch(addSalon(res.data.salon))
             }
-        });
+        })
+        .catch(err => { 
+            if (err.response) { 
+                dispatch(addError({code: status, message: err.response.data.email})) 
+            } else if (err.request) { 
+                dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+            } else { 
+                dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+            }})
 }
 
 export const fetchSalonInfo = (id) => (dispatch, getState) => {
@@ -47,5 +55,13 @@ export const fetchSalonInfo = (id) => (dispatch, getState) => {
                 dispatch(addMastersAll(res.data.salon.masters));
                 dispatch(addAction(res.data.salon.actions));
             }
-        });
+        })
+        .catch(err => { 
+            if (err.response) { 
+                dispatch(addError({code: status, message: err.response.data.email})) 
+            } else if (err.request) { 
+                dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+            } else { 
+                dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+            }})
 }

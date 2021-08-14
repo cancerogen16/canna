@@ -12,5 +12,13 @@ export const updateSalonUserFetch = (user_id) => (dispach, getState) => {
     
     HTTP.get(`api/users/${user_id}/salons`)
     .then(res => {dispach(updateSalonUser(res.data.salons[0].id))})
+    .catch(err => { 
+        if (err.response) { 
+            dispatch(addError({code: status, message: err.response.data.email})) 
+        } else if (err.request) { 
+            dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+        } else { 
+            dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+        }})
 
 }

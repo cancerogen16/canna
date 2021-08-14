@@ -1,27 +1,19 @@
-import { Dialog, Button, DialogContent, DialogContentText, DialogTitle, DialogActions } from '@material-ui/core'
-import React from 'react'
-
+import { Button } from '@material-ui/core';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import { useSnack } from '../../../store/error/useSnack';
 
 export default function Alert (props){
-
-    return  <Dialog
-                open={props.open}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
-                <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    {props.children}
-                </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={props.handleYes} color="primary">
-                    Да
-                </Button>
-                <Button onClick={props.handleNot} color="primary">
-                    Нет
-                </Button>
-                </DialogActions>
-            </Dialog>
+    const err = useSelector(state => state.error);
+    const {snack} = useSnack();
+    
+    useEffect(() => {
+        if(err.length > 0){
+            err.map((item, index) => {
+              snack(item.message, 'error', index +1);
+            })
+          }
+    })
+    return <>{props.children}</>            
 }

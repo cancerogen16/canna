@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 
@@ -9,11 +9,15 @@ import { withRouter } from 'react-router-dom'
 import PrivateLayout from './Private'
 import PublicLayout from './Public'
 import DashboardLayout from './Dashboard'
+import { useSnack } from '../store/error/useSnack'
+import Alert from '../components/Dialogs/Alert'
 
 
 function Layout(props) {
 
-  
+ 
+
+
   
   const { isAuthenticated, children} = props
   console.log(isAuthenticated)
@@ -23,7 +27,7 @@ function Layout(props) {
       }
     return <PrivateLayout {...props}>{children}</PrivateLayout>
   }
-  return <PublicLayout {...props}>{children}</PublicLayout>
+  return <Alert><PublicLayout {...props}>{children}</PublicLayout></Alert>
 }
 
 Layout.displayName = 'Layout';
