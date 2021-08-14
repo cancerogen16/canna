@@ -3,9 +3,9 @@ export const CLEAR_SALON = 'SALON::CLEAR_SALON';
 export const CREATE_SALON = 'SALON::CREATE_SALON';
 export const UPDATE_MASTER_SALON = 'SALON::UPDATE_MASTER_SALON';
 
-    export default {
-  ADD_SALON,
-  CLEAR_SALON,
-  CREATE_SALON,
-  UPDATE_MASTER_SALON,
+export default {
+    ADD_SALON,
+    CLEAR_SALON,
+    CREATE_SALON,
+    UPDATE_MASTER_SALON,
 }

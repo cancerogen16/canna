@@ -1,6 +1,9 @@
 import HTTP from '../../utils/HTTP';
 import {updateSalonUser} from '../user/action';
 import {addSalon, clearSalon} from './action';
+import {addMasters} from "../master/action";
+import {addServices} from "../services/action";
+import {addAction} from "../action/action";
 
 export const fetchCreateSalon = (form) => (dispatch, getState) => {
     HTTP.post('api/salons', form, {
@@ -28,6 +31,21 @@ export const fetchSalonsOneId = (id) => (dispatch, getState) => {
             } else {
                 console.log('sad', res)
                 dispatch(addSalon(res.data.salon))
+            }
+        });
+}
+
+export const fetchSalonInfo = (id) => (dispatch, getState) => {
+    HTTP.get(`/api/salons/${id}/info`)
+        .then(res => {
+            if (res.data.code) {
+                dispatch(clearSalon())
+            } else {
+                console.log('sad', res)
+                dispatch(addSalon(res.data.salon));
+                dispatch(addServices(res.data.salon.services));
+                dispatch(addMasters(res.data.salon.masters));
+                dispatch(addAction(res.data.salon.actions));
             }
         });
 }
