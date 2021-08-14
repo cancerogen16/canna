@@ -14,7 +14,7 @@ import { servicesReducer } from './services/reducer';
 const persistConfig = {
     key: 'canna',
     storage,
-    blacklist: ['categoties', 'salons', 'salon', 'masters', 'records','actions']
+    whitelist: ['user']
   }
 
 
