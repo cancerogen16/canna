@@ -3,6 +3,7 @@ import {updateSalonUser} from '../user/action';
 import {addSalon, clearSalon} from './action';
 import {addMasters} from "../master/action";
 import {addServices} from "../services/action";
+import {addAction} from "../action/action";
 
 export const fetchCreateSalon = (form) => (dispatch, getState) => {
     HTTP.post('api/salons', form, {
@@ -44,6 +45,7 @@ export const fetchSalonInfo = (id) => (dispatch, getState) => {
                 dispatch(addSalon(res.data.salon));
                 dispatch(addServices(res.data.salon.services));
                 dispatch(addMasters(res.data.salon.masters));
+                dispatch(addAction(res.data.salon.actions));
             }
         });
 }

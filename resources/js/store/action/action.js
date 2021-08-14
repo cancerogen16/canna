@@ -1,16 +1,8 @@
-import { ADD_ACTION, CLEAR_ACTION, DELETE_ACTION } from "./action-types";
+import {ADD_ACTION, CLEAR_ACTION, DELETE_ACTION} from "./action-types";
 
-export const addAction = ({id, salon_id, name, photo, description, price, start_at, end_at}) => ({
+export const addAction = (actions) => ({
     type: ADD_ACTION,
-    id,
-    salon_id,
-    name,
-    photo,
-    description,
-    price,
-    start_at,
-    end_at
-
+    actions
 });
 
 export const delAction = (id) => ({
