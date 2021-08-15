@@ -9,9 +9,7 @@ import Modal from '../components/Dialogs/Modal'
 import { fetchSalonByUserId } from '../store/salon/thunks'
 
 const DashboardRoute = ({ component: Component, isAuthenticated, userSalon, user,  ...rest }) => {
-  const dispatch = useDispatch();
     return <Route {...rest} render={props => {
-        console.log('dash',props)
         return <Suspense fallback={<div>Loading...</div>}>
 
             
