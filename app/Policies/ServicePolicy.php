@@ -18,10 +18,9 @@ class ServicePolicy
      * Perform pre-authorization checks.
      *
      * @param User $user
-     * @param  string  $ability
      * @return void|bool
      */
-    public function before(User $user, $ability)
+    public function before(User $user)
     {
         if ($user->role()->first()->id == 1) {
             return true;
@@ -33,9 +32,9 @@ class ServicePolicy
      *
      * @param User $user
      * @param Service $service
-     * @return Response|bool
+     * @return bool
      */
-    public function create(User $user, Service $service)
+    public function create(User $user, Service $service): bool
     {
         return $user->id == $service->salon()->first()->user_id;
     }
@@ -45,9 +44,9 @@ class ServicePolicy
      *
      * @param User $user
      * @param Service $service
-     * @return Response|bool
+     * @return bool
      */
-    public function update(User $user, Service $service, int $salon_id)
+    public function update(User $user, Service $service, int $salon_id): bool
     {
         $new_salon = Salon::find($salon_id);
         return $user->id == $service->salon()->first()->user_id
@@ -59,9 +58,9 @@ class ServicePolicy
      *
      * @param User $user
      * @param Service $service
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, Service $service)
+    public function delete(User $user, Service $service): bool
     {
         return $user->id == $service->salon()->first()->user_id;
     }
@@ -71,9 +70,10 @@ class ServicePolicy
      *
      * @param User $user
      * @param Service $service
-     * @return Response|bool
+     * @param int $master_id
+     * @return bool
      */
-    public function editMasterConnection(User $user, Service $service, int $master_id)
+    public function editMasterConnection(User $user, Service $service, int $master_id): bool
     {
         $master = Master::find($master_id);
         return $user->id == $service->salon()->first()->user_id
@@ -85,9 +85,10 @@ class ServicePolicy
      *
      * @param User $user
      * @param Service $service
-     * @return Response|bool
+     * @param int $action_id
+     * @return bool
      */
-    public function editActionConnection(User $user, Service $service, int $action_id)
+    public function editActionConnection(User $user, Service $service, int $action_id): bool
     {
         $action = Action::find($action_id);
         return $user->id == $service->salon()->first()->user_id

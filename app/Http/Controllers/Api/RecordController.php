@@ -9,7 +9,6 @@ use App\Models\Record;
 use App\Models\Service;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class RecordController extends Controller
@@ -23,15 +22,17 @@ class RecordController extends Controller
      */
     public function index(): JsonResponse
     {
-        if (Auth::user()->cannot('viewAny', Record::class)) {
-            return $this->response(401, [], 'Нет доступа');
+        try {
+            $this->authorize('viewAny', Record::class);
+
+            $records = Record::all();
+
+            return $this->ok([
+                'records' => $records,
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
         }
-
-        $records = Record::all();
-
-        return $this->ok([
-            'records' => $records,
-        ]);
     }
 
      /**
@@ -47,9 +48,7 @@ class RecordController extends Controller
 
             $record = new Record($data);
 
-            if (Auth::user()->cannot('create', $record)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('create', $record);
 
             $service = $record->service()->first();
 
@@ -98,9 +97,7 @@ class RecordController extends Controller
         try {
             $record = Record::findOrFail($id);
 
-            if (Auth::user()->cannot('view', $record)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('view', $record);
 
             return $this->ok([
                 'record' => $record->toArray(),
@@ -124,9 +121,7 @@ class RecordController extends Controller
 
             $data = $request->validated();
 
-            if (Auth::user()->cannot('update', [$record, $data['user_id']])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('update', [$record, $data['user_id']]);
 
             $service = Service::findOrFail($data['service_id']);
 
@@ -179,9 +174,7 @@ class RecordController extends Controller
         try {
             $record = Record::findOrFail($id);
 
-            if (Auth::user()->cannot('delete', $record)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('delete', $record);
 
             $record->calendars()->update(['record_id' => null]);
 
@@ -204,9 +197,7 @@ class RecordController extends Controller
         try {
             $record = Record::findOrFail($id);
 
-            if (Auth::user()->cannot('view', $record)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('view', $record);
 
             $calendars = $record->calendars()->get();
 

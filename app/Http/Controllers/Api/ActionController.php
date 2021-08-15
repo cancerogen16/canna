@@ -15,7 +15,7 @@ class ActionController extends Controller
     use ApiResponder;
 
     /**
-     * @param ImageUploadService $
+     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
     public function index(ImageUploadService $uploadService): JsonResponse
@@ -44,6 +44,8 @@ class ActionController extends Controller
     {
         try {
             $action = new Action($request->validated());
+
+            $this->authorize('create', $action);
 
             if (isset($action['photo'])) {
                 if ($photo = $uploadService->upload($action['photo'])) {
@@ -98,6 +100,8 @@ class ActionController extends Controller
 
             $data = $request->validated();
 
+            $this->authorize('update', [$action, $data['salon_id']]);
+
             if (isset($action['photo'])) {
                 if ($photo = $uploadService->upload($action['photo'])) {
                     $action['photo'] = $photo;
@@ -128,6 +132,8 @@ class ActionController extends Controller
     {
         try {
             $action = Action::findOrFail($id);
+
+            $this->authorize('delete', $action);
 
             $action->delete();
 

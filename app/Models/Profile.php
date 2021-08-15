@@ -15,7 +15,7 @@ class Profile extends Model
         'name',
         'photo',
         'address',
-        'email',
+        'phone',
         'about'
     ];
 

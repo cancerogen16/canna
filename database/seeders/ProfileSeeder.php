@@ -23,7 +23,7 @@ class ProfileSeeder extends Seeder
                 'name' => 'Иван Иванов',
                 'photo' => 'https://avatars.mds.yandex.net/get-kinopoisk-image/1704946/abe7bf78-316f-42dd-b2dd-131c4215f7a1/360',
                 'address' => $faker->address(),
-                'email' => $faker->email(),
+                'phone' => $faker->phoneNumber(),
                 'about' => $faker->realText(200),
                 'created_at' => $faker->dateTimeBetween('-1 month', '-2 weeks'),
                 'updated_at' => $faker->dateTimeBetween('-2 weeks'),

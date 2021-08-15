@@ -42,6 +42,9 @@ Route::prefix('authorization')
 Route::prefix('users')
     ->group(base_path('routes/api/users.php'));
 
+Route::prefix('profiles')
+    ->group(base_path('routes/api/profiles.php'));
+
 Route::any('/{any}', function () {
     return response()->json([
         'success' => false,

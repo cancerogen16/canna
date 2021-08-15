@@ -16,12 +16,13 @@ class CreateProfilesTable extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id') // привязка к таблице users
+                ->unique()
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->string('name')->nullable();
             $table->string('photo')->nullable();
             $table->string('address')->nullable();
-            $table->string('email')->unique()->nullable();
+            $table->string('phone')->nullable();
             $table->text('about')->nullable(); // о себе
             $table->timestamps();
             $table->softDeletes();

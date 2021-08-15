@@ -10,7 +10,6 @@ use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -49,9 +48,7 @@ class SalonController extends Controller
         try {
             $salon = new Salon($request->validated());
 
-            if (Auth::user()->cannot('create', $salon)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('create', $salon);
 
             if (isset($salon['main_photo'])) {
                 if ($main_photo = $uploadService->upload($salon['main_photo'])) {
@@ -106,9 +103,7 @@ class SalonController extends Controller
 
             $data = $request->all();
 
-            if (Auth::user()->cannot('update', [$salon, $data['user_id']])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('update', [$salon, $data['user_id']]);
 
             if (isset($salon['main_photo'])) {
                 if ($main_photo = $uploadService->upload($salon['main_photo'])) {
@@ -141,9 +136,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            if (Auth::user()->cannot('delete', $salon)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('delete', $salon);
 
             $salon->delete();
 
@@ -248,9 +241,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            if (Auth::user()->cannot('viewRecords', $salon)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('viewRecords', $salon);
 
             $services = $salon->services()->get();
 

@@ -8,7 +8,6 @@ use App\Models\Master;
 use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
@@ -47,9 +46,7 @@ class MasterController extends Controller
         try {
             $master = new Master($request->validated());
 
-            if (Auth::user()->cannot('create', $master)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('create', $master);
 
             if (isset($master['photo'])) {
                 if ($photo = $uploadService->upload($master['photo'])) {
@@ -104,9 +101,7 @@ class MasterController extends Controller
 
             $data = $request->validated();
 
-            if (Auth::user()->cannot('update', [$master, $data['salon_id']])) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('update', [$master, $data['salon_id']]);
 
             if (isset($master['photo'])) {
                 if ($photo = $uploadService->upload($master['photo'])) {
@@ -139,9 +134,7 @@ class MasterController extends Controller
         try {
             $master = Master::findOrFail($id);
 
-            if (Auth::user()->cannot('delete', $master)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('delete', $master);
 
             $master->delete();
 
@@ -235,9 +228,7 @@ class MasterController extends Controller
         try {
             $master = Master::findOrFail($id);
 
-            if (Auth::user()->cannot('viewRecords', $master)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('viewRecords', $master);
 
             $calendars = $master->calendars()->get();
 

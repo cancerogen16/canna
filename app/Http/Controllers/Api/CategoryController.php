@@ -48,6 +48,8 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request, ImageUploadService $uploadService): JsonResponse
     {
         try {
+            $this->authorize('create', Category::class);
+
             $category = new Category($request->validated());
 
             if (isset($category['image'])) {
@@ -99,6 +101,8 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, ImageUploadService $uploadService, int $id): JsonResponse
     {
         try {
+            $this->authorize('update', Category::class);
+
             $category = Category::findOrFail($id);
 
             $data = $request->validated();
@@ -134,6 +138,8 @@ class CategoryController extends Controller
     public function delete(int $id): JsonResponse
     {
         try {
+            $this->authorize('delete', Category::class);
+
             $category = Category::findOrFail($id);
 
             $category->delete();

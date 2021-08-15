@@ -2,12 +2,20 @@
 
 namespace App\Providers;
 
+use App\Models\Action;
+use App\Models\Calendar;
+use App\Models\Category;
 use App\Models\Master;
+use App\Models\Profile;
 use App\Models\Record;
 use App\Models\Salon;
 use App\Models\Service;
 use App\Models\User;
+use App\Policies\ActionPolicy;
+use App\Policies\CalendarPolicy;
+use App\Policies\CategoryPolicy;
 use App\Policies\MasterPolicy;
+use App\Policies\ProfilePolicy;
 use App\Policies\RecordPolicy;
 use App\Policies\SalonPolicy;
 use App\Policies\ServicePolicy;
@@ -30,6 +38,10 @@ class AuthServiceProvider extends ServiceProvider
         Master::class => MasterPolicy::class,
         Service::class => ServicePolicy::class,
         Record::class => RecordPolicy::class,
+        Action::class => ActionPolicy::class,
+        Calendar::class => CalendarPolicy::class,
+        Category::class => CategoryPolicy::class,
+        Profile::class => ProfilePolicy::class,
     ];
 
     /**

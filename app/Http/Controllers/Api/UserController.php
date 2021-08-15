@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Throwable;
 use function PHPUnit\Framework\isNull;
 
@@ -22,15 +21,17 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        if (Auth::user()->cannot('viewAny', User::class)) {
-            return $this->response(401, [], 'Нет доступа');
+        try {
+            $this->authorize('viewAny', User::class);
+
+            $users = User::all();
+
+            return $this->ok([
+                'users' => $users,
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
         }
-
-        $users = User::all();
-
-        return $this->ok([
-            'users' => $users,
-        ]);
     }
 
     /**
@@ -44,9 +45,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            if (Auth::user()->cannot('view', $user)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('view', $user);
 
             return $this->ok([
                 'user' => $user->toArray(),
@@ -68,9 +67,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            if (Auth::user()->cannot('update', $user)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('update', $user);
 
             $data = $request->validated();
 
@@ -95,9 +92,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            if (Auth::user()->cannot('delete', $user)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('delete', $user);
 
             $user->delete();
 
@@ -121,9 +116,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            if (Auth::user()->cannot('view', $user)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('view', $user);
 
             $profile = $user->profile()->first();
             if (isNull($profile)) {
@@ -152,9 +145,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            if (Auth::user()->cannot('view', $user)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('view', $user);
 
             $salons = [];
 
@@ -185,9 +176,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            if (Auth::user()->cannot('view', $user)) {
-                return $this->response(401, [], 'Нет доступа');
-            }
+            $this->authorize('view', $user);
 
             $records = $user->records()->get();
 

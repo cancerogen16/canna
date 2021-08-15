@@ -40,6 +40,8 @@ class CalendarController extends Controller
         try {
             $calendar = new Calendar($request->validated());
 
+            $this->authorize('create', $calendar);
+
             $calendar->save();
 
             return $this->response(201, [
@@ -83,6 +85,8 @@ class CalendarController extends Controller
 
             $data = $request->validated();
 
+            $this->authorize('update', [$calendar, $data['master_id']]);
+
             $calendar->update($data);
 
             return $this->ok([
@@ -103,6 +107,8 @@ class CalendarController extends Controller
     {
         try {
             $calendar = Calendar::findOrFail($id);
+
+            $this->authorize('delete', $calendar);
 
             $calendar->delete();
 
@@ -210,6 +216,8 @@ class CalendarController extends Controller
         try {
             $fields = $request->input();
 
+            $this->authorize('editSchedule', [Calendar::class, $fields['master_id']]);
+
             $slotsByDays = $this->getSlotsByDays($fields); // массив слотов в новом расписании мастера, отсортированный по дням и часам
 
             if (!empty($slotsByDays)) {
@@ -236,6 +244,8 @@ class CalendarController extends Controller
     {
         try {
             $fields = $request->input();
+
+            $this->authorize('editSchedule', [Calendar::class, $fields['master_id']]);
 
             $dates = $fields['dates'];
             $master_id = $fields['master_id'];

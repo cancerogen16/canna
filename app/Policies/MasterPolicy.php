@@ -16,10 +16,9 @@ class MasterPolicy
      * Perform pre-authorization checks.
      *
      * @param User $user
-     * @param  string  $ability
      * @return void|bool
      */
-    public function before(User $user, $ability)
+    public function before(User $user)
     {
         if ($user->role()->first()->id == 1) {
             return true;
@@ -31,9 +30,9 @@ class MasterPolicy
      *
      * @param User $user
      * @param  Master  $master
-     * @return Response|bool
+     * @return bool
      */
-    public function viewRecords(User $user, Master $master)
+    public function viewRecords(User $user, Master $master): bool
     {
         return $user->id == $master->salon()->first()->user_id;
     }
@@ -43,9 +42,9 @@ class MasterPolicy
      *
      * @param User $user
      * @param Master $master
-     * @return Response|bool
+     * @return bool
      */
-    public function create(User $user, Master $master)
+    public function create(User $user, Master $master): bool
     {
         return $user->id == $master->salon()->first()->user_id;
     }
@@ -55,9 +54,10 @@ class MasterPolicy
      *
      * @param User $user
      * @param Master $master
-     * @return Response|bool
+     * @param int $salon_id
+     * @return bool
      */
-    public function update(User $user, Master $master, int $salon_id)
+    public function update(User $user, Master $master, int $salon_id): bool
     {
         $new_salon = Salon::find($salon_id);
         return $user->id == $master->salon()->first()->user_id
@@ -69,9 +69,9 @@ class MasterPolicy
      *
      * @param User $user
      * @param Master $master
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, Master $master)
+    public function delete(User $user, Master $master): bool
     {
         return $user->id == $master->salon()->first()->user_id;
     }

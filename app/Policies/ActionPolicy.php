@@ -2,12 +2,13 @@
 
 namespace App\Policies;
 
+use App\Models\Action;
 use App\Models\Salon;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class SalonPolicy
+class ActionPolicy
 {
     use HandlesAuthorization;
 
@@ -25,50 +26,43 @@ class SalonPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can create models.
      *
      * @param User $user
-     * @param  Salon  $salon
+     * @param Action $action
      * @return bool
      */
-    public function viewRecords(User $user, Salon $salon): bool
+    public function create(User $user, Action $action): bool
     {
-        return $user->id == $salon->user_id;
-    }
-
-    /**
-     * Determine whether the user can create the model.
-     *
-     * @param User $user
-     * @param Salon $salon
-     * @return bool
-     */
-    public function create(User $user, Salon $salon): bool
-    {
-        return $user->id == $salon->user_id;
+        return $user->id == $action->salon()->first()->user_id;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param Salon $salon
+     * @param Action $action
+     * @param int $salon_id
      * @return bool
      */
-    public function update(User $user, Salon $salon, int $user_id): bool
+    public function update(User $user, Action $action, int $salon_id): bool
     {
-        return $user->id == $salon->user_id && $user->id == $user_id;
+        $new_salon = Salon::find($salon_id);
+        return $user->id == $action->salon()->first()->user_id
+            && $user->id == $new_salon->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param Salon $salon
+     * @param Action $action
      * @return bool
      */
-    public function delete(User $user, Salon $salon): bool
+    public function delete(User $user, Action $action): bool
     {
-        return $user->id == $salon->user_id;
+        return $user->id == $action->salon()->first()->user_id;
     }
+
+
 }
