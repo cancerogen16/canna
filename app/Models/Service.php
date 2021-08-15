@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Facades\ImageUpload;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,25 +27,41 @@ class Service extends Model
         'description',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function salon(): BelongsTo
     {
         return $this->belongsTo(Salon::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function actions(): BelongsToMany
     {
         return $this->belongsToMany(Action::class);
     }
+
+    /**
+     * @return HasMany
+     */
     public function records(): HasMany
     {
         return $this->hasMany(Record::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function masters(): BelongsToMany
     {
         return $this->belongsToMany(Master::class);
@@ -57,5 +74,43 @@ class Service extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    /**
+     * @param string $imageSize
+     * @return array
+     */
+    public function getMasters(string $imageSize = 'medium'): array
+    {
+        $masters = [];
+
+        $mastersCollection = $this->masters()->get();
+
+        foreach ($mastersCollection as $item) {
+            $item['photo'] = ImageUpload::getImage($item['photo'], $imageSize);
+
+            $masters[] = $item;
+        }
+
+        return $masters;
+    }
+
+    /**
+     * @param string $imageSize
+     * @return array
+     */
+    public function getActions(string $imageSize = 'medium'): array
+    {
+        $actions = [];
+
+        $actionsCollection = $this->actions()->get();
+
+        foreach ($actionsCollection as $item) {
+            $item['photo'] = ImageUpload::getImage($item['photo'], $imageSize);
+
+            $actions[] = $item;
+        }
+
+        return $actions;
     }
 }

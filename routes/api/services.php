@@ -4,8 +4,8 @@ use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ServiceController::class, 'index'])->name('services.index');
-Route::get('/{id}/masters', [ServiceController::class, 'getMasters'])->name('services.masters');
-Route::get('/{id}/actions', [ServiceController::class, 'getActions'])->name('services.actions');
+Route::get('/{id}/masters', [ServiceController::class, 'masters'])->name('services.masters');
+Route::get('/{id}/actions', [ServiceController::class, 'actions'])->name('services.actions');
 Route::get('/{id}', [ServiceController::class, 'show'])->name('services.show');
 
 Route::group([
