@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return $this->response(401, $validator->messages());
+                return $this->response(401, $validator->messages()->toArray());
             }
 
             $user = User::create([
