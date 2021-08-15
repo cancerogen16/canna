@@ -6,6 +6,14 @@ import { addMasterOne } from '../masters/action';
 export const fetchMasterOne = (master_id) => (dispach, getState) => {
     HTTP.get(`/api/masters${master_id}`)
         .then(res => dispach(addMaster(res.data.master)))
+        .catch(err => { 
+            if (err.response) { 
+                dispatch(addError({code: status, message: err.response.data.email})) 
+            } else if (err.request) { 
+                dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+            } else { 
+                dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+            }})
 }
 
 export const fetchCreateMaster = (form) => (dispatch, getState) => {
@@ -19,4 +27,12 @@ export const fetchCreateMaster = (form) => (dispatch, getState) => {
             dispatch(addMasterOne(master));
             dispatch(updateMasterSalon(master.id));
         })
+        .catch(err => { 
+            if (err.response) { 
+                dispatch(addError({code: status, message: err.response.data.email})) 
+            } else if (err.request) { 
+                dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+            } else { 
+                dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+            }})
 }

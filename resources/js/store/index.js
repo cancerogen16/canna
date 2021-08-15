@@ -12,6 +12,7 @@ import { recordsReducer } from './records/reducer';
 import {actionReducer} from "./action/reducer";
 import { salonsReducer } from './salons/reducer';
 import { servicesReducer } from './services/reducer';
+import { errorReducer } from './error/reducer';
 const persistConfig = {
     key: 'canna',
     storage,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
     masters: mastersReducer,
     records: recordsReducer,
     actions: actionReducer,
-    services: servicesReducer
+    services: servicesReducer,
+    error: errorReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -8,7 +8,15 @@ export const fetchRecords = (master_id) => (dispach, getState) => {
         dispach(clearRecord())
         res.data.data.forEach(record => {
             dispach(addRecord(record));
-        });
+        })
     })
+    .catch(err => { 
+        if (err.response) { 
+            dispatch(addError({code: status, message: err.response.data.email})) 
+        } else if (err.request) { 
+            dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
+        } else { 
+            dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
+        }})
 
 }

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Header from '../components/Header'
-import { Container } from '@material-ui/core'
+import { Container, Snackbar } from '@material-ui/core'
 import Auth from '../components/Public/Auth'
+import { useSelector } from 'react-redux'
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import Alert from '../components/Dialogs/Alert'
+import { useSnack } from '../store/error/useSnack'
 
 
 
@@ -16,7 +20,10 @@ const propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-function PublicLayout({ children }) {
+function PublicLayout({ children }) { 
+  const err = useSelector(state => state.error);
+  const {snack} = useSnack();
+ 
   return <div >
     <Header>
     <Auth/>
@@ -25,6 +32,7 @@ function PublicLayout({ children }) {
     <main >
       { children }
     </main>
+    
     </Container>
   </div>
 }
