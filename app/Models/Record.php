@@ -20,16 +20,25 @@ class Record extends Model
         'comment',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function calendars(): HasMany
     {
         return $this->hasMany(Calendar::class);

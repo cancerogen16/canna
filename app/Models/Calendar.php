@@ -16,11 +16,17 @@ class Calendar extends Model
         'start_datetime',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function master(): BelongsTo
     {
         return $this->belongsTo(Master::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function record(): BelongsTo
     {
         return $this->belongsTo(Record::class);

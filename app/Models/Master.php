@@ -26,21 +26,33 @@ class Master extends Model
         'rating',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function salon(): BelongsTo
     {
         return $this->belongsTo(Salon::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function calendars(): HasMany
     {
         return $this->hasMany(Calendar::class);
     }
 
+    /**
+     * @return \string[][]
+     */
     public function sluggable(): array
     {
         return [
@@ -50,6 +62,10 @@ class Master extends Model
         ];
     }
 
+    /**
+     * @param string $imageSize
+     * @return array
+     */
     public function getServices(string $imageSize = 'medium'): array
     {
         $services = [];
