@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Facades\ImageUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ActionRequest;
 use App\Models\Action;
-use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Throwable;
@@ -15,17 +15,16 @@ class ActionController extends Controller
     use ApiResponder;
 
     /**
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function index(ImageUploadService $uploadService): JsonResponse
+    public function index(): JsonResponse
     {
         $actions = [];
 
         $actionsCollection = Action::all();
 
         foreach ($actionsCollection as $item) {
-            $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
+            $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
 
             $actions[] = $item;
         }
@@ -37,10 +36,9 @@ class ActionController extends Controller
 
     /**
      * @param ActionRequest $request
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function store(ActionRequest $request, ImageUploadService $uploadService): JsonResponse
+    public function store(ActionRequest $request): JsonResponse
     {
         try {
             $action = new Action($request->validated());
@@ -48,7 +46,7 @@ class ActionController extends Controller
             $this->authorize('create', $action);
 
             if (isset($action['photo'])) {
-                if ($photo = $uploadService->upload($action['photo'])) {
+                if ($photo = ImageUpload::upload($action['photo'])) {
                     $action['photo'] = $photo;
                 }
             }
@@ -56,7 +54,7 @@ class ActionController extends Controller
             $action->save();
 
             if (isset($action['photo'])) {
-                $action['photo'] = $uploadService->getImage($action['photo'], 'large');
+                $action['photo'] = ImageUpload::getImage($action['photo'], 'large');
             }
 
             return $this->ok([
@@ -68,16 +66,15 @@ class ActionController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function show(ImageUploadService $uploadService, int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         try {
             $action = Action::findOrFail($id);
 
-            $action['photo'] = $uploadService->getImage($action['photo'], 'large');
+            $action['photo'] = ImageUpload::getImage($action['photo'], 'large');
 
             return $this->ok([
                 'action' => $action->toArray()
@@ -89,11 +86,10 @@ class ActionController extends Controller
 
     /**
      * @param ActionRequest $request
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function update(ActionRequest $request, ImageUploadService $uploadService, int $id): JsonResponse
+    public function update(ActionRequest $request, int $id): JsonResponse
     {
         try {
             $action = Action::findOrFail($id);
@@ -103,7 +99,7 @@ class ActionController extends Controller
             $this->authorize('update', [$action, $data['salon_id']]);
 
             if (isset($action['photo'])) {
-                if ($photo = $uploadService->upload($action['photo'])) {
+                if ($photo = ImageUpload::upload($action['photo'])) {
                     $action['photo'] = $photo;
                 }
             } else {
@@ -113,7 +109,7 @@ class ActionController extends Controller
             $action->update($data);
 
             if (isset($action['photo'])) {
-                $action['photo'] = $uploadService->getImage($action['photo'], 'large');
+                $action['photo'] = ImageUpload::getImage($action['photo'], 'large');
             }
 
             return $this->ok([
@@ -146,24 +142,15 @@ class ActionController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function getServices(ImageUploadService $uploadService, int $id): JsonResponse
+    public function services(int $id): JsonResponse
     {
         try {
             $action = Action::findOrFail($id);
 
-            $services = [];
-
-            $servicesCollection = $action->services()->get();
-
-            foreach ($servicesCollection as $item) {
-                $item['image'] = $uploadService->getImage($item['image'], 'thumbnail');
-
-                $services[] = $item;
-            }
+            $services = $action->getServices('thumbnail');
 
             return $this->ok([
                 'services' => $services,
@@ -172,5 +159,4 @@ class ActionController extends Controller
             return $this->error([], $e->getMessage());
         }
     }
-
 }
