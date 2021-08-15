@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Facades\ImageUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Throwable;
 
 class CategoryController extends Controller
@@ -18,17 +17,16 @@ class CategoryController extends Controller
     /**
      * Список категорий
      *
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function index(ImageUploadService $uploadService): JsonResponse
+    public function index(): JsonResponse
     {
         $categories = [];
 
         $categoriesCollection = Category::all();
 
         foreach ($categoriesCollection as $item) {
-            $item['image'] = $uploadService->getImage($item['image'], 'medium');
+            $item['image'] = ImageUpload::getImage($item['image'], 'medium');
 
             $categories[] = $item;
         }
@@ -42,10 +40,9 @@ class CategoryController extends Controller
      * Создание новой категории
      *
      * @param CategoryRequest $request
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function store(CategoryRequest $request, ImageUploadService $uploadService): JsonResponse
+    public function store(CategoryRequest $request): JsonResponse
     {
         try {
             $this->authorize('create', Category::class);
@@ -53,7 +50,7 @@ class CategoryController extends Controller
             $category = new Category($request->validated());
 
             if (isset($category['image'])) {
-                if ($photo = $uploadService->upload($category['image'])) {
+                if ($photo = ImageUpload::upload($category['image'])) {
                     $category['image'] = $photo;
                 }
             }
@@ -71,16 +68,15 @@ class CategoryController extends Controller
     /**
      * Вывод категории по id
      *
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function show(ImageUploadService $uploadService, int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         try {
             $category = Category::findOrFail($id);
 
-            $category['image'] = $uploadService->getImage($category['image'], 'large');
+            $category['image'] = ImageUpload::getImage($category['image'], 'large');
 
             return $this->ok([
                 'category' => $category
@@ -94,11 +90,10 @@ class CategoryController extends Controller
      * Изменение категории
      *
      * @param CategoryRequest $request
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function update(CategoryRequest $request, ImageUploadService $uploadService, int $id): JsonResponse
+    public function update(CategoryRequest $request, int $id): JsonResponse
     {
         try {
             $this->authorize('update', Category::class);
@@ -108,7 +103,7 @@ class CategoryController extends Controller
             $data = $request->validated();
 
             if (isset($category['image'])) {
-                if ($photo = $uploadService->upload($category['image'])) {
+                if ($photo = ImageUpload::upload($category['image'])) {
                     $category['image'] = $photo;
                 }
             } else {
@@ -118,7 +113,7 @@ class CategoryController extends Controller
             $category->update($data);
 
             if (isset($category['image'])) {
-                $category['image'] = $uploadService->getImage($category['image'], 'large');
+                $category['image'] = ImageUpload::getImage($category['image'], 'large');
             }
 
             return $this->ok([

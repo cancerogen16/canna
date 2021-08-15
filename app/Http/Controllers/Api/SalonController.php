@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Facades\ImageUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SalonRequest;
 use App\Http\Requests\SalonSearchRequest;
@@ -18,17 +19,16 @@ class SalonController extends Controller
     use ApiResponder;
 
     /**
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function index(ImageUploadService $uploadService): JsonResponse
+    public function index(): JsonResponse
     {
         $salons = [];
 
         $salonsCollection = Salon::all();
 
         foreach ($salonsCollection as $item) {
-            $item['main_photo'] = $uploadService->getImage($item['main_photo'], 'medium');
+            $item['main_photo'] = ImageUpload::getImage($item['main_photo'], 'medium');
 
             $salons[] = $item;
         }
@@ -40,10 +40,9 @@ class SalonController extends Controller
 
     /**
      * @param SalonRequest $request
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function store(SalonRequest $request, ImageUploadService $uploadService): JsonResponse
+    public function store(SalonRequest $request): JsonResponse
     {
         try {
             $salon = new Salon($request->validated());
@@ -51,7 +50,7 @@ class SalonController extends Controller
             $this->authorize('create', $salon);
 
             if (isset($salon['main_photo'])) {
-                if ($main_photo = $uploadService->upload($salon['main_photo'])) {
+                if ($main_photo = ImageUpload::upload($salon['main_photo'])) {
                     $salon['main_photo'] = $main_photo;
                 }
             }
@@ -59,7 +58,7 @@ class SalonController extends Controller
             $salon->save();
 
             if (isset($salon['main_photo'])) {
-                $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+                $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
             }
 
             return $this->response(201, [
@@ -72,15 +71,14 @@ class SalonController extends Controller
 
     /**
      * @param int $id
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function show(ImageUploadService $uploadService, int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+            $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
 
             return $this->ok([
                 'salon' => $salon
@@ -93,10 +91,9 @@ class SalonController extends Controller
     /**
      * @param SalonRequest $request
      * @param int $id
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function update(Request $request, ImageUploadService $uploadService, int $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
@@ -106,7 +103,7 @@ class SalonController extends Controller
             $this->authorize('update', [$salon, $data['user_id']]);
 
             if (isset($salon['main_photo'])) {
-                if ($main_photo = $uploadService->upload($salon['main_photo'])) {
+                if ($main_photo = ImageUpload::upload($salon['main_photo'])) {
                     $salon['main_photo'] = $main_photo;
                 }
             } else {
@@ -116,7 +113,7 @@ class SalonController extends Controller
             $salon->update($data);
 
             if (isset($salon['main_photo'])) {
-                $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+                $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
             }
 
             return $this->ok([
@@ -150,10 +147,9 @@ class SalonController extends Controller
 
     /**
      * @param SalonSearchRequest $request
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function search(SalonSearchRequest $request, ImageUploadService $uploadService): JsonResponse
+    public function search(SalonSearchRequest $request): JsonResponse
     {
         $salons = [];
 
@@ -165,7 +161,7 @@ class SalonController extends Controller
             ->get();
 
         foreach ($salonsCollection as $item) {
-            $item['main_photo'] = $uploadService->getImage($item['main_photo'], 'medium');
+            $item['main_photo'] = ImageUpload::getImage($item['main_photo'], 'medium');
 
             $salons[] = $item;
         }
@@ -264,16 +260,15 @@ class SalonController extends Controller
     /**
      * Получает параметры салона: салон, мастеров, услуги, акции
      *
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function info(ImageUploadService $uploadService, int $id): JsonResponse
+    public function info(int $id): JsonResponse
     {
         try {
             $salon = Salon::findOrFail($id);
 
-            $salon['main_photo'] = $uploadService->getImage($salon['main_photo'], 'large');
+            $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
 
             $salon['masters'] = $salon->getMasters('thumbnail');
 

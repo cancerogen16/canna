@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Facades\ImageUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterRequest;
 use App\Models\Master;
-use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
@@ -16,17 +16,16 @@ class MasterController extends Controller
     use ApiResponder;
 
     /**
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function index(ImageUploadService $uploadService): JsonResponse
+    public function index(): JsonResponse
     {
         $masters = [];
 
         $mastersCollection = Master::all();
 
         foreach ($mastersCollection as $item) {
-            $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
+            $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
 
             $masters[] = $item;
         }
@@ -38,10 +37,9 @@ class MasterController extends Controller
 
     /**
      * @param MasterRequest $request
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function store(MasterRequest $request, ImageUploadService $uploadService): JsonResponse
+    public function store(MasterRequest $request): JsonResponse
     {
         try {
             $master = new Master($request->validated());
@@ -49,7 +47,7 @@ class MasterController extends Controller
             $this->authorize('create', $master);
 
             if (isset($master['photo'])) {
-                if ($photo = $uploadService->upload($master['photo'])) {
+                if ($photo = ImageUpload::upload($master['photo'])) {
                     $master['photo'] = $photo;
                 }
             }
@@ -57,7 +55,7 @@ class MasterController extends Controller
             $master->save();
 
             if (isset($master['photo'])) {
-                $master['photo'] = $uploadService->getImage($master['photo'], 'large');
+                $master['photo'] = ImageUpload::getImage($master['photo'], 'large');
             }
 
             return $this->response(201, [
@@ -70,15 +68,14 @@ class MasterController extends Controller
 
     /**
      * @param int $id
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function show(ImageUploadService $uploadService, int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
 
-            $master['photo'] = $uploadService->getImage($master['photo'], 'large');
+            $master['photo'] = ImageUpload::getImage($master['photo'], 'large');
 
             return $this->ok([
                 'master' => $master->toArray()
@@ -91,10 +88,9 @@ class MasterController extends Controller
     /**
      * @param MasterRequest $request
      * @param int $id
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function update(MasterRequest $request, ImageUploadService $uploadService, int $id): JsonResponse
+    public function update(MasterRequest $request, int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
@@ -104,7 +100,7 @@ class MasterController extends Controller
             $this->authorize('update', [$master, $data['salon_id']]);
 
             if (isset($master['photo'])) {
-                if ($photo = $uploadService->upload($master['photo'])) {
+                if ($photo = ImageUpload::upload($master['photo'])) {
                     $master['photo'] = $photo;
                 }
             } else {
@@ -114,7 +110,7 @@ class MasterController extends Controller
             $master->update($data);
 
             if (isset($master['photo'])) {
-                $master['photo'] = $uploadService->getImage($master['photo'], 'large');
+                $master['photo'] = ImageUpload::getImage($master['photo'], 'large');
             }
 
             return $this->ok([
@@ -147,24 +143,15 @@ class MasterController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function getServices(ImageUploadService $uploadService, int $id): JsonResponse
+    public function services(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
 
-            $services = [];
-
-            $servicesCollection = $master->services()->get();
-
-            foreach ($servicesCollection as $item) {
-                $item['image'] = $uploadService->getImage($item['image'], 'thumbnail');
-
-                $services[] = $item;
-            }
+            $services = $master->getServices('thumbnail');
 
             return $this->ok([
                 'services' => $services,
@@ -178,7 +165,7 @@ class MasterController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getCalendars(int $id): JsonResponse
+    public function calendars(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);
@@ -198,13 +185,15 @@ class MasterController extends Controller
      * @param string $day
      * @return JsonResponse
      */
-    public function getCalendarsForDay(int $id, string $day): JsonResponse
+    public function calendarsForDay(int $id, string $day): JsonResponse
     {
         try {
-            $validator = Validator::make(['day' => $day], ['day' => 'required|date_format:Y-m-d']);
+            $validator = Validator::make(['day' => $day], [
+                'day' => 'required|date_format:Y-m-d'
+            ]);
 
             if ($validator->fails()) {
-                return $this->response(401, $validator->messages());
+                return $this->response(401, $validator->messages()->toArray());
             }
 
             $master = Master::findOrFail($id);
@@ -223,7 +212,7 @@ class MasterController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getRecords(int $id): JsonResponse
+    public function records(int $id): JsonResponse
     {
         try {
             $master = Master::findOrFail($id);

@@ -26,21 +26,33 @@ class Salon extends Model
         'rating',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function masters(): HasMany
     {
         return $this->hasMany(Master::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function services(): HasMany
     {
         return $this->hasMany(Service::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function actions(): HasMany
     {
         return $this->hasMany(Action::class);

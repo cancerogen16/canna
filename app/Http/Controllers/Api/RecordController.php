@@ -192,7 +192,7 @@ class RecordController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getCalendars(int $id): JsonResponse
+    public function сalendars(int $id): JsonResponse
     {
         try {
             $record = Record::findOrFail($id);

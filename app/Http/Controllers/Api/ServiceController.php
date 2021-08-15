@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Facades\ImageUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
 use App\Models\Action;
 use App\Models\Master;
 use App\Models\Service;
-use App\Services\ImageUploadService;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Throwable;
@@ -17,17 +17,16 @@ class ServiceController extends Controller
     use ApiResponder;
 
     /**
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function index(ImageUploadService $uploadService): JsonResponse
+    public function index(): JsonResponse
     {
         $services = [];
 
         $servicesCollection = Service::all();
 
         foreach ($servicesCollection as $item) {
-            $item['image'] = $uploadService->getImage($item['image'], 'medium');
+            $item['image'] = ImageUpload::getImage($item['image'], 'medium');
 
             $services[] = $item;
         }
@@ -39,10 +38,9 @@ class ServiceController extends Controller
 
     /**
      * @param ServiceRequest $request
-     * @param ImageUploadService $uploadService
      * @return JsonResponse
      */
-    public function store(ServiceRequest $request, ImageUploadService $uploadService): JsonResponse
+    public function store(ServiceRequest $request): JsonResponse
     {
         try {
             $service = new Service($request->validated());
@@ -50,7 +48,7 @@ class ServiceController extends Controller
             $this->authorize('create', $service);
 
             if (isset($service['image'])) {
-                if ($photo = $uploadService->upload($service['image'])) {
+                if ($photo = ImageUpload::upload($service['image'])) {
                     $service['image'] = $photo;
                 }
             }
@@ -58,7 +56,7 @@ class ServiceController extends Controller
             $service->save();
 
             if (isset($service['image'])) {
-                $service['image'] = $uploadService->getImage($service['image'], 'large');
+                $service['image'] = ImageUpload::getImage($service['image'], 'large');
             }
 
             return $this->response(201, [
@@ -70,16 +68,15 @@ class ServiceController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function show(ImageUploadService $uploadService, int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
 
-            $service['image'] = $uploadService->getImage($service['image'], 'large');
+            $service['image'] = ImageUpload::getImage($service['image'], 'large');
 
             return $this->ok([
                 'service' => $service->toArray()
@@ -91,11 +88,10 @@ class ServiceController extends Controller
 
     /**
      * @param ServiceRequest $request
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function update(ServiceRequest $request, ImageUploadService $uploadService, int $id): JsonResponse
+    public function update(ServiceRequest $request, int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
@@ -105,7 +101,7 @@ class ServiceController extends Controller
             $this->authorize('update', [$service, $data['salon_id']]);
 
             if (isset($service['image'])) {
-                if ($photo = $uploadService->upload($service['image'])) {
+                if ($photo = ImageUpload::upload($service['image'])) {
                     $service['image'] = $photo;
                 }
             } else {
@@ -115,7 +111,7 @@ class ServiceController extends Controller
             $service->update($data);
 
             if (isset($service['image'])) {
-                $service['image'] = $uploadService->getImage($service['image'], 'large');
+                $service['image'] = ImageUpload::getImage($service['image'], 'large');
             }
 
             return $this->ok([
@@ -144,24 +140,15 @@ class ServiceController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function getMasters(ImageUploadService $uploadService, int $id): JsonResponse
+    public function masters(int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
 
-            $masters = [];
-
-            $mastersCollection = $service->masters()->get();
-
-            foreach ($mastersCollection as $item) {
-                $item['photo'] = $uploadService->getImage($item['photo'], 'thumbnail');
-
-                $masters[] = $item;
-            }
+            $masters = $service->getMasters('thumbnail');
 
             return $this->ok([
                 'masters' => $masters,
@@ -172,24 +159,15 @@ class ServiceController extends Controller
     }
 
     /**
-     * @param ImageUploadService $uploadService
      * @param int $id
      * @return JsonResponse
      */
-    public function getActions(ImageUploadService $uploadService, int $id): JsonResponse
+    public function actions(int $id): JsonResponse
     {
         try {
             $service = Service::findOrFail($id);
 
-            $actions = [];
-
-            $actionsCollection = $service->actions()->get();
-
-            foreach ($actionsCollection as $item) {
-                $item['photo'] = $uploadService->getImage($item['photo'], 'medium');
-
-                $actions[] = $item;
-            }
+            $actions = $service->getActions('medium');
 
             return $this->ok([
                 'actions' => $actions,
