@@ -1,4 +1,5 @@
 import HTTP from '../../utils/HTTP';
+import { addError } from '../error/action';
 import {addServices} from './action';
 
 export const fetchServices = () => (dispach, getState) => {
@@ -32,7 +33,7 @@ export const fetchServicesBySalonId = (salon_id) => (dispach, getState) => {
         .then(res => dispach(addServices(res.data.services)))
         .catch(err => { 
             if (err.response) { 
-                dispatch(addError({code: status, message: err.response.data.email})) 
+                dispatch(addError({code: status, message: err.response.data.message})) 
             } else if (err.request) { 
                 dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
             } else { 
@@ -45,7 +46,7 @@ export const fetchServicesOfSalon = (salon_id) => (dispach, getState) => {
         .then(res => dispach(addServices(res.data.services)))
         .catch(err => { 
             if (err.response) { 
-                dispatch(addError({code: status, message: err.response.data.email})) 
+                dispatch(addError({code: status, message: err.response.data.message})) 
             } else if (err.request) { 
                 dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
             } else { 

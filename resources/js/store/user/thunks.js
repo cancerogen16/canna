@@ -1,4 +1,5 @@
 import HTTP from '../../utils/HTTP';
+import { addError } from '../error/action';
 import { clearSalon } from '../salon/action';
 import { setUser, updateSalonUser } from './action';
 
@@ -14,7 +15,7 @@ export const updateSalonUserFetch = (user_id) => (dispach, getState) => {
     .then(res => {dispach(updateSalonUser(res.data.salons[0].id))})
     .catch(err => { 
         if (err.response) { 
-            dispatch(addError({code: status, message: err.response.data.email})) 
+            dispatch(addError({code: status, message: err.response.data.message})) 
         } else if (err.request) { 
             dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
         } else { 
