@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Facades\ImageUpload;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -49,4 +50,18 @@ class Master extends Model
         ];
     }
 
+    public function getServices(string $imageSize = 'medium'): array
+    {
+        $services = [];
+
+        $servicesCollection = $this->services()->get();
+
+        foreach ($servicesCollection as $item) {
+            $item['image'] = ImageUpload::getImage($item['image'], $imageSize);
+
+            $services[] = $item;
+        }
+
+        return $services;
+    }
 }
