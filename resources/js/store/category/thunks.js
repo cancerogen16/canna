@@ -1,4 +1,5 @@
 import HTTP from '../../utils/HTTP';
+import { addError } from '../error/action';
 import {addCategory, clearCategory} from "./action";
 
 export const fetchCategoryAll = () => (dispatch, getState) => {
@@ -11,7 +12,7 @@ export const fetchCategoryAll = () => (dispatch, getState) => {
     })
     .catch(err => { 
         if (err.response) { 
-            dispatch(addError({code: status, message: err.response.data.email})) 
+            dispatch(addError({code: status, message: err.response.data.message})) 
         } else if (err.request) { 
             dispatch(addError({code: status, message: 'Не удается соединится с сервером'}))
         } else { 
