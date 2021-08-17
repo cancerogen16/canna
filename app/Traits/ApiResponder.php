@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 trait ApiResponder
 {
@@ -119,6 +120,8 @@ trait ApiResponder
             $message = 'Server error';
         }
 
-        return $this->response(500, $data, $message);
+        Log::error($message);
+
+        return $this->response(500, $data, "Ошибка сервера, обратитесь к администратору");
     }
 }
