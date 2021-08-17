@@ -23,19 +23,23 @@ class SalonController extends Controller
      */
     public function index(): JsonResponse
     {
-        $salons = [];
+        try {
+            $salons = [];
 
-        $salonsCollection = Salon::all();
+            $salonsCollection = Salon::all();
 
-        foreach ($salonsCollection as $item) {
-            $item['main_photo'] = ImageUpload::getImage($item['main_photo'], 'medium');
+            foreach ($salonsCollection as $item) {
+                $item['main_photo'] = ImageUpload::getImage($item['main_photo'], 'medium');
 
-            $salons[] = $item;
+                $salons[] = $item;
+            }
+
+            return $this->ok([
+                'salons' => $salons
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
         }
-
-        return $this->ok([
-            'salons' => $salons
-        ]);
     }
 
     /**

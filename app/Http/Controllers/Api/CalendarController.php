@@ -22,11 +22,15 @@ class CalendarController extends Controller
      */
     public function index(): JsonResponse
     {
-        $calendars = Calendar::all();
+        try {
+            $calendars = Calendar::all();
 
-        return $this->ok([
-            'calendars' => $calendars,
-        ]);
+            return $this->ok([
+                'calendars' => $calendars,
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
+        }
     }
 
     /**

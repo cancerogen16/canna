@@ -21,19 +21,23 @@ class ServiceController extends Controller
      */
     public function index(): JsonResponse
     {
-        $services = [];
+        try {
+            $services = [];
 
-        $servicesCollection = Service::all();
+            $servicesCollection = Service::all();
 
-        foreach ($servicesCollection as $item) {
-            $item['image'] = ImageUpload::getImage($item['image'], 'medium');
+            foreach ($servicesCollection as $item) {
+                $item['image'] = ImageUpload::getImage($item['image'], 'medium');
 
-            $services[] = $item;
+                $services[] = $item;
+            }
+
+            return $this->ok([
+                'services' => $services
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
         }
-
-        return $this->ok([
-            'services' => $services
-        ]);
     }
 
     /**

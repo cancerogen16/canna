@@ -20,19 +20,23 @@ class MasterController extends Controller
      */
     public function index(): JsonResponse
     {
-        $masters = [];
+        try {
+            $masters = [];
 
-        $mastersCollection = Master::all();
+            $mastersCollection = Master::all();
 
-        foreach ($mastersCollection as $item) {
-            $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
+            foreach ($mastersCollection as $item) {
+                $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
 
-            $masters[] = $item;
+                $masters[] = $item;
+            }
+
+            return $this->ok([
+                'masters' => $masters,
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
         }
-
-        return $this->ok([
-            'masters' => $masters,
-        ]);
     }
 
     /**
