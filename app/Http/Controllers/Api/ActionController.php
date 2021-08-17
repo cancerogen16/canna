@@ -19,19 +19,23 @@ class ActionController extends Controller
      */
     public function index(): JsonResponse
     {
-        $actions = [];
+        try {
+            $actions = [];
 
-        $actionsCollection = Action::all();
+            $actionsCollection = Action::all();
 
-        foreach ($actionsCollection as $item) {
-            $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
+            foreach ($actionsCollection as $item) {
+                $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
 
-            $actions[] = $item;
+                $actions[] = $item;
+            }
+
+            return $this->ok([
+                'actions' => $actions
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
         }
-
-        return $this->ok([
-            'actions' => $actions
-        ]);
     }
 
     /**

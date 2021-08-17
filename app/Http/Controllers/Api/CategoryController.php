@@ -21,19 +21,23 @@ class CategoryController extends Controller
      */
     public function index(): JsonResponse
     {
-        $categories = [];
+        try {
+            $categories = [];
 
-        $categoriesCollection = Category::all();
+            $categoriesCollection = Category::all();
 
-        foreach ($categoriesCollection as $item) {
-            $item['image'] = ImageUpload::getImage($item['image'], 'medium');
+            foreach ($categoriesCollection as $item) {
+                $item['image'] = ImageUpload::getImage($item['image'], 'medium');
 
-            $categories[] = $item;
+                $categories[] = $item;
+            }
+
+            return $this->ok([
+                'categories' => $categories
+            ]);
+        } catch (Throwable $e) {
+            return $this->error([], $e->getMessage());
         }
-
-        return $this->ok([
-            'categories' => $categories
-        ]);
     }
 
     /**
