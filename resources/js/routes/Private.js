@@ -7,7 +7,6 @@ import { updateSalonUserFetch } from '../store/user/thunks'
 
 const PrivateRoute = ({ component: Component, isAuthenticated, user, ...rest }) => {
   
-   console.log('privet', user);
     return <Route {...rest} render={props => {
       
         return <Suspense fallback={<div>Loading...</div>}>

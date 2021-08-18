@@ -10,11 +10,7 @@ export default function Page(props) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user)
     const salon = useSelector(state => state.salon)
-    useEffect(() => {
-        if(user.salon)
-            dispatch(fetchSalonsOneId(user.salon))
-        
-    },[])
+    
 
     if(!!user.salon){
         return <Salon salon={salon}/>

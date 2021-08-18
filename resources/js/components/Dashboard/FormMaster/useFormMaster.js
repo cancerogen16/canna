@@ -15,8 +15,8 @@ export default function useFormMaster(props) {
         description: '',
         photo: []
     });
-
-    const handleSubmit = (e) => {
+    
+    const handleSubmit = (e, calback) => {
         const form = new FormData(e.target.form);
         form.append('salon_id',credentials.salon_id);
         form.append('name', credentials.name)
@@ -25,10 +25,12 @@ export default function useFormMaster(props) {
         form.append('description', credentials.description)
         form.append('photo', credentials.photo)
         console.log(e.target.form)
-
+        console.log(e);
+        
         dispatch(fetchCreateMaster(form));
         setSubmitted(true);
         setOpen(false);
+        calback()
     }
 
     const handlerOnChangeField = (e) => {
@@ -69,6 +71,7 @@ export default function useFormMaster(props) {
     return {
         handlerOnChangeField,
         handleSubmit,
+        setCredentials,
         submitted,
         credentials,
         open,

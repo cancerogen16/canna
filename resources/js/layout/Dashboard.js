@@ -13,7 +13,7 @@ import Alert from '../components/Dialogs/Alert'
 import Modal from '../components/Dialogs/Modal'
 import FormSalon from '../components/Dashboard/FormSalon'
 import FormMaster from '../components/Dashboard/FormMaster'
-import { fetchSalonsOneId } from '../store/salon/thunks'
+import { fetchSalonInfo, fetchSalonsOneId } from '../store/salon/thunks'
 import { fetchMasters } from '../store/master/thunks'
 
 
@@ -41,16 +41,13 @@ function DashboardLayout({ children, history, user }) {
         state: {pathname: history.location.pathname}
       })
   }
-  useEffect(() =>{
-    //dispatch(fetchSalonsOneId(user.id))
-  }, [])
-  const handleYes = () => {
-   
-    //dispatch(clearSalon());
-    setOpen(false);
 
-  }
-  console.log(user)
+  useEffect(() => {
+    if(user.salon)
+        dispatch(fetchSalonInfo(user.salon))
+    
+},[])
+ 
   return <div>
       <Header>
         <UserBar />
@@ -96,18 +93,6 @@ function DashboardLayout({ children, history, user }) {
           
       </ Grid>
       </Container>
-      {/* <Alert 
-        
-          open={open} 
-          title="Создать салон?"
-          handleNot={handleNot} 
-          handleYes={handleYes}
-          >
-            Мы не нашли в базе информацию о вашем салоне
-        </Alert> */}
-        {/* <Modal open={open}>
-          <FormSalon  handleYes={handleYes}/>
-        </Modal> */}
 
   </div>
 }
