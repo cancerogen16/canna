@@ -12,11 +12,9 @@ export default function FormMaster (props){
         submitted,
         credentials,
         open,
-    } = useFormMaster()
-    console.log(credentials)
+    } = props.useHuck
     return  <ValidatorForm
                 className={classes.root}
-                ref={props.ref}
                 onSubmit={props.submit}
             >
                 <TextValidator
@@ -68,7 +66,6 @@ export default function FormMaster (props){
                     color="primary"
                     variant="contained"
                     type="submit"
-                    disabled={submitted}
                 >
                     Сохранить
                 </Button>
@@ -77,7 +74,6 @@ export default function FormMaster (props){
                     className={classes.item}
                     color="secondary"
                     variant="contained"
-                    disabled={submitted}
                 >
                     Отмена
                 </Button>

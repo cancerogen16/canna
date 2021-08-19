@@ -1,39 +1,50 @@
 import {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchCreateMaster} from '../../../store/master/thunks';
+import {fetchCreateMaster, fetchUpdateMaster} from '../../../store/master/thunks';
 
 export default function useFormMaster(props) {
     const dispatch = useDispatch();
     const [submitted, setSubmitted] = useState(false);
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const salon = useSelector(state => state.salon);
+    const [update, setUpdate] = useState(false);
+    
     const [credentials, setCredentials] = useState({
         salon_id: salon.id,
+        id:'',
         name: '',
         position: '',
         experience: '',
         description: '',
-        photo: []
+        //photo: []
     });
-    
-    const handleSubmit = (e, calback) => {
+
+    const handleSubmit = (e, callback) => {
+        
         const form = new FormData(e.target.form);
-        form.append('salon_id',credentials.salon_id);
+        form.append('salon_id', credentials.salon_id);
         form.append('name', credentials.name)
         form.append('position', credentials.position)
-        form.append('experience', credentials.experiencee)
+        form.append('experience', credentials.experience)
         form.append('description', credentials.description)
         form.append('photo', credentials.photo)
-        console.log(e.target.form)
-        console.log(e);
         
-        dispatch(fetchCreateMaster(form));
+        if(update) {
+            dispatch(fetchUpdateMaster(credentials.id,form));
+        }else{
+            dispatch(fetchCreateMaster(form));
+        }
+        
         setSubmitted(true);
         setOpen(false);
-        calback()
+        callback()
     }
 
     const handlerOnChangeField = (e) => {
+        setCredentials({
+            ...credentials,
+            salon_id: salon.id
+        })
         switch (e.target.name) {
             case 'name':
                 setCredentials({
@@ -68,13 +79,32 @@ export default function useFormMaster(props) {
         }
     }
 
+    const openModal = (master, callback) => {
+        setOpen(!open);
+        setCredentials({...credentials, ...master});
+        callback();
+    }
+
+    const closeModal = () => {
+        setOpen(!open);
+        setUpdate(false);
+        setCredentials({ salon_id: salon.id,
+            name: '',
+            position: '',
+            experience: '',
+            description: '',
+            photo: []});
+    }
+
     return {
         handlerOnChangeField,
         handleSubmit,
         setCredentials,
+        openModal,
+        closeModal,
+        setUpdate,
         submitted,
         credentials,
-        open,
-        //ValidatorForm
+        open
     }
 }

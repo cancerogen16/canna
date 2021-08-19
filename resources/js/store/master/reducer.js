@@ -11,9 +11,7 @@ const clearMasters = () => {
     return []
 }
 
-const deleteMaster = (state, action) => {
-    return state.filter(item => item.id !== action.id);
-}
+
 
 export const masterReducer = (state = initialMastersState, action) => {
     switch (action.type) {

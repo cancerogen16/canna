@@ -66,7 +66,6 @@ export const fetchSalonInfo = (id) => (dispatch, getState) => {
             if (res.data.code) {
                 dispatch(clearSalon())
             } else {
-                console.log('sad', res)
                 dispatch(addSalon(res.data.salon));
                 dispatch(addServices(res.data.salon.services));
                 dispatch(addMastersAll(res.data.salon.masters));

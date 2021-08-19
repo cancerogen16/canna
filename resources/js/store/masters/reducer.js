@@ -1,11 +1,11 @@
-import { ADD_ALL_MASTERS, ADD_ONE_MASTER, CLEAR_MASTERS } from "./action-types"
+import { ADD_ALL_MASTERS, ADD_ONE_MASTER, CLEAR_MASTERS, DELETE_MASTER } from "./action-types"
 
 
 const initialMastersState = []
 
 
 const addMastersAll = (state, action) => {
-    console.log(action);
+    
     return [
         ...action.masters
     ]
@@ -14,9 +14,10 @@ const addMastersAll = (state, action) => {
 const addMasterOne = (state, action) => {
     return [
         ...state,
-        ...action
+        action
     ]
 }
+
 
 const clearMasters = () => {
     return [
@@ -40,7 +41,10 @@ export const mastersReducer = (state = initialMastersState, action) => {
             return clearMasters();
         }
         case ADD_ONE_MASTER:{
-            return addMasterOne();
+            return addMasterOne(state, action);
+        }
+        case DELETE_MASTER: {
+            return deleteMaster(state, action)
         }
         default:{
             return state
