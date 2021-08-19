@@ -12,7 +12,6 @@ const Routes = () => (<>
             <Layout>
                 <Switch>
                     {routes.map((route, i) => {
-                        console.log(route)
                         
                         if (route.auth) {
                             if (route.dashboard) {
