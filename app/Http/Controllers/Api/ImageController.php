@@ -15,7 +15,7 @@ class ImageController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function uploadImage(Request $request): JsonResponse
     {

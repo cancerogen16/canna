@@ -1,10 +1,61 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
-import {Button, TextField} from '@material-ui/core'
+import {Button, TextField, Typography} from '@material-ui/core'
 import formMaster from './style';
+import HTTP from "../../../utils/HTTP";
 
 export default function FormMaster(props) {
+    const [selectedImage, setSelectedImage] = useState('');
+    const [imageData, setImageData] = useState('');
+
+    /* Изменение значения в скрытом поле name="photo" */
+    const setImage = (src, oldImage) => {
+        return src ? src : oldImage;
+    };
+
+    /* Отрисовка изображения для просмотра */
+    const renderImage = (src, oldImage) => {
+        const newImage = src ? src : oldImage;
+
+        return <img className="ava" src={'/images/origin/' + newImage} alt="" style={{width: "100px", height: "100px"}}/>;
+    };
+
+    /* Выбор файла в поле name="image" */
+    const handlerChangeImage = (files) => {
+        setSelectedImage('');
+
+        if (files) {
+            const image = files[0];
+
+            setSelectedImage(image.name);
+
+            setImageData(image);
+        }
+    }
+
+    /* Загрузка изображения на сервер */
+    const uploadImage = (e) => {
+        e.preventDefault();
+
+        const fData = new FormData();
+
+        fData.append("image", imageData);
+
+        HTTP.post('api/upload', fData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(res => {
+                console.log("response", res);
+            })
+            .catch(err => {
+                console.error("Failure", err);
+            })
+    }
+
     const classes = formMaster();
+
     const {
         handlerOnChangeField,
         handleSubmit,
@@ -43,11 +94,36 @@ export default function FormMaster(props) {
             validators={['required']}
             errorMessages={['Поле обязательно для заполнения']}
         />
-        <input
-            type="file"
-            name='photo'
-            onChange={handlerOnChangeField}
-        />
+        <div className={classes.imageBox}>
+            <Typography className={classes.imageBox__head}>
+                Фото
+            </Typography>
+            <div className={classes.imageBox__left}>
+                <TextField
+                    name="photo"
+                    type="hidden"
+                    value={setImage(selectedImage, credentials.photo)}
+                    onChange={handlerOnChangeField}
+                />
+                <div className="result">{renderImage(selectedImage, credentials.photo)}</div>
+            </div>
+            <div className={classes.imageBox__right}>
+                <input
+                    type="file"
+                    name="image"
+                    onChange={e => handlerChangeImage(e.target.files)}
+                />
+                <br/>
+                <Button
+                    onClick={uploadImage}
+                    className={classes.uploadButton}
+                    color="primary"
+                    variant="contained"
+                >
+                    Загрузить изображение
+                </Button>
+            </div>
+        </div>
         <TextField
             className={classes.areal}
             label="Описание"
