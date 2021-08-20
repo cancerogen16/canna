@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,8 @@ Route::prefix('users')
 
 Route::prefix('profiles')
     ->group(base_path('routes/api/profiles.php'));
+
+Route::post('/upload', [ImageController::class, 'uploadImage']);
 
 Route::any('/{any}', function () {
     return response()->json([
