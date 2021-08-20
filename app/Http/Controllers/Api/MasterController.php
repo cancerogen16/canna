@@ -101,10 +101,6 @@ class MasterController extends Controller
 
             $this->authorize('update', [$master, $data['salon_id']]);
 
-            if (isset($data['photo']) && $photo = ImageUpload::upload($data['photo'])) {
-                $data['photo'] = $photo;
-            }
-
             $master->update($data);
 
             if (isset($master['photo'])) {
