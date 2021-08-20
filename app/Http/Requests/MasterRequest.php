@@ -18,7 +18,7 @@ class MasterRequest extends FormRequest
             'salon_id' => 'required|integer|exists:salons,id',
             'slug' => 'nullable|regex:/^[a-z0-9-]+$/',
             'position' => 'required|string|max:191',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'nullable|string',
             'experience' => 'nullable|string',
             'description' => 'nullable|string',
             'rating' => 'nullable|integer|between:0,5',
