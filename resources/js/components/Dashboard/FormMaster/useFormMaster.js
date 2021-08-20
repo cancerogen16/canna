@@ -16,7 +16,7 @@ export default function useFormMaster(props) {
         position: '',
         experience: '',
         description: '',
-        //photo: []
+        photo: ''
     });
 
     const handleSubmit = (e, callback) => {
@@ -73,7 +73,7 @@ export default function useFormMaster(props) {
             case 'photo':
                 setCredentials({
                     ...credentials,
-                    photo: e.target.files[0]
+                    photo: e.target.value
                 })
                 break;
         }
