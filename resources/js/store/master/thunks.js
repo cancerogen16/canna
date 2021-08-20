@@ -17,7 +17,7 @@ export const fetchMasterOne = (master_id) => (dispach, getState) => {
 }
 
 export const fetchUpdateMaster = (id,form) => (dispatch, getState) => {
-    HTTP.put(`api/masters/${id}`, form, {
+    HTTP.post(`api/masters/${id}?_method=PUT`, form, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
