@@ -104,7 +104,7 @@ class MasterController extends Controller
             $master->update($data);
 
             if (isset($master['photo'])) {
-                $master['photo'] = ImageUpload::getImage($master['photo'], 'thumbnail');
+                $master['thumb'] = ImageUpload::getImage($master['photo'], 'thumbnail');
             }
 
             return $this->ok([
