@@ -50,10 +50,8 @@ class MasterController extends Controller
 
             $this->authorize('create', $master);
 
-            if (isset($master['photo'])) {
-                if ($photo = ImageUpload::upload($master['photo'])) {
-                    $master['photo'] = $photo;
-                }
+            if (isset($master['photo']) && $photo = ImageUpload::upload($master['photo'])) {
+                $master['photo'] = $photo;
             }
 
             $master->save();
@@ -103,10 +101,8 @@ class MasterController extends Controller
 
             $this->authorize('update', [$master, $data['salon_id']]);
 
-            if (isset($data['photo'])) {
-                if ($photo = ImageUpload::upload($data['photo'])) {
-                    $data['photo'] = $photo;
-                }
+            if (isset($data['photo']) && $photo = ImageUpload::upload($data['photo'])) {
+                $data['photo'] = $photo;
             }
 
             $master->update($data);
