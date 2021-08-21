@@ -78,7 +78,7 @@ class Salon extends Model
         $mastersCollection = $this->masters()->get();
 
         foreach ($mastersCollection as $item) {
-            $item['photo'] = ImageUpload::getImage($item['photo'], $imageSize);
+            $item['thumb'] = ImageUpload::getImage($item['photo'], $imageSize);
 
             $masters[] = $item;
         }
@@ -97,7 +97,7 @@ class Salon extends Model
         $servicesCollection = $this->services()->get();
 
         foreach ($servicesCollection as $item) {
-            $item['image'] = ImageUpload::getImage($item['image'], $imageSize);
+            $item['thumb'] = ImageUpload::getImage($item['image'], $imageSize);
 
             $services[] = $item;
         }
@@ -116,7 +116,7 @@ class Salon extends Model
         $actionsCollection = $this->actions()->get();
 
         foreach ($actionsCollection as $item) {
-            $item['photo'] = ImageUpload::getImage($item['photo'], $imageSize);
+            $item['thumb'] = ImageUpload::getImage($item['photo'], $imageSize);
 
             $actions[] = $item;
         }

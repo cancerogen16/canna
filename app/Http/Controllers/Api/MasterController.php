@@ -50,16 +50,10 @@ class MasterController extends Controller
 
             $this->authorize('create', $master);
 
-            if (isset($master['photo'])) {
-                if ($photo = ImageUpload::upload($master['photo'])) {
-                    $master['photo'] = $photo;
-                }
-            }
-
             $master->save();
 
             if (isset($master['photo'])) {
-                $master['photo'] = ImageUpload::getImage($master['photo'], 'large');
+                $master['thumb'] = ImageUpload::getImage($master['photo'], 'thumbnail');
             }
 
             return $this->response(201, [
@@ -103,18 +97,10 @@ class MasterController extends Controller
 
             $this->authorize('update', [$master, $data['salon_id']]);
 
-            if (isset($master['photo'])) {
-                if ($photo = ImageUpload::upload($master['photo'])) {
-                    $master['photo'] = $photo;
-                }
-            } else {
-                $master['photo'] = null;
-            }
-
             $master->update($data);
 
             if (isset($master['photo'])) {
-                $master['photo'] = ImageUpload::getImage($master['photo'], 'large');
+                $master['thumb'] = ImageUpload::getImage($master['photo'], 'thumbnail');
             }
 
             return $this->ok([

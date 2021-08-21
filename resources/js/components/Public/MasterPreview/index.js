@@ -14,7 +14,7 @@ export default function MasterPreview (props){
     return  <>
             
             <div onClick={props.onClick} className={classes.root}>
-                <Avatar className={classes.ava} alt={master.name} src={master.photo} />
+                <Avatar className={classes.ava} alt={master.name} src={master.thumb} />
                 <div className={classes.info}>
                     <span className={classes.name}>{master.name}</span>
                     <span className={classes.spec}>{master.position}</span>
