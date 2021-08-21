@@ -2,4 +2,5 @@
 
 return [
     'includeTrashed' => true,
+    'onUpdate' => true,
 ];
