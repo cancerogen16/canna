@@ -1,17 +1,19 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const priviewService = makeStyles({
+const formService = makeStyles({
     root: {
         display: 'flex',
-        'justify-content': 'space-between',
-        'align-items': 'center'
+        flexWrap: 'wrap',
+        width: '473px;',
+        justifyContent: 'center'
     },
-    ava: {
-      width: '100px',
-      height: '100px'
+    item: {
+
+        margin: '10px'
     },
-    name: {
-        margin: '10px 0 10px 0'
+    areal: {
+        margin: '10px',
+        width: '90%'
     },
     info: {
         'display': 'flex',
@@ -25,6 +27,6 @@ const priviewService = makeStyles({
         display: 'flex',
         flexDirection: 'column'
     }
-  });
+});
 
-export default priviewService;
+export default formService;

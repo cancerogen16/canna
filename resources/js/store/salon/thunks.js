@@ -2,7 +2,7 @@ import HTTP from '../../utils/HTTP';
 import {updateSalonUser} from '../user/action';
 import {addSalon, clearSalon} from './action';
 import {addMastersAll} from "../masters/action";
-import {addServices} from "../services/action";
+import {addServicesAll} from "../services/action";
 import {addAction} from "../action/action";
 import { addError } from '../error/action';
 
@@ -67,7 +67,7 @@ export const fetchSalonInfo = (id) => (dispatch, getState) => {
                 dispatch(clearSalon())
             } else {
                 dispatch(addSalon(res.data.salon));
-                dispatch(addServices(res.data.salon.services));
+                dispatch(addServicesAll(res.data.salon.services));
                 dispatch(addMastersAll(res.data.salon.masters));
                 dispatch(addAction(res.data.salon.actions));
             }

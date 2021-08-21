@@ -1,0 +1,9 @@
+export const ADD_SERVICE = 'SERVICE::ADD_SERVICES';
+export const CLEAR_SERVICE = 'SERVICE::CLEAR_SERVICE';
+export const DELETE_SERVICE = 'SERVICE::DELETE_SERVICE';
+
+export default {
+    ADD_SERVICE,
+    CLEAR_SERVICE,
+    DELETE_SERVICE
+}
