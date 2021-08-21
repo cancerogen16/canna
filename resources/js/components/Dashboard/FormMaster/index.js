@@ -5,26 +5,26 @@ import formMaster from './style';
 import HTTP from "../../../utils/HTTP";
 
 export default function FormMaster(props) {
-    const [selectedImage, setSelectedImage] = useState('');
+    const {
+        setImage,
+        handlerOnChangeField,
+        handleSubmit,
+        submitted,
+        credentials,
+        open,
+    } = props.useHuck;
+
+    const [imagePreview, setImagePreview] = useState(credentials.photo);
     const [imageData, setImageData] = useState('');
 
-    /* Изменение значения в скрытом поле name="photo" */
-    const setImage = (src, oldImage) => {
-        return src ? src : oldImage;
-    };
-
     /* Отрисовка изображения для просмотра */
-    const renderImage = (src, oldImage) => {
-        const newImage = src ? src : oldImage;
-
-        return <img className="ava" src={'/images/origin/' + newImage} alt=""
+    const renderImage = (src) => {
+        return <img className="ava" src={'/images/origin/' + src} alt=""
                     style={{width: "100px", height: "100px"}}/>;
     };
 
     /* Выбор файла в поле name="image" */
     const handlerChangeImage = (files) => {
-        setSelectedImage('');
-
         if (files) {
             const image = files[0];
 
@@ -47,8 +47,8 @@ export default function FormMaster(props) {
         })
             .then(res => {
                 console.log("response", res);
-                setSelectedImage(res.data.image);
-
+                setImagePreview(res.data.image);
+                setImage(res.data.image);
             })
             .catch(err => {
                 console.error("Failure", err);
@@ -57,13 +57,6 @@ export default function FormMaster(props) {
 
     const classes = formMaster();
 
-    const {
-        handlerOnChangeField,
-        handleSubmit,
-        submitted,
-        credentials,
-        open,
-    } = props.useHuck
     return <ValidatorForm
         className={classes.root}
         onSubmit={props.submit}
@@ -100,13 +93,7 @@ export default function FormMaster(props) {
                 Фото
             </Typography>
             <div className={classes.imageBox__left}>
-                <TextField
-                    name="photo"
-                    type="hidden"
-                    value={setImage(selectedImage, credentials.photo)}
-                    onChange={handlerOnChangeField}
-                />
-                <div className="result">{renderImage(selectedImage, credentials.photo)}</div>
+                <div className="result">{renderImage(imagePreview)}</div>
             </div>
             <div className={classes.imageBox__right}>
                 <input

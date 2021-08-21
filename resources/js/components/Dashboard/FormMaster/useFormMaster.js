@@ -19,6 +19,14 @@ export default function useFormMaster(props) {
         photo: ''
     });
 
+    /* Изменение изображения */
+    const setImage = (newImage) => {
+        setCredentials({
+            ...credentials,
+            photo: newImage
+        });
+    };
+
     const handleSubmit = (e, callback) => {
 
         const form = new FormData(e.target.form);
@@ -99,6 +107,7 @@ export default function useFormMaster(props) {
     }
 
     return {
+        setImage,
         handlerOnChangeField,
         handleSubmit,
         setCredentials,
