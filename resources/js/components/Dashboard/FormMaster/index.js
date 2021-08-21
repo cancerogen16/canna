@@ -27,8 +27,6 @@ export default function FormMaster(props) {
         if (files) {
             const image = files[0];
 
-            setSelectedImage(image.name);
-
             setImageData(image);
         }
     }
@@ -48,6 +46,8 @@ export default function FormMaster(props) {
         })
             .then(res => {
                 console.log("response", res);
+                setSelectedImage(res.data.image);
+
             })
             .catch(err => {
                 console.error("Failure", err);
