@@ -17,7 +17,8 @@ export default function FormMaster(props) {
     const renderImage = (src, oldImage) => {
         const newImage = src ? src : oldImage;
 
-        return <img className="ava" src={'/images/origin/' + newImage} alt="" style={{width: "100px", height: "100px"}}/>;
+        return <img className="ava" src={'/images/origin/' + newImage} alt=""
+                    style={{width: "100px", height: "100px"}}/>;
     };
 
     /* Выбор файла в поле name="image" */
