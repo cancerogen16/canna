@@ -50,14 +50,10 @@ class MasterController extends Controller
 
             $this->authorize('create', $master);
 
-            if (isset($master['photo']) && $photo = ImageUpload::upload($master['photo'])) {
-                $master['photo'] = $photo;
-            }
-
             $master->save();
 
             if (isset($master['photo'])) {
-                $master['photo'] = ImageUpload::getImage($master['photo'], 'large');
+                $master['thumb'] = ImageUpload::getImage($master['photo'], 'thumbnail');
             }
 
             return $this->response(201, [
