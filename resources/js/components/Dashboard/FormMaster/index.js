@@ -18,7 +18,9 @@ export default function FormMaster(props) {
     const [imageData, setImageData] = useState('');
 
     /* Отрисовка изображения для просмотра */
-    const renderImage = (src) => {
+    const renderImage = (imageSrc) => {
+        const src = imageSrc ? imageSrc : 'noimage.gif';
+
         return <img className="ava" src={'/images/origin/' + src} alt=""
                     style={{width: "100px", height: "100px"}}/>;
     };

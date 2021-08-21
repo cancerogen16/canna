@@ -102,7 +102,7 @@ export default function useFormMaster(props) {
             position: '',
             experience: '',
             description: '',
-            photo: []
+            photo: ''
         });
     }
 
