@@ -25,7 +25,7 @@ class ActionController extends Controller
             $actionsCollection = Action::all();
 
             foreach ($actionsCollection as $item) {
-                $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
+                $item['thumb'] = ImageUpload::getImage($item['photo'], 'medium');
 
                 $actions[] = $item;
             }
@@ -49,16 +49,10 @@ class ActionController extends Controller
 
             $this->authorize('create', $action);
 
-            if (isset($action['photo'])) {
-                if ($photo = ImageUpload::upload($action['photo'])) {
-                    $action['photo'] = $photo;
-                }
-            }
-
             $action->save();
 
             if (isset($action['photo'])) {
-                $action['photo'] = ImageUpload::getImage($action['photo'], 'large');
+                $action['thumb'] = ImageUpload::getImage($action['photo'], 'thumbnail');
             }
 
             return $this->ok([
@@ -78,7 +72,9 @@ class ActionController extends Controller
         try {
             $action = Action::findOrFail($id);
 
-            $action['photo'] = ImageUpload::getImage($action['photo'], 'large');
+            if (isset($action['photo'])) {
+                $action['thumb'] = ImageUpload::getImage($action['photo'], 'large');
+            }
 
             return $this->ok([
                 'action' => $action->toArray()
@@ -102,18 +98,10 @@ class ActionController extends Controller
 
             $this->authorize('update', [$action, $data['salon_id']]);
 
-            if (isset($action['photo'])) {
-                if ($photo = ImageUpload::upload($action['photo'])) {
-                    $action['photo'] = $photo;
-                }
-            } else {
-                $action['photo'] = null;
-            }
-
             $action->update($data);
 
             if (isset($action['photo'])) {
-                $action['photo'] = ImageUpload::getImage($action['photo'], 'large');
+                $action['thumb'] = ImageUpload::getImage($action['photo'], 'thumbnail');
             }
 
             return $this->ok([
