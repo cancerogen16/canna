@@ -51,16 +51,10 @@ class ServiceController extends Controller
 
             $this->authorize('create', $service);
 
-            if (isset($service['image'])) {
-                if ($photo = ImageUpload::upload($service['image'])) {
-                    $service['image'] = $photo;
-                }
-            }
-
             $service->save();
 
             if (isset($service['image'])) {
-                $service['image'] = ImageUpload::getImage($service['image'], 'large');
+                $service['image'] = ImageUpload::getImage($service['image'], 'thumbnail');
             }
 
             return $this->response(201, [
@@ -104,18 +98,10 @@ class ServiceController extends Controller
 
             $this->authorize('update', [$service, $data['salon_id']]);
 
-            if (isset($service['image'])) {
-                if ($photo = ImageUpload::upload($service['image'])) {
-                    $service['image'] = $photo;
-                }
-            } else {
-                $service['image'] = null;
-            }
-
             $service->update($data);
 
             if (isset($service['image'])) {
-                $service['image'] = ImageUpload::getImage($service['image'], 'large');
+                $service['image'] = ImageUpload::getImage($service['image'], 'thumbnail');
             }
 
             return $this->ok([
