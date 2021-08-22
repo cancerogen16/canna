@@ -27,7 +27,7 @@ class ServiceController extends Controller
             $servicesCollection = Service::all();
 
             foreach ($servicesCollection as $item) {
-                $item['image'] = ImageUpload::getImage($item['image'], 'medium');
+                $item['thumb'] = ImageUpload::getImage($item['image'], 'medium');
 
                 $services[] = $item;
             }
@@ -54,7 +54,7 @@ class ServiceController extends Controller
             $service->save();
 
             if (isset($service['image'])) {
-                $service['image'] = ImageUpload::getImage($service['image'], 'thumbnail');
+                $service['thumb'] = ImageUpload::getImage($service['image'], 'thumbnail');
             }
 
             return $this->response(201, [
@@ -74,7 +74,7 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            $service['image'] = ImageUpload::getImage($service['image'], 'large');
+            $service['thumb'] = ImageUpload::getImage($service['image'], 'large');
 
             return $this->ok([
                 'service' => $service->toArray()
@@ -101,7 +101,7 @@ class ServiceController extends Controller
             $service->update($data);
 
             if (isset($service['image'])) {
-                $service['image'] = ImageUpload::getImage($service['image'], 'thumbnail');
+                $service['thumb'] = ImageUpload::getImage($service['image'], 'thumbnail');
             }
 
             return $this->ok([
