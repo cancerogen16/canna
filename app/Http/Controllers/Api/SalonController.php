@@ -272,7 +272,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
+            $salon['thumb'] = ImageUpload::getImage($salon['main_photo'], 'large');
 
             $salon['masters'] = $salon->getMasters('thumbnail');
 
