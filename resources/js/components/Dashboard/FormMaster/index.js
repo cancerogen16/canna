@@ -91,9 +91,6 @@ export default function FormMaster(props) {
             errorMessages={['Поле обязательно для заполнения']}
         />
         <div className={classes.imageBox}>
-            <Typography className={classes.imageBox__head}>
-                Фото
-            </Typography>
             <div className={classes.imageBox__left}>
                 <div className="result">{renderImage(imagePreview)}</div>
             </div>
@@ -120,7 +117,7 @@ export default function FormMaster(props) {
             name='description'
             multiline
             maxRows={4}
-            value={credentials.description}
+            value={credentials.description ?? ''}
             onChange={handlerOnChangeField}
         />
         <br/>
