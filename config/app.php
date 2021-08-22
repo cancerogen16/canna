@@ -229,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'ImageUpload' => \App\Facades\ImageUpload::class,
+        'Schedule' => \App\Facades\Schedule::class,
 
     ],
 
