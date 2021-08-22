@@ -11,8 +11,6 @@ const clearServices = () => {
     return []
 }
 
-
-
 export const serviceReducer = (state = initialServicesState, action) => {
     switch (action.type) {
         case ADD_SERVICE: {

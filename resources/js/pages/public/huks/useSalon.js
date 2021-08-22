@@ -20,6 +20,10 @@ export default function useSalon(props){
         dispatch(fetchServicesByMasterId(id));
     }
 
+    const handleClickSalon = (id) => {
+        dispatch(fetchServicesBySalonId(id));
+    }
+
     const handleClickOpen = () => {
         dispatch(fetchRecords(1));
         setOpen(true);
@@ -48,6 +52,7 @@ export default function useSalon(props){
         handleClickOpen,
         handleClose,
         handleChange,
-        handleClickMaster
+        handleClickMaster,
+        handleClickSalon
     }
 }

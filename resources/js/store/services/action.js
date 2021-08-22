@@ -7,14 +7,16 @@ export const addServicesAll = (services) => ({
 
 });
 
-export const addServiceOne = ({ salon_id, title, slug, price, image, duration, excerpt, description}) => ({
+export const addServiceOne = ({salon_id, id, category_id, title, slug, price, duration, image, thumb, excerpt, description}) => ({
     type: ADD_ONE_SERVICE,
     salon_id,
+    id,
     title,
     slug,
     price,
     duration,
     image,
+    thumb,
     excerpt,
     description
 })

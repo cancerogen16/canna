@@ -98,6 +98,7 @@ export default function useFormMaster(props) {
         setUpdate(false);
         setCredentials({
             salon_id: salon.id,
+            id: '',
             name: '',
             position: '',
             experience: '',

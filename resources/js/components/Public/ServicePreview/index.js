@@ -9,7 +9,7 @@ export default function ServicePreview(props) {
 
     return <>
         <div className={classes.root}>
-            <Avatar className={classes.ava} alt={service.title} src={service.image}/>
+            <Avatar className={classes.ava} alt={service.title} src={service.thumb}/>
             <div className={classes.info}>
                 <span className={classes.name}>{service.title}</span>
                 <span className={classes.spec}>{service.excerpt}</span>

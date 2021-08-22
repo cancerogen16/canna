@@ -17,7 +17,7 @@ export const fetchServiceOne = (service_id) => (dispach, getState) => {
 }
 
 export const fetchUpdateService = (id,form) => (dispatch, getState) => {
-    HTTP.put(`api/services/${id}`, form, {
+    HTTP.post(`api/services/${id}?_method=PUT`, form, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
