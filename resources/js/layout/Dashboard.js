@@ -15,10 +15,7 @@ import FormSalon from '../components/Dashboard/FormSalon'
 import FormMaster from '../components/Dashboard/FormMaster'
 import { fetchSalonInfo, fetchSalonsOneId } from '../store/salon/thunks'
 import { fetchMasters } from '../store/master/thunks'
-
-
-
-
+import { fetchCategoryAll } from '../store/category/thunks'
 
 const containerStyle = {
   paddingTop: '3.5rem',
@@ -28,8 +25,6 @@ const displayName = 'Мой салон'
 const propTypes = {
   children: PropTypes.node.isRequired,
 }
-
-
 
 function DashboardLayout({ children, history, user }) {
   const [open, setOpen] = useState(!user.salon);
@@ -43,9 +38,11 @@ function DashboardLayout({ children, history, user }) {
   }
 
   useEffect(() => {
-    if(user.salon)
-        dispatch(fetchSalonInfo(user.salon))
-    
+    if(user.salon) {
+        dispatch(fetchSalonInfo(user.salon));
+        dispatch(fetchCategoryAll());
+    }
+
 },[])
  
   return <div>
@@ -89,8 +86,7 @@ function DashboardLayout({ children, history, user }) {
             { children }
           </main>
           </Grid>
-            
-          
+
       </ Grid>
       </Container>
 
