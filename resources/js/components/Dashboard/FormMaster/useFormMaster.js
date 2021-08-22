@@ -34,8 +34,8 @@ export default function useFormMaster(props) {
         form.append('name', credentials.name)
         form.append('position', credentials.position)
         form.append('experience', credentials.experience)
-        form.append('description', credentials.description)
-        form.append('photo', credentials.photo)
+        form.append('description', credentials.description ?? '')
+        form.append('photo', credentials.photo ?? '')
 
         if (update) {
             dispatch(fetchUpdateMaster(credentials.id, form));
