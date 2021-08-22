@@ -14,17 +14,16 @@ const priviewService = makeStyles({
         margin: '10px 0 10px 0'
     },
     info: {
-        display: 'flex',
-        maxWidth: '785px',
-        flexDirection: 'column',
-        margin: '0 40px'
+        'display': 'flex',
+        'flex-direction': 'column',
+        marginLeft: '40px'
     },
     spec: {
         margin: '10px 0 10px 0'
     },
     btns: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column'
     }
   });
 

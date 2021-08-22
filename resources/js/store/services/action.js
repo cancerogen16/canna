@@ -1,17 +1,35 @@
-import {ADD_SERVICES, CLEAR_SERVICES, DELETE_SERVICES} from "./action-types";
+import { ADD_ALL_SERVICES, ADD_ONE_SERVICE, CLEAR_SERVICES, DELETE_SERVICE } from "./action-types";
 
-export const addServices = (services) => ({
-    type: ADD_SERVICES,
+export const addServicesAll = (services) => ({
+
+    type: ADD_ALL_SERVICES,
     services
+
 });
 
-export const delServices = (id) => ({
-    type: DELETE_SERVICES,
+export const addServiceOne = ({salon_id, id, category_id, title, slug, price, duration, image, thumb, excerpt, description}) => ({
+    type: ADD_ONE_SERVICE,
+    salon_id,
+    id,
+    title,
+    slug,
+    price,
+    duration,
+    image,
+    thumb,
+    excerpt,
+    description
+})
+
+export const delService = (id) => ({
+    type: DELETE_SERVICE,
     id
 });
 
-export const clearServices = () => ({
+export const clearService = () => ({
+
     type: CLEAR_SERVICES,
+
 });
 
 
