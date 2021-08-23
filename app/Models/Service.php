@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Facades\ImageUpload;
 use Cviebrock\EloquentSluggable\Sluggable;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -112,5 +113,16 @@ class Service extends Model
         }
 
         return $actions;
+    }
+
+    /**
+     * @param string $startDatetime
+     * @return string
+     */
+    public function getEndDatetime(string $startDatetime): DateTime
+    {
+        $datetimeModifier = $this->duration - 1;
+
+        return date_modify(date_create_from_format('Y-m-d H', $startDatetime), "+ {$datetimeModifier} hours");
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Service;
 use App\Traits\ApiResponder;
 use Illuminate\Http\JsonResponse;
 use Throwable;
+use function PHPUnit\Framework\containsIdentical;
 
 class RecordController extends Controller
 {
@@ -56,14 +57,12 @@ class RecordController extends Controller
                 return $this->response(422, [], 'Мастер не оказывает запрашиваемую услугу');
             }
 
-            $datetimeModifier = $service->duration - 1;
-            $startDatetime = date_create_from_format('Y-m-d H',$data['start_datetime']);
-            $endDatetime = date_modify(date_create_from_format('Y-m-d H',$data['start_datetime']), "+ {$datetimeModifier} hours");
+            $endDatetime = $service->getEndDatetime($data['start_datetime']);
 
             $master = Master::find($data['master_id']);
 
             $calendars = $master->calendars()
-                ->whereBetween('start_datetime', [$startDatetime, $endDatetime])
+                ->whereBetween('start_datetime', [$data['start_datetime'], $endDatetime])
                 ->where('record_id', null)
                 ->get();
 
@@ -129,14 +128,12 @@ class RecordController extends Controller
                 return $this->response(422, [], 'Мастер не оказывает запрашиваемую услугу');
             }
 
-            $datetimeModifier = $service->duration - 1;
-            $startDatetime = date_create_from_format('Y-m-d H',$data['start_datetime']);
-            $endDatetime = date_modify(date_create_from_format('Y-m-d H',$data['start_datetime']), "+ {$datetimeModifier} hours");
+            $endDatetime = $service->getEndDatetime($data['start_datetime']);
 
             $master = Master::find($data['master_id']);
 
             $slotsCount = $master->calendars()
-                ->whereBetween('start_datetime', [$startDatetime, $endDatetime])
+                ->whereBetween('start_datetime', [$data['start_datetime'], $endDatetime])
                 ->where(function ($query) use ($record) {
                     $query->where('record_id', null)
                         ->orWhere('record_id', $record->id);
@@ -152,7 +149,7 @@ class RecordController extends Controller
             $record->update($data);
 
             $master->calendars()
-                ->whereBetween('start_datetime', [$startDatetime, $endDatetime])
+                ->whereBetween('start_datetime', [$data['start_datetime'], $endDatetime])
                 ->update(['record_id' => $record->id]);
 
             return $this->ok([
