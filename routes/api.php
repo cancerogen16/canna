@@ -46,7 +46,8 @@ Route::prefix('users')
 Route::prefix('profiles')
     ->group(base_path('routes/api/profiles.php'));
 
-Route::post('/upload', [ImageController::class, 'uploadImage']);
+Route::post('/upload', [ImageController::class, 'uploadImage'])
+    ->middleware('auth:sanctum');
 
 Route::any('/{any}', function () {
     return response()->json([

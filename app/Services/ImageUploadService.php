@@ -18,12 +18,12 @@ class ImageUploadService implements UploadImageServiceContract
      */
     public function upload(UploadedFile $file): ?string
     {
-        $originalName = '';
+        $newName = '';
 
         try {
-            $originalName = $file->getClientOriginalName();
+            $newName = $file->hashName();
 
-            $fileUploaded = $file->move(Storage::path('images') . '/origin/', $originalName);
+            $fileUploaded = $file->move(Storage::path('images') . '/origin/', $newName);
 
             if ($fileUploaded === false) {
                 throw new RuntimeException('Image upload error');
@@ -32,7 +32,7 @@ class ImageUploadService implements UploadImageServiceContract
             report($e);
         }
 
-        return $originalName;
+        return $newName;
     }
 
     /**
