@@ -26,7 +26,7 @@ class MasterController extends Controller
             $mastersCollection = Master::all();
 
             foreach ($mastersCollection as $item) {
-                $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
+                $item['thumb'] = ImageUpload::getImage($item['photo'], 'medium');
 
                 $masters[] = $item;
             }
@@ -73,7 +73,9 @@ class MasterController extends Controller
         try {
             $master = Master::findOrFail($id);
 
-            $master['photo'] = ImageUpload::getImage($master['photo'], 'large');
+            if (isset($master['photo'])) {
+                $master['thumb'] = ImageUpload::getImage($master['photo'], 'large');
+            }
 
             return $this->ok([
                 'master' => $master->toArray()
