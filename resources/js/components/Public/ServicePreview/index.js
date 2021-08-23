@@ -18,6 +18,9 @@ export default function ServicePreview(props) {
                 <p>Цена: {service.price} руб.</p>
                 <p>Продолжительность услуги: {service.duration} ч.</p>
             </div>
+            <div className={classes.btns}>
+                {props.children}
+            </div>
         </div>
     </>
 }
