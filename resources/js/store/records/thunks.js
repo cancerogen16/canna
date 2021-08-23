@@ -1,5 +1,6 @@
 import HTTP from '../../utils/HTTP';
 import {addRecord, clearRecord} from "./action";
+import {addError} from "../error/action";
 
 export const fetchRecords = (master_id) => (dispatch, getState) => {
     HTTP.get('/api/calendars')
