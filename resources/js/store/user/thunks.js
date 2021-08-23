@@ -1,18 +1,14 @@
 import HTTP from '../../utils/HTTP';
-import { addError } from '../error/action';
-import { clearSalon } from '../salon/action';
-import { setUser, updateSalonUser } from './action';
+import {addError} from '../error/action';
+import {setUser, updateSalonUser} from './action';
 
-export const setUserWithThunk = (user) => (dispach, getState) => {
-
-    dispach(setUser(user));
-
+export const setUserWithThunk = (user) => (dispatch, getState) => {
+    dispatch(setUser(user));
 }
 
-export const updateSalonUserFetch = (user_id) => (dispach, getState) => {
-    
+export const updateSalonUserFetch = (user_id) => (dispatch, getState) => {
     HTTP.get(`api/users/${user_id}/salons`)
-    .then(res => {dispach(updateSalonUser(res.data.salons[0].id))})
+    .then(res => {dispatch(updateSalonUser(res.data.salons[0].id))})
     .catch(err => { 
         if (err.response) { 
             dispatch(addError({code: status, message: err.response.data.message})) 
@@ -21,5 +17,4 @@ export const updateSalonUserFetch = (user_id) => (dispach, getState) => {
         } else { 
             dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
         }})
-
 }
