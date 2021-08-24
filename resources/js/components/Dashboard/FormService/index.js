@@ -3,6 +3,10 @@ import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
 import {Button, TextField, Typography} from '@material-ui/core'
 import formService from './style';
 import HTTP from "../../../utils/HTTP";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import {useSelector} from "react-redux";
+import {fetchDeleteService} from "../../../store/service/thunks";
 
 /*import React, { useRef } from 'react'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
@@ -12,6 +16,9 @@ import useFormService from './useFormService'*/
 
 export default function FormService (props){
     const classes = formService();
+
+    const categories = useSelector(state => state.categories);
+
     const {
         setImage,
         handlerOnChangeField,
@@ -68,15 +75,17 @@ export default function FormService (props){
         className={classes.root}
         onSubmit={props.submit}
     >
-        <TextValidator
+        <Select
             className={classes.item}
             label="Категория услуги"
-            onChange={handlerOnChangeField}
             name="category_id"
             value={credentials.category_id}
-            validators={['required']}
-            errorMessages={['Поле обязательно для заполнения']}
-        />
+            onChange={handlerOnChangeField}
+        >
+            {categories.map(category =>{
+                return  <MenuItem key={category.id} value={category.id}>{category.title}</MenuItem>
+            })}
+        </Select>
         <TextValidator
             className={classes.item}
             label="Название услуги"
