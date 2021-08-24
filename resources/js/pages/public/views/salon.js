@@ -1,4 +1,4 @@
-import {Card, Grid, List, ListItem} from '@material-ui/core'
+import {Button, Chip, Grid, List, ListItem, MenuItem, TextField} from '@material-ui/core'
 import React from 'react';
 import useSalon from '../huks/useSalon';
 import priviewMaster from '../../../components/Public/MasterPreview/style';
@@ -9,6 +9,10 @@ import Salon from '../../../components/Public/Salon';
 import {SimpleTabs, TabPanel} from '../../../components/Tabs';
 import Modal from '../../../components/Dialogs/Modal';
 import ControlledAccordions from '../../../components/Public/ControlledAccordions';
+import FormRecord from '../../../components/Dashboard/FormRecord';
+import useRecord from '../huks/useRecord';
+import styleSalon from '../styles/salon';
+
 
 export default function Page(props) {
     const {
@@ -17,16 +21,20 @@ export default function Page(props) {
         services,
         masters,
         actions,
-        open,
-        records,
-        handleClickOpen,
-        handleClose,
-        handleChange,
-        handleClickMaster
+        handleChange
     } = useSalon(props);
+    const {
+        open,
+        cretendials,
+        times,
+        handleClose,
+        handleRecord,
+        handleEditRecordForm,
+    } = useRecord();
 
     const classes = priviewMaster();
-
+    const classesSalon = styleSalon();
+    
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -39,11 +47,11 @@ export default function Page(props) {
                             ]}>
                     <TabPanel value={value} index={0}>
                         {services.map(service => {
-                            return <ListItem className={classes.root} key={service.id} button>
-                                <ControlledAccordions
-                                    heading={<ServicePreview service={service}/>}
-                                    //content={<ServicePreview />}
-                                />
+                            return <ListItem  className={classes.root} key={service.id} button>
+                                    <ControlledAccordions
+                                         heading={<ServicePreview  service={service}><Button onClick={(e) => handleRecord(e, '', service.id)}>Записаться</Button></ServicePreview>}
+                                         
+                                    />
                             </ListItem>
                         })}
                     </TabPanel>
@@ -51,9 +59,12 @@ export default function Page(props) {
                         <List>
                             {masters.map(master => {
                                 return <ListItem className={classes.root} key={master.id} button>
-                                    <ControlledAccordions onClick={() => handleClickMaster(master.id)}
-                                                          heading={<MasterPreview master={master}/>}
-                                        //content={<ServicePreview />}
+                                    
+                                    <ControlledAccordions 
+                                            heading={<MasterPreview master={master}>
+                                                        <Button onClick={(e) => handleRecord(e, master.id, '')}>Записаться</Button>
+                                                    </MasterPreview>}
+                                            content={master.description}
                                     />
                                 </ListItem>
                             })}
@@ -71,11 +82,44 @@ export default function Page(props) {
                         </List>
                     </TabPanel>
                 </SimpleTabs>
-                <Modal open={open} onClose={handleClose} closeButton={'Закрыть'}>
-                    {records.map(record => {
-                        let date = new Date(record.start_datetime);
-                        return <Card>{`${date.getUTCHours()}:${date.getUTCMinutes()}`}</Card>
-                    })}
+                <Modal className={classesSalon.modal} open={open} onClose={handleClose} closeButton={'Закрыть'}>
+                    <FormRecord className={classesSalon.item} label='Мастер' name="master" value={cretendials.master_id}onChange={(e) =>  handleEditRecordForm(e)} selectes={masters} >
+                        {masters.map(master => <MenuItem key={master.id} value={master.id}>
+                                {master.name}
+                            </MenuItem>
+                        )}
+                    </FormRecord>
+                    <FormRecord className={classesSalon.item} label='Услуга' name='service' value={cretendials.service_id} onChange={(e) =>  handleEditRecordForm(e)}>
+                        {services.map(service => <MenuItem key={service.id} value={service.id}>
+                                {service.title}
+                            </MenuItem> 
+                        )}
+                    </FormRecord>
+                    <TextField
+                        onChange={handleEditRecordForm}
+                        name="date"
+                        id="date"
+                        label="Birthday"
+                        type="date"
+                        defaultValue={cretendials.date}
+                        className={classesSalon.item}
+                        InputLabelProps={{
+                        shrink: true,
+                        }}
+                    />
+                    {times.length !== 0
+                        ?  <ul className={classesSalon.list}>
+                                {times.map(time => <li className={classesSalon.listItem} key={time.id}>
+                                <Chip
+                                    label={time.start_datetime}
+                                    className={time.record_id? '': classesSalon.active}
+                                />
+                                </li>)}
+                            </ul>
+                        : (cretendials.master_id == ''
+                                    ? <p>Выберите мастера</p>
+                                    : <p>Нет записи к этому мастеру на этот день</p>)
+                    }
                 </Modal>
             </Grid>
         </Grid>)
