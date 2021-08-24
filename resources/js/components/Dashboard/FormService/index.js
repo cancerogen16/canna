@@ -4,7 +4,6 @@ import {Button, TextField, Typography} from '@material-ui/core'
 import formService from './style';
 import HTTP from "../../../utils/HTTP";
 
-
 /*import React, { useRef } from 'react'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { Dialog, Button, DialogContent, DialogContentText, DialogTitle, DialogActions, TextField } from '@material-ui/core'
@@ -22,7 +21,7 @@ export default function FormService (props){
         open,
     } = props.useHuck;
 
-    const [imagePreview, setImagePreview] = useState(credentials.photo);
+    const [imagePreview, setImagePreview] = useState(credentials.image);
     const [imageData, setImageData] = useState('');
 
     /* Отрисовка изображения для просмотра */
@@ -64,7 +63,6 @@ export default function FormService (props){
                 console.error("Failure", err);
             })
     }
-
 
     return  <ValidatorForm
         className={classes.root}
