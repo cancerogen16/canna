@@ -74,9 +74,7 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
 
-            if (isset($service['image'])) {
-                $service['thumb'] = ImageUpload::getImage($service['image'], 'large');
-            }
+            $service['thumb'] = ImageUpload::getImage($service['image'], 'large');
 
             return $this->ok([
                 'service' => $service->toArray()

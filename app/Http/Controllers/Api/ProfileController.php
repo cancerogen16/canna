@@ -29,7 +29,7 @@ class ProfileController extends Controller
             $profilesCollection = Profile::all();
 
             foreach ($profilesCollection as $item) {
-                $item['thumb'] = ImageUpload::getImage($item['photo'], 'medium');
+                $item['photo'] = ImageUpload::getImage($item['photo'], 'medium');
 
                 $profiles[] = $item;
             }
@@ -55,10 +55,16 @@ class ProfileController extends Controller
 
             $this->authorize('create', $profile);
 
+            if (isset($profile['photo'])) {
+                if ($photo = ImageUpload::upload($profile['photo'])) {
+                    $profile['photo'] = $photo;
+                }
+            }
+
             $profile->save();
 
             if (isset($profile['photo'])) {
-                $profile['thumb'] = ImageUpload::getImage($profile['photo'], 'large');
+                $profile['photo'] = ImageUpload::getImage($profile['photo'], 'large');
             }
 
             return $this->ok([
@@ -82,9 +88,7 @@ class ProfileController extends Controller
 
             $this->authorize('view', $profile);
 
-            if (isset($profile['photo'])) {
-                $profile['thumb'] = ImageUpload::getImage($profile['photo'], 'large');
-            }
+            $profile['photo'] = ImageUpload::getImage($profile['photo'], 'large');
 
             return $this->ok([
                 'profile' => $profile->toArray(),

@@ -27,7 +27,7 @@ class CategoryController extends Controller
             $categoriesCollection = Category::all();
 
             foreach ($categoriesCollection as $item) {
-                $item['thumb'] = ImageUpload::getImage($item['image'], 'medium');
+                $item['image'] = ImageUpload::getImage($item['image'], 'medium');
 
                 $categories[] = $item;
             }
@@ -53,11 +53,13 @@ class CategoryController extends Controller
 
             $category = new Category($request->validated());
 
-            $category->save();
-
             if (isset($category['image'])) {
-                $category['thumb'] = ImageUpload::getImage($category['image'], 'thumbnail');
+                if ($photo = ImageUpload::upload($category['image'])) {
+                    $category['image'] = $photo;
+                }
             }
+
+            $category->save();
 
             return $this->response(201, [
                 'category' => $category
@@ -78,9 +80,7 @@ class CategoryController extends Controller
         try {
             $category = Category::findOrFail($id);
 
-            if (isset($category['image'])) {
-                $category['thumb'] = ImageUpload::getImage($category['image'], 'large');
-            }
+            $category['image'] = ImageUpload::getImage($category['image'], 'large');
 
             return $this->ok([
                 'category' => $category
@@ -106,10 +106,18 @@ class CategoryController extends Controller
 
             $data = $request->validated();
 
+            if (isset($category['image'])) {
+                if ($photo = ImageUpload::upload($category['image'])) {
+                    $category['image'] = $photo;
+                }
+            } else {
+                $category['image'] = null;
+            }
+
             $category->update($data);
 
             if (isset($category['image'])) {
-                $category['thumb'] = ImageUpload::getImage($category['image'], 'thumbnail');
+                $category['image'] = ImageUpload::getImage($category['image'], 'large');
             }
 
             return $this->ok([

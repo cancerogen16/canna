@@ -29,7 +29,7 @@ class SalonController extends Controller
             $salonsCollection = Salon::all();
 
             foreach ($salonsCollection as $item) {
-                $item['thumb'] = ImageUpload::getImage($item['main_photo'], 'medium');
+                $item['main_photo'] = ImageUpload::getImage($item['main_photo'], 'medium');
 
                 $salons[] = $item;
             }
@@ -53,10 +53,16 @@ class SalonController extends Controller
 
             $this->authorize('create', $salon);
 
+            if (isset($salon['main_photo'])) {
+                if ($main_photo = ImageUpload::upload($salon['main_photo'])) {
+                    $salon['main_photo'] = $main_photo;
+                }
+            }
+
             $salon->save();
 
             if (isset($salon['main_photo'])) {
-                $salon['thumb'] = ImageUpload::getImage($salon['main_photo'], 'thumbnail');
+                $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
             }
 
             return $this->response(201, [
@@ -76,7 +82,7 @@ class SalonController extends Controller
         try {
             $salon = Salon::findOrFail($id);
 
-            $salon['thumb'] = ImageUpload::getImage($salon['main_photo'], 'large');
+            $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
 
             return $this->ok([
                 'salon' => $salon
@@ -100,10 +106,18 @@ class SalonController extends Controller
 
             $this->authorize('update', [$salon, $data['user_id']]);
 
+            if (isset($salon['main_photo'])) {
+                if ($main_photo = ImageUpload::upload($salon['main_photo'])) {
+                    $salon['main_photo'] = $main_photo;
+                }
+            } else {
+                $salon['main_photo'] = null;
+            }
+
             $salon->update($data);
 
             if (isset($salon['main_photo'])) {
-                $salon['thumb'] = ImageUpload::getImage($salon['main_photo'], 'thumbnail');
+                $salon['main_photo'] = ImageUpload::getImage($salon['main_photo'], 'large');
             }
 
             return $this->ok([
@@ -151,7 +165,7 @@ class SalonController extends Controller
             ->get();
 
         foreach ($salonsCollection as $item) {
-            $item['thumb'] = ImageUpload::getImage($item['main_photo'], 'medium');
+            $item['main_photo'] = ImageUpload::getImage($item['main_photo'], 'medium');
 
             $salons[] = $item;
         }
