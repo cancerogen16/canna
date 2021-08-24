@@ -17,13 +17,9 @@ export const fetchMasterOne = (master_id) => (dispatch, getState) => {
 }
 
 export const fetchUpdateMaster = (id,form) => (dispatch, getState) => {
-    HTTP.post(`api/masters/${id}?_method=PUT`, form, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
+    HTTP.post(`api/masters/${id}?_method=PUT`, form)
     .then(res => {
-        // const master = res.data.master;
+        const master = res.data.master;
         // dispatch(addMasterOne(master));
         // dispatch(updateMasterSalon(master.id));
     })
@@ -43,11 +39,7 @@ export const fetchDeleteMaster = (id) => (dispatch) => {
 }
 
 export const fetchCreateMaster = (form) => (dispatch, getState) => {
-    HTTP.post('api/masters', form, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
+    HTTP.post('api/masters', form)
         .then(res => {
             const master = res.data.master;
             dispatch(addMasterOne(master));
