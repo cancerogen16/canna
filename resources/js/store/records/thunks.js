@@ -1,13 +1,13 @@
 import HTTP from '../../utils/HTTP';
-import {addRecord, clearRecord} from "./action";
-import {addError} from "../error/action";
+import { addRecord, clearRecord } from "./action";
 
-export const fetchRecords = (master_id) => (dispatch, getState) => {
+export const fetchRecords = (master_id) => (dispach, getState) => {
+
     HTTP.get('/api/calendars')
     .then((res) => {
-        dispatch(clearRecord())
+        dispach(clearRecord())
         res.data.data.forEach(record => {
-            dispatch(addRecord(record));
+            dispach(addRecord(record));
         })
     })
     .catch(err => { 
@@ -18,4 +18,5 @@ export const fetchRecords = (master_id) => (dispatch, getState) => {
         } else { 
             dispatch(addError({code: status, message: 'Что-то пошло не так'})) 
         }})
+
 }

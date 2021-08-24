@@ -14,7 +14,6 @@ import { salonsReducer } from './salons/reducer';
 import { servicesReducer } from './services/reducer';
 import { errorReducer } from './error/reducer';
 import {serviceReducer} from "./service/reduser";
-import { timesReducer } from './times/reducer';
 
 const persistConfig = {
     key: 'canna',
@@ -36,8 +35,7 @@ const rootReducer = combineReducers({
     actions: actionReducer,
     service: serviceReducer,
     services: servicesReducer,
-    error: errorReducer,
-    times: timesReducer
+    error: errorReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

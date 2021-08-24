@@ -1,11 +1,11 @@
 import HTTP from '../../utils/HTTP';
 import {addMaster} from './action';
-import {addMasterOne, delMaster} from '../masters/action';
-import {addError} from '../error/action';
+import { addMasterOne, delMaster } from '../masters/action';
+import { addError } from '../error/action';
 
-export const fetchMasterOne = (master_id) => (dispatch, getState) => {
+export const fetchMasterOne = (master_id) => (dispach, getState) => {
     HTTP.get(`/api/masters${master_id}`)
-        .then(res => dispatch(addMaster(res.data.master)))
+        .then(res => dispach(addMaster(res.data.master)))
         .catch(err => { 
             if (err.response) { 
                 dispatch(addError({code: status, message: err.response.data.message})) 

@@ -1,11 +1,11 @@
 import HTTP from '../../utils/HTTP';
 import {addService} from './action';
-import {addServiceOne, delService} from '../services/action';
-import {addError} from '../error/action';
+import { addServiceOne, delService } from '../services/action';
+import { addError } from '../error/action';
 
-export const fetchServiceOne = (service_id) => (dispatch, getState) => {
+export const fetchServiceOne = (service_id) => (dispach, getState) => {
     HTTP.get(`/api/services${service_id}`)
-        .then(res => dispatch(addService(res.data.service)))
+        .then(res => dispach(addService(res.data.service)))
         .catch(err => {
             if (err.response) {
                 dispatch(addError({code: status, message: err.response.data.message}))
