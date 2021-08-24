@@ -8,46 +8,43 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { Link } from '@material-ui/core';
-import { cardSalon } from './style';
-
-
+import {Link} from '@material-ui/core';
+import {cardSalon} from './style';
 
 export default function CardSalon(props) {
 
-  const classes = cardSalon();
-  const {id, title, main_photo, city, address, phone, description, rating} = props.salon;
+    const classes = cardSalon();
+    const {id, title, main_photo, thumb, city, address, phone, description, rating} = props.salon;
 
-  return (
-    <><Link href={`/salon/${id}`}>
-       <Card elevation={4}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            {title[0]}
-          </Avatar>
-        }
-        title={title}
-        subheader={`${city}, ${address}`}
-      />
-      <CardMedia
-        className={classes.media}
-        image={main_photo}
-        title="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
-    </Link>
-    </>
-   
-  );
+    return (
+        <><Link href={`/salon/${id}`}>
+            <Card elevation={4}>
+                <CardHeader
+                    avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                            {title[0]}
+                        </Avatar>
+                    }
+                    title={title}
+                    subheader={`${city}, ${address}`}
+                />
+                <CardMedia
+                    className={classes.media}
+                    image={thumb}
+                    title="Paella dish"
+                />
+                <CardContent>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {description}
+                    </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <IconButton aria-label="add to favorites">
+                        <FavoriteIcon/>
+                    </IconButton>
+                </CardActions>
+            </Card>
+        </Link>
+        </>
+    );
 }
