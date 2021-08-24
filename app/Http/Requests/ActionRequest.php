@@ -16,7 +16,7 @@ class ActionRequest extends FormRequest
         return [
             'salon_id' => 'required|integer|exists:salons,id',
             'name' => 'required|between:3,191',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'nullable|string',
             'description' => 'nullable|string',
             'price' => 'required|integer|between:0,999999',
             'start_at' => 'required|date_format:Y-m-d H:i:s',

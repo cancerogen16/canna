@@ -16,7 +16,7 @@ class ProfileRequest extends FormRequest
         return [
             'user_id' => 'required|integer|exists:users,id',
             'name' => 'nullable|string|min:3|max:250',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'nullable|string',
             'address' => 'nullable|string|min:4|max:300',
             'phone' => 'nullable|string|between:10,15',
             'about' => 'nullable|string|min:4|max:300',
