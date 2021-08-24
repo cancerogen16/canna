@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 const priviewMaster = makeStyles({
     root: {
         display: 'flex',
-        'justify-content': 'space-between',
-        'align-items': 'center'
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     ava: {
       width: '100px',
@@ -14,6 +15,7 @@ const priviewMaster = makeStyles({
         margin: '10px 0 10px 0'
     },
     info: {
+        width: '100%',
         'display': 'flex',
         'flex-direction': 'column',
         marginLeft: '40px'

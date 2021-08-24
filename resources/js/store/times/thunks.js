@@ -1,14 +1,13 @@
 import HTTP from '../../utils/HTTP';
-import {addError} from '../error/action';
-import {setUser, updateSalonUser} from './action';
+import { addError } from '../error/action';
+import { addTimeAll } from './action';
 
-export const setUserWithThunk = (user) => (dispatch, getState) => {
-    dispatch(setUser(user));
-}
-
-export const updateSalonUserFetch = (user_id) => (dispatch, getState) => {
-    HTTP.get(`api/users/${user_id}/salons`)
-    .then(res => {dispatch(updateSalonUser(res.data.salons[0].id))})
+export const fetchTimesMaster = (master_id, date = '') => (dispatch, getState) => {
+    HTTP.get(`/api/masters/${master_id}/calendars/${date}`)
+    .then(res => {
+        console.log(res);
+        dispatch(addTimeAll(res.data.calendars));
+    })
     .catch(err => { 
         if (err.response) { 
             dispatch(addError({code: status, message: err.response.data.message})) 

@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRecords } from "../../../store/records/thunks";
 import {fetchSalonInfo} from "../../../store/salon/thunks";
 import { fetchServicesByMasterId, fetchServicesBySalonId } from '../../../store/services/thunks';
 
 export default function useSalon(props){
-    const [value, setValue] = useState(0);
-    const [open, setOpen] = useState(false);
 
+    const [value, setValue] = useState(0);
     const masters = useSelector(state => state.masters);
     const salon = useSelector(state => state.salon);
-    const records = useSelector(state => state.records);
     const services = useSelector(state => state.services);
     const actions = useSelector(state => state.actions);
-
+    
     const dispatch = useDispatch();
     
     const handleClickMaster = (id) => {
@@ -23,15 +20,6 @@ export default function useSalon(props){
     const handleClickSalon = (id) => {
         dispatch(fetchServicesBySalonId(id));
     }
-
-    const handleClickOpen = () => {
-        dispatch(fetchRecords(1));
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -47,10 +35,6 @@ export default function useSalon(props){
         services,
         masters,
         actions,
-        open,
-        records,
-        handleClickOpen,
-        handleClose,
         handleChange,
         handleClickMaster,
         handleClickSalon
