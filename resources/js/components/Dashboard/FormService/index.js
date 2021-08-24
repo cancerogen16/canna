@@ -6,6 +6,7 @@ import HTTP from "../../../utils/HTTP";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useSelector} from "react-redux";
+import InputLabel from "@material-ui/core/InputLabel";
 
 /*import React, { useRef } from 'react'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
@@ -74,17 +75,23 @@ export default function FormService (props){
         className={classes.root}
         onSubmit={props.submit}
     >
-        <Select
-            className={classes.item}
-            label="Категория услуги"
-            name="category_id"
-            value={credentials.category_id}
-            onChange={handlerOnChangeField}
-        >
-            {categories.map(category => {
-                return <MenuItem key={category.id} value={category.id}>{category.title}</MenuItem>
-            })}
-        </Select>
+        <div className={classes.item}>
+            <InputLabel id="select-label">Выберите категорию</InputLabel>
+            <Select
+                required
+                className={classes.select}
+                labelId="select-label"
+                name="category_id"
+                value={credentials.category_id}
+                errorMessages={['Поле обязательно для заполнения']}
+                onChange={handlerOnChangeField}
+            >
+                {categories.map(category => {
+                    return <MenuItem key={category.id} value={category.id}>{category.title}</MenuItem>
+                })}
+            </Select>
+        </div>
+
         <TextValidator
             className={classes.item}
             label="Название услуги"
