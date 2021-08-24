@@ -37,13 +37,13 @@ export default function useFormService(props) {
         form.append('title', credentials.title);
         form.append('price', credentials.price);
         form.append('duration', credentials.duration);
-        form.append('excerpt', credentials.excerpt);
-        form.append('description', credentials.description);
-        form.append('image', credentials.image);
+        form.append('excerpt', credentials.excerpt ?? '');
+        form.append('description', credentials.description ?? '');
+        form.append('image', credentials.image ?? '');
 
-        if(update) {
-            dispatch(fetchUpdateService(credentials.id,form));
-        }else{
+        if (update) {
+            dispatch(fetchUpdateService(credentials.id, form));
+        } else {
             dispatch(fetchCreateService(form));
         }
 
@@ -97,7 +97,7 @@ export default function useFormService(props) {
             case 'image':
                 setCredentials({
                     ...credentials,
-                    image: e.target.files[0]
+                    image: e.target.value
                 })
                 break;
         }
@@ -112,7 +112,8 @@ export default function useFormService(props) {
     const closeModal = () => {
         setOpen(!open);
         setUpdate(false);
-        setCredentials({ salon_id: salon.id,
+        setCredentials({
+            salon_id: salon.id,
             id: '',
             category_id: '',
             title: '',
@@ -120,7 +121,8 @@ export default function useFormService(props) {
             duration: '',
             excerpt: '',
             description: '',
-            image: []});
+            image: ''
+        });
     }
 
     return {
