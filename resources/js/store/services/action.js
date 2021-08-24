@@ -8,6 +8,7 @@ export const addServicesAll = (services) => ({
 export const addServiceOne = ({salon_id, id, category_id, title, slug, price, duration, image, thumb, excerpt, description}) => ({
     type: ADD_ONE_SERVICE,
     salon_id,
+    category_id,
     id,
     title,
     slug,
