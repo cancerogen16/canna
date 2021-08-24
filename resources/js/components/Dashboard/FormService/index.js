@@ -6,7 +6,6 @@ import HTTP from "../../../utils/HTTP";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useSelector} from "react-redux";
-import {fetchDeleteService} from "../../../store/service/thunks";
 
 /*import React, { useRef } from 'react'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
@@ -71,7 +70,7 @@ export default function FormService (props){
             })
     }
 
-    return  <ValidatorForm
+    return <ValidatorForm
         className={classes.root}
         onSubmit={props.submit}
     >
@@ -82,8 +81,8 @@ export default function FormService (props){
             value={credentials.category_id}
             onChange={handlerOnChangeField}
         >
-            {categories.map(category =>{
-                return  <MenuItem key={category.id} value={category.id}>{category.title}</MenuItem>
+            {categories.map(category => {
+                return <MenuItem key={category.id} value={category.id}>{category.title}</MenuItem>
             })}
         </Select>
         <TextValidator
@@ -144,7 +143,7 @@ export default function FormService (props){
             name='excerpt'
             multiline
             maxRows={4}
-            value={credentials.excerpt}
+            value={credentials.excerpt ?? ''}
             onChange={handlerOnChangeField}
         />
         <br/>
@@ -154,7 +153,7 @@ export default function FormService (props){
             name='description'
             multiline
             maxRows={4}
-            value={credentials.description}
+            value={credentials.description ?? ''}
             onChange={handlerOnChangeField}
         />
         <br/>
