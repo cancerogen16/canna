@@ -1,6 +1,6 @@
 import HTTP from '../../utils/HTTP';
 import {addService} from './action';
-import {addServiceOne, delService} from '../services/action';
+import {addServiceOne, updateService, delService} from '../services/action';
 import {addError} from '../error/action';
 
 export const fetchServiceOne = (service_id) => (dispatch, getState) => {
@@ -19,9 +19,7 @@ export const fetchServiceOne = (service_id) => (dispatch, getState) => {
 export const fetchUpdateService = (id,form) => (dispatch, getState) => {
     HTTP.post(`api/services/${id}?_method=PUT`, form)
         .then(res => {
-            // const service = res.data.service;
-            // dispatch(addServiceOne(service));
-            // dispatch(updateServiceSalon(service.id));
+            dispatch(updateService(res.data.service));
         })
 }
 
