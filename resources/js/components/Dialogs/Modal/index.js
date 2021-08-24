@@ -10,12 +10,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 export default function Modal(props) {
   
   return (
-    <div>
-      <Dialog onClose={props.onClose} aria-labelledby="customized-dialog-title" open={props.open}>
-        <DialogTitle id="customized-dialog-title" onClose={props.onClose}>
+      <Dialog  onClose={props.onClose} aria-labelledby="customized-dialog-title" open={props.open}>
+        <DialogTitle  id="customized-dialog-title" onClose={props.onClose}>
           {props.title}
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent className={props.className} dividers>
           {props.children}
         </DialogContent>
         <DialogActions>
@@ -24,6 +23,5 @@ export default function Modal(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 }

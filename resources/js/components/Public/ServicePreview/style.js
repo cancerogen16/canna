@@ -13,10 +13,16 @@ const priviewService = makeStyles({
     name: {
         margin: '10px 0 10px 0'
     },
-    info: {
+    desc: {
         'display': 'flex',
         'flex-direction': 'column',
-        marginLeft: '40px'
+        width: '45%',
+        padding: '0 10px',
+        boxSizing: 'border-box'
+    },
+    info: {
+        width: '25%',
+        padding: '0 10px'
     },
     spec: {
         margin: '10px 0 10px 0'
