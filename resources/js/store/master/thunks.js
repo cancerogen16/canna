@@ -1,6 +1,6 @@
 import HTTP from '../../utils/HTTP';
 import {addMaster} from './action';
-import {addMasterOne, delMaster} from '../masters/action';
+import {addMasterOne, delMaster, updateMaster} from '../masters/action';
 import {addError} from '../error/action';
 
 export const fetchMasterOne = (master_id) => (dispatch, getState) => {
@@ -19,9 +19,7 @@ export const fetchMasterOne = (master_id) => (dispatch, getState) => {
 export const fetchUpdateMaster = (id,form) => (dispatch, getState) => {
     HTTP.post(`api/masters/${id}?_method=PUT`, form)
     .then(res => {
-        const master = res.data.master;
-        // dispatch(addMasterOne(master));
-        // dispatch(updateMasterSalon(master.id));
+        dispatch(updateMaster(res.data.master));
     })
 }
 
