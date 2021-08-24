@@ -17,11 +17,7 @@ export const fetchServiceOne = (service_id) => (dispatch, getState) => {
 }
 
 export const fetchUpdateService = (id,form) => (dispatch, getState) => {
-    HTTP.post(`api/services/${id}?_method=PUT`, form, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
+    HTTP.post(`api/services/${id}?_method=PUT`, form)
         .then(res => {
             // const service = res.data.service;
             // dispatch(addServiceOne(service));
@@ -43,11 +39,7 @@ export const fetchDeleteService = (id) => (dispatch) => {
 }
 
 export const fetchCreateService = (form) => (dispatch, getState) => {
-    HTTP.post('api/services', form, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
+    HTTP.post('api/services', form)
         .then(res => {
             const service = res.data.service;
             dispatch(addServiceOne(service));
