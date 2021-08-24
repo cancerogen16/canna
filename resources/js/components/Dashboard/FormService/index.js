@@ -83,7 +83,6 @@ export default function FormService (props){
                 labelId="select-label"
                 name="category_id"
                 value={credentials.category_id}
-                errorMessages={['Поле обязательно для заполнения']}
                 onChange={handlerOnChangeField}
             >
                 {categories.map(category => {
