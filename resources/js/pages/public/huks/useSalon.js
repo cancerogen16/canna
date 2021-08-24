@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRecords } from "../../../store/records/thunks";
 import {fetchSalonInfo} from "../../../store/salon/thunks";
 import { fetchServicesByMasterId, fetchServicesBySalonId } from '../../../store/services/thunks';
 
@@ -11,6 +10,7 @@ export default function useSalon(props){
     const salon = useSelector(state => state.salon);
     const services = useSelector(state => state.services);
     const actions = useSelector(state => state.actions);
+    
     const dispatch = useDispatch();
     
     const handleClickMaster = (id) => {

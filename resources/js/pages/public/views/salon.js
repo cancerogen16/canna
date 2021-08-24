@@ -11,6 +11,7 @@ import Modal from '../../../components/Dialogs/Modal';
 import ControlledAccordions from '../../../components/Public/ControlledAccordions';
 import FormRecord from '../../../components/Dashboard/FormRecord';
 import useRecord from '../huks/useRecord';
+import styleSalon from '../styles/salon';
 
 
 export default function Page(props) {
@@ -32,6 +33,7 @@ export default function Page(props) {
     } = useRecord();
 
     const classes = priviewMaster();
+    const classesSalon = styleSalon();
     
     return (
         <Grid container spacing={3}>
@@ -80,14 +82,14 @@ export default function Page(props) {
                         </List>
                     </TabPanel>
                 </SimpleTabs>
-                <Modal open={open} onClose={handleClose} closeButton={'Закрыть'}>
-                    <FormRecord label='Мастер' name="master" value={cretendials.master_id}onChange={(e) =>  handleEditRecordForm(e)} selectes={masters} >
+                <Modal className={classesSalon.modal} open={open} onClose={handleClose} closeButton={'Закрыть'}>
+                    <FormRecord className={classesSalon.item} label='Мастер' name="master" value={cretendials.master_id}onChange={(e) =>  handleEditRecordForm(e)} selectes={masters} >
                         {masters.map(master => <MenuItem key={master.id} value={master.id}>
                                 {master.name}
                             </MenuItem>
                         )}
                     </FormRecord>
-                    <FormRecord label='Услуга' name='service' value={cretendials.service_id} onChange={(e) =>  handleEditRecordForm(e)}>
+                    <FormRecord className={classesSalon.item} label='Услуга' name='service' value={cretendials.service_id} onChange={(e) =>  handleEditRecordForm(e)}>
                         {services.map(service => <MenuItem key={service.id} value={service.id}>
                                 {service.title}
                             </MenuItem> 
@@ -100,22 +102,24 @@ export default function Page(props) {
                         label="Birthday"
                         type="date"
                         defaultValue={cretendials.date}
-                        //className={classes.textField}
+                        className={classesSalon.item}
                         InputLabelProps={{
                         shrink: true,
                         }}
                     />
-                    <ul>
-                        {times.map(time => <li key={time.id}>
-                            <Chip
-                                
-                                label={time.start_datetime}
-                                
-                                //className={classes.chip}
-                            />
-                        </li>)}
-                    </ul>
-                    
+                    {times.length !== 0
+                        ?  <ul className={classesSalon.list}>
+                                {times.map(time => <li className={classesSalon.listItem} key={time.id}>
+                                <Chip
+                                    label={time.start_datetime}
+                                    className={time.record_id? '': classesSalon.active}
+                                />
+                                </li>)}
+                            </ul>
+                        : (cretendials.master_id == ''
+                                    ? <p>Выберите мастера</p>
+                                    : <p>Нет записи к этому мастеру на этот день</p>)
+                    }
                 </Modal>
             </Grid>
         </Grid>)

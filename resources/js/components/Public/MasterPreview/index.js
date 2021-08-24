@@ -19,10 +19,11 @@ export default function MasterPreview (props){
                     <span className={classes.name}>{master.name}</span>
                     <span className={classes.spec}>{master.position}</span>
                 </div>
-            </div>
-            <div className={classes.btns}>
+                <div className={classes.btns}>
                     {props.children}
                 </div>
+            </div>
+            
             </>
                 
 }

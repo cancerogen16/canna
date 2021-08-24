@@ -8,7 +8,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { masterReducer } from './master/reducer';
 import { mastersReducer } from './masters/reducer';
-import { recordsReducer } from './records/reducer';
+//import { recordsReducer } from './records/reducer';
 import {actionReducer} from "./action/reducer";
 import { salonsReducer } from './salons/reducer';
 import { servicesReducer } from './services/reducer';
@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
     salon: salonReducer,
     master: masterReducer,
     masters: mastersReducer,
-    records: recordsReducer,
+   // records: recordsReducer,
     actions: actionReducer,
     service: serviceReducer,
     services: servicesReducer,
