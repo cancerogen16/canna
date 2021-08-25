@@ -12,7 +12,11 @@ const formService = makeStyles({
         height: '100px'
     },
     item: {
-        margin: '10px'
+        margin: '10px',
+        minWidth: '25%'
+    },
+    select: {
+        width: '100%'
     },
     areal: {
         margin: '10px',

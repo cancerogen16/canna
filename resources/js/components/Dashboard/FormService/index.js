@@ -3,6 +3,10 @@ import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
 import {Button, TextField, Typography} from '@material-ui/core'
 import formService from './style';
 import HTTP from "../../../utils/HTTP";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import {useSelector} from "react-redux";
+import InputLabel from "@material-ui/core/InputLabel";
 
 /*import React, { useRef } from 'react'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
@@ -12,6 +16,9 @@ import useFormService from './useFormService'*/
 
 export default function FormService (props){
     const classes = formService();
+
+    const categories = useSelector(state => state.categories);
+
     const {
         setImage,
         handlerOnChangeField,
@@ -64,19 +71,26 @@ export default function FormService (props){
             })
     }
 
-    return  <ValidatorForm
+    return <ValidatorForm
         className={classes.root}
         onSubmit={props.submit}
     >
-        <TextValidator
-            className={classes.item}
-            label="Категория услуги"
-            onChange={handlerOnChangeField}
-            name="category_id"
-            value={credentials.category_id}
-            validators={['required']}
-            errorMessages={['Поле обязательно для заполнения']}
-        />
+        <div className={classes.item}>
+            <InputLabel id="select-label">Выберите категорию</InputLabel>
+            <Select
+                required
+                className={classes.select}
+                labelId="select-label"
+                name="category_id"
+                value={credentials.category_id}
+                onChange={handlerOnChangeField}
+            >
+                {categories.map(category => {
+                    return <MenuItem key={category.id} value={category.id}>{category.title}</MenuItem>
+                })}
+            </Select>
+        </div>
+
         <TextValidator
             className={classes.item}
             label="Название услуги"
@@ -135,7 +149,7 @@ export default function FormService (props){
             name='excerpt'
             multiline
             maxRows={4}
-            value={credentials.excerpt}
+            value={credentials.excerpt ?? ''}
             onChange={handlerOnChangeField}
         />
         <br/>
@@ -145,7 +159,7 @@ export default function FormService (props){
             name='description'
             multiline
             maxRows={4}
-            value={credentials.description}
+            value={credentials.description ?? ''}
             onChange={handlerOnChangeField}
         />
         <br/>

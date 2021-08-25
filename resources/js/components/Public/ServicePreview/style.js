@@ -4,7 +4,8 @@ const priviewService = makeStyles({
     root: {
         display: 'flex',
         'justify-content': 'space-between',
-        'align-items': 'center'
+        'align-items': 'center',
+        width: '100%'
     },
     ava: {
       width: '100px',
