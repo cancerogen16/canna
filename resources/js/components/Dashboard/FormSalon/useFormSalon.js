@@ -14,8 +14,16 @@ export default function useFormSalon(props) {
         address: '',
         phone: '',
         description: '',
-        main_photo: []
+        main_photo: ''
     });
+
+    /* Изменение изображения */
+    const setImage = (newImage) => {
+        setCredentials({
+            ...credentials,
+            main_photo: newImage
+        });
+    };
 
     const handleSubmit = (e) => {
         const form = new FormData(e.target.form);
@@ -24,7 +32,7 @@ export default function useFormSalon(props) {
         form.append('city', credentials.city)
         form.append('phone', credentials.phone)
         form.append('address', credentials.address)
-        form.append('description', credentials.description)
+        form.append('description', credentials.description ?? '')
         form.append('main_photo', credentials.main_photo)
         console.log(e.target.form)
 
@@ -68,13 +76,14 @@ export default function useFormSalon(props) {
             case 'main_photo':
                 setCredentials({
                     ...credentials,
-                    main_photo: e.target.files[0]
+                    main_photo: e.target.value
                 })
                 break;
         }
     }
 
     return {
+        setImage,
         handlerOnChangeField,
         handleSubmit,
         submitted,
