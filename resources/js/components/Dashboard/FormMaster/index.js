@@ -19,9 +19,12 @@ export default function FormMaster(props) {
 
     /* Отрисовка изображения для просмотра */
     const renderImage = (imageSrc) => {
-        const src = imageSrc ? imageSrc : 'noimage.gif';
+        let src = imageSrc ? imageSrc : 'noimage.gif';
+        if (src.indexOf('http') === -1) {
+            src = '/images/origin/' + src;
+        }
 
-        return <img className="ava" src={'/images/origin/' + src} alt=""
+        return <img className="ava" src={src} alt=""
                     style={{width: "100px", height: "100px"}}/>;
     };
 
