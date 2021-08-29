@@ -12,6 +12,10 @@ import ControlledAccordions from '../../../components/Public/ControlledAccordion
 import FormRecord from '../../../components/Dashboard/FormRecord';
 import useRecord from '../huks/useRecord';
 import styleSalon from '../styles/salon';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRecorClear } from '../../../store/times/thunks';
+import date from 'date-and-time';
+
 
 
 export default function Page(props) {
@@ -34,7 +38,23 @@ export default function Page(props) {
 
     const classes = priviewMaster();
     const classesSalon = styleSalon();
-    
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+    const handleTime = (time) => {
+        
+        const record = {
+            user_id: user.id,
+            service_id: cretendials.service_id,
+            master_id: cretendials.master_id,
+            start_datetime: date.format(new Date(time.start_datetime), 'YYYY-MM-DD HH') ,
+            name: user.name,
+            phone: '+79999999999',
+            comment: 'sada',
+        }
+        
+        dispatch(fetchRecorClear(time, record))
+    }
+
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -111,6 +131,7 @@ export default function Page(props) {
                         ?  <ul className={classesSalon.list}>
                                 {times.map(time => <li className={classesSalon.listItem} key={time.id}>
                                 <Chip
+                                    onClick={() => handleTime(time)}
                                     label={time.start_datetime}
                                     className={time.record_id? '': classesSalon.active}
                                 />
